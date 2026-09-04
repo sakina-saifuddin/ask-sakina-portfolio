@@ -88,7 +88,7 @@ export default function Home() {
           <Link className="text-link reveal" href="/appreciation">View appreciation →</Link>
         </section>
 
-        <section className="closing-cta reveal"><span>CONTACT</span><h2>Want to talk about a role or project?</h2><p>I’m open to opportunities across software, data, analytics, machine learning, and automation.</p><div><a className="primary-button neon-button" href={`mailto:${profile.email}?subject=Opportunity for Sakina Saifuddin`}>Email Sakina</a><a className="secondary-button" href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></div></section>
+        <section className="closing-cta reveal" id="contact"><span>CONTACT</span><h2>Want to talk about a role or project?</h2><p>I’m open to opportunities across software, data, analytics, machine learning, and automation.</p><div><a className="primary-button neon-button" href={`mailto:${profile.email}?subject=Opportunity for Sakina Saifuddin`}>Email Sakina</a><a className="secondary-button" href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a></div></section>
       </main>
       <Footer />
     </>

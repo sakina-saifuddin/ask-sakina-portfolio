@@ -2,18 +2,17 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { BookOpen, FolderKanban, Layers, Briefcase, GraduationCap, Award, Mail, Menu, X } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { profile } from "@/data/portfolio";
-import { FloatingDock, type DockItem } from "@/components/FloatingDock";
 
 const chapters = [
-  { num: "01", title: "Intro", href: "/#intro", icon: BookOpen },
-  { num: "02", title: "Work", href: "/#work", icon: FolderKanban },
-  { num: "03", title: "What I Build", href: "/#build", icon: Layers },
-  { num: "04", title: "Experience", href: "/#experience", icon: Briefcase },
-  { num: "05", title: "Expertise", href: "/#expertise", icon: GraduationCap },
-  { num: "06", title: "Recognition", href: "/#recognition", icon: Award },
-  { num: "07", title: "Contact", href: "/#contact", icon: Mail },
+  { num: "01", title: "Intro", href: "/#intro" },
+  { num: "02", title: "Work", href: "/#work" },
+  { num: "03", title: "What I Build", href: "/#build" },
+  { num: "04", title: "Experience", href: "/#experience" },
+  { num: "05", title: "Expertise", href: "/#expertise" },
+  { num: "06", title: "Recognition", href: "/#recognition" },
+  { num: "07", title: "Contact", href: "/#contact" },
 ];
 
 export function Header() {
@@ -34,27 +33,25 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
-  const dockItems: DockItem[] = [
-    ...chapters.map((chapter) => {
-      const Icon = chapter.icon;
-      return { title: `${chapter.num} · ${chapter.title}`, href: chapter.href, icon: <Icon size={19} strokeWidth={1.6} /> };
-    }),
-    { title: open ? "Close" : "Menu", isMenuTrigger: true, icon: open ? <X size={19} strokeWidth={1.6} /> : <Menu size={19} strokeWidth={1.6} /> },
-  ];
-
   return (
     <>
-      <div className="dock-topbar" data-menu-open={open}>
-        <Link className="dock-brand" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
-          SAKINA <span>SAIFUDDIN</span>
-        </Link>
+      <div className="hz-nav" data-menu-open={open}>
+        <button
+          type="button"
+          className="hz-nav-hamburger"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="navbar-overlay"
+          onClick={() => setOpen((value) => !value)}
+        >
+          {open ? <X size={20} strokeWidth={1.6} /> : <Menu size={20} strokeWidth={1.6} />}
+        </button>
 
-        <FloatingDock
-          items={dockItems}
-          menuOpen={open}
-          onMenuClick={() => setOpen((value) => !value)}
-          onNavigate={() => setOpen(false)}
-        />
+        <span className="hz-nav-vertical hz-nav-vertical-top">Portfolio</span>
+
+        <Link className="hz-nav-vertical hz-nav-vertical-bottom" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
+          Sakina Saifuddin
+        </Link>
       </div>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>

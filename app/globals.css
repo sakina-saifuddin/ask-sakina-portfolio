@@ -754,57 +754,96 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
 }
 
 /* ======================================================
-   NAVBAR — fullscreen overlay menu (CodePen-inspired)
+   TOP NAVIGATION — Floating Dock (default) + fullscreen
+   overlay menu (opened from the dock's menu trigger)
    ====================================================== */
-.navbar{
+.dock-topbar{
   position:sticky;
   top:0;
   z-index:300;
-  height:78px;
+  height:86px;
   display:flex;
   align-items:center;
   justify-content:space-between;
+  gap:1rem;
   padding:0 clamp(20px,4vw,64px);
-  background:#0a0a0a;
+  pointer-events:none;
   font-family:var(--font-poppins),"Segoe UI Variable","Segoe UI",Arial,sans-serif;
 }
-.navbar-brand{
+.dock-topbar>*{pointer-events:auto}
+.dock-brand{
   display:inline-flex;
   align-items:baseline;
   gap:.4rem;
   font-weight:700;
   font-size:1.05rem;
   letter-spacing:.02em;
-  color:#fff;
+  color:#111;
   text-decoration:none;
   white-space:nowrap;
 }
-.navbar-brand span{font-weight:800}
-.navbar-toggle{
+.dock-brand span{font-weight:800}
+.dock-topbar[data-menu-open="true"] .dock-brand{color:#fff}
+
+.floating-dock{
+  position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  z-index:300;
+  display:flex;
+  align-items:flex-end;
+  gap:.55rem;
+  padding:.5rem .7rem;
+  border-radius:999px;
+  background:rgba(10,10,10,.92);
+  backdrop-filter:blur(10px);
+  box-shadow:0 12px 30px rgba(0,0,0,.22);
+}
+.floating-dock-icon{
   position:relative;
-  width:32px;
-  height:22px;
-  padding:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-radius:999px;
+  background:#1c1c1c;
+  transition:opacity .3s ease,background .2s ease;
+}
+.floating-dock-icon:hover{background:#2a2a2a}
+.floating-dock-trigger{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:100%;
+  height:100%;
+  color:#fff;
+  text-decoration:none;
   border:0;
   background:transparent;
   cursor:pointer;
-  display:flex;
-  flex-direction:column;
-  justify-content:space-between;
-  flex-shrink:0;
 }
-.navbar-toggle span{
-  display:block;
-  width:100%;
-  height:2px;
-  background:#fff;
-  border-radius:2px;
-  transition:transform .35s cubic-bezier(.65,0,.35,1),opacity .25s ease;
-  transform-origin:center;
+.floating-dock-tooltip{
+  position:absolute;
+  bottom:calc(100% + 10px);
+  left:50%;
+  transform:translateX(-50%);
+  white-space:nowrap;
+  background:#111;
+  color:#fff;
+  font-size:.72rem;
+  font-weight:600;
+  letter-spacing:.01em;
+  padding:.3rem .6rem;
+  border-radius:6px;
+  pointer-events:none;
 }
-.navbar-toggle.is-open span:nth-child(1){transform:translateY(10px) rotate(45deg)}
-.navbar-toggle.is-open span:nth-child(2){opacity:0}
-.navbar-toggle.is-open span:nth-child(3){transform:translateY(-10px) rotate(-45deg)}
+.floating-dock[data-menu-open="true"] .floating-dock-icon:not(.floating-dock-menu-item){
+  opacity:0;
+  pointer-events:none;
+}
+.floating-dock-menu-item{background:#b7ff2a}
+.floating-dock-menu-item .floating-dock-trigger{color:#111}
+.floating-dock-menu-item:hover{background:#a3e620}
 
 .nav-overlay{
   position:fixed;
@@ -853,21 +892,26 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
 .nav-overlay-links a:hover{color:#b7ff2a}
 
 @media(prefers-reduced-motion:reduce){
-  .navbar-toggle span,.nav-overlay,.nav-overlay-links a{transition:none}
+  .floating-dock-icon,.nav-overlay,.nav-overlay-links a{transition:none}
 }
 
 @media(max-width:900px){
-  .navbar{height:70px;padding:0 20px}
+  .dock-topbar{height:78px;padding:0 20px}
+  .floating-dock{position:static;transform:none;gap:.4rem;padding:.42rem .55rem}
+  .floating-dock-icon:nth-child(n+6):not(.floating-dock-menu-item){display:none}
 }
 
 @media(max-width:620px){
-  .navbar{height:62px;padding:0 16px}
-  .navbar-brand{font-size:.88rem}
+  .dock-topbar{height:70px;padding:0 16px}
+  .dock-brand{font-size:.86rem}
+  .floating-dock{gap:.3rem;padding:.38rem .5rem}
+  .floating-dock-icon:nth-child(n+4):not(.floating-dock-menu-item){display:none}
   .nav-overlay{padding:0 22px}
   .nav-overlay-links a{font-size:clamp(1.5rem,8vw,2.3rem)}
 }
 
 @media(max-width:390px){
-  .navbar-brand{font-size:.78rem}
+  .dock-brand{font-size:.74rem}
+  .floating-dock-icon:nth-child(n+3):not(.floating-dock-menu-item){display:none}
   .nav-overlay-links a{font-size:1.35rem}
 }

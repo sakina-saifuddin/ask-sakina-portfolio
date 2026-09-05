@@ -2,7 +2,9 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { User, Briefcase, FolderKanban, Cpu, Heart, MessageCircle, Mail, Menu, X } from "lucide-react";
 import { profile } from "@/data/portfolio";
+import { FloatingDock, type DockItem } from "@/components/FloatingDock";
 
 const navLinks = [
   { label: "About", href: "/#about" },
@@ -13,6 +15,8 @@ const navLinks = [
   { label: "Ask My Resume", href: "/#ask-resume" },
   { label: "Contact", href: "/#contact" },
 ];
+
+const dockIcons = [User, Briefcase, FolderKanban, Cpu, Heart, MessageCircle, Mail];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -32,26 +36,28 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, []);
 
+  const dockItems: DockItem[] = [
+    ...navLinks.map((link, index) => {
+      const Icon = dockIcons[index];
+      return { title: link.label, href: link.href, icon: <Icon size={20} strokeWidth={1.8} /> };
+    }),
+    { title: open ? "Close" : "Menu", isMenuTrigger: true, icon: open ? <X size={20} strokeWidth={1.8} /> : <Menu size={20} strokeWidth={1.8} /> },
+  ];
+
   return (
     <>
-      <header className="navbar">
-        <Link className="navbar-brand" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
+      <div className="dock-topbar" data-menu-open={open}>
+        <Link className="dock-brand" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
           SAKINA <span>SAIFUDDIN.</span>
         </Link>
 
-        <button
-          type="button"
-          className={`navbar-toggle${open ? " is-open" : ""}`}
-          aria-label={open ? "Close menu" : "Open menu"}
-          aria-expanded={open}
-          aria-controls="navbar-overlay"
-          onClick={() => setOpen((value) => !value)}
-        >
-          <span />
-          <span />
-          <span />
-        </button>
-      </header>
+        <FloatingDock
+          items={dockItems}
+          menuOpen={open}
+          onMenuClick={() => setOpen((value) => !value)}
+          onNavigate={() => setOpen(false)}
+        />
+      </div>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
         <nav className="nav-overlay-links">

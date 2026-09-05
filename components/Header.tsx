@@ -2,21 +2,19 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { User, Briefcase, FolderKanban, Cpu, Heart, MessageCircle, Mail, Menu, X } from "lucide-react";
+import { BookOpen, FolderKanban, Layers, Briefcase, GraduationCap, Award, Mail, Menu, X } from "lucide-react";
 import { profile } from "@/data/portfolio";
 import { FloatingDock, type DockItem } from "@/components/FloatingDock";
 
-const navLinks = [
-  { label: "About", href: "/#about" },
-  { label: "Experience", href: "/#experience" },
-  { label: "Projects", href: "/#projects" },
-  { label: "Skills", href: "/#tools" },
-  { label: "Appreciation", href: "/appreciation" },
-  { label: "Ask My Resume", href: "/#ask-resume" },
-  { label: "Contact", href: "/#contact" },
+const chapters = [
+  { num: "01", title: "Intro", href: "/#intro", icon: BookOpen },
+  { num: "02", title: "Work", href: "/#work", icon: FolderKanban },
+  { num: "03", title: "What I Build", href: "/#build", icon: Layers },
+  { num: "04", title: "Experience", href: "/#experience", icon: Briefcase },
+  { num: "05", title: "Expertise", href: "/#expertise", icon: GraduationCap },
+  { num: "06", title: "Recognition", href: "/#recognition", icon: Award },
+  { num: "07", title: "Contact", href: "/#contact", icon: Mail },
 ];
-
-const dockIcons = [User, Briefcase, FolderKanban, Cpu, Heart, MessageCircle, Mail];
 
 export function Header() {
   const [open, setOpen] = useState(false);
@@ -37,18 +35,18 @@ export function Header() {
   }, []);
 
   const dockItems: DockItem[] = [
-    ...navLinks.map((link, index) => {
-      const Icon = dockIcons[index];
-      return { title: link.label, href: link.href, icon: <Icon size={20} strokeWidth={1.8} /> };
+    ...chapters.map((chapter) => {
+      const Icon = chapter.icon;
+      return { title: `${chapter.num} · ${chapter.title}`, href: chapter.href, icon: <Icon size={19} strokeWidth={1.6} /> };
     }),
-    { title: open ? "Close" : "Menu", isMenuTrigger: true, icon: open ? <X size={20} strokeWidth={1.8} /> : <Menu size={20} strokeWidth={1.8} /> },
+    { title: open ? "Close" : "Menu", isMenuTrigger: true, icon: open ? <X size={19} strokeWidth={1.6} /> : <Menu size={19} strokeWidth={1.6} /> },
   ];
 
   return (
     <>
       <div className="dock-topbar" data-menu-open={open}>
         <Link className="dock-brand" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
-          SAKINA <span>SAIFUDDIN.</span>
+          SAKINA <span>SAIFUDDIN</span>
         </Link>
 
         <FloatingDock
@@ -61,15 +59,16 @@ export function Header() {
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
         <nav className="nav-overlay-links">
-          {navLinks.map((link, index) => (
+          {chapters.map((chapter, index) => (
             <Link
-              key={link.href}
-              href={link.href}
+              key={chapter.href}
+              href={chapter.href}
               tabIndex={open ? 0 : -1}
               style={{ transitionDelay: open ? `${0.08 + index * 0.06}s` : "0s" }}
               onClick={() => setOpen(false)}
             >
-              {link.label}
+              <span className="nav-overlay-index">{chapter.num}</span>
+              {chapter.title}
             </Link>
           ))}
         </nav>

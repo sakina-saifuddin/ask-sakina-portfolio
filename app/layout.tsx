@@ -1,13 +1,11 @@
 import type { Metadata } from "next";
-import { Bodoni_Moda, Inter } from "next/font/google";
+import { Cinzel, Inter } from "next/font/google";
 import "./globals.css";
 
-const bodoniModa = Bodoni_Moda({
+const cinzel = Cinzel({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
-  style: ["normal", "italic"],
-  variable: "--font-display",
-  display: "swap",
+  variable: "--font-cinzel",
+  weight: ["400", "500", "600", "700", "800", "900"],
 });
 
 const inter = Inter({
@@ -24,5 +22,5 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${bodoniModa.variable} ${inter.variable}`}><body>{children}</body></html>;
+  return <html lang="en" className={`${cinzel.variable} ${inter.variable}`}><body>{children}</body></html>;
 }

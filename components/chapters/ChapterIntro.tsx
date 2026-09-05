@@ -1,6 +1,4 @@
 import Image from "next/image";
-import { profile } from "@/data/portfolio";
-import { WorkingPhoto } from "./WorkingPhoto";
 
 export function ChapterIntro() {
   return (
@@ -19,26 +17,9 @@ export function ChapterIntro() {
         <div className="intro-portrait reveal">
           <Image src="/profile.jpg" alt="Sakina Saifuddin" fill priority sizes="(max-width: 900px) 92vw, 46vw" />
         </div>
-
-        <div className="intro-body reveal">
-          <p>
-            I work across AI, data, software, and automation — the connective tissue behind decisions,
-            forecasts, and systems that need to hold up in production. {profile.intro}
-          </p>
-          <p className="intro-quote">Systems for impact. Code for curiosity.</p>
-        </div>
-
-        <div className="intro-working reveal">
-          <div className="working-photo-frame">
-            <WorkingPhoto />
-          </div>
-          <div className="intro-meta">
-            <div><small>Based in</small><span>{profile.location}</span></div>
-            <div><small>Currently</small><span>{profile.education}</span></div>
-            <div><small>Status</small><span>{profile.availability}</span></div>
-          </div>
-        </div>
       </div>
+
+      <p className="intro-quote reveal">Systems for impact. Code for curiosity.</p>
     </section>
   );
 }

@@ -1039,3 +1039,45 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
   .chapter{padding-left:18px;padding-right:18px}
   .chapter-label{flex-direction:column;align-items:flex-start;gap:.3rem}
 }
+
+/* ======================================================
+   HORIZONTAL FOUNDATION — Chapter I only (experimental)
+   ====================================================== */
+.hz-stage{height:calc(100dvh - 86px);overflow:hidden;background:var(--paper);position:relative}
+.hz-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
+.hz-track::-webkit-scrollbar{display:none}
+.hz-panel{flex:0 0 100vw;height:100%;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 clamp(24px,6vw,90px);position:relative}
+.hz-panel-intro{align-items:flex-start}
+.hz-label{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
+.hz-eyebrow{font-family:var(--font-sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
+.hz-eyebrow-title{font-family:var(--font-sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+.hz-name{font-size:clamp(3.4rem,10vw,8.6rem);line-height:.92;letter-spacing:-.02em;font-weight:500;margin:0 0 1.5rem}
+.hz-statement{font-family:var(--font-sans);font-size:clamp(1.1rem,2vw,1.5rem);color:var(--muted);max-width:32ch;line-height:1.5;margin:0}
+.hz-hint{position:absolute;left:clamp(24px,6vw,90px);bottom:clamp(20px,4vw,42px);font-family:var(--font-sans);font-size:.7rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+.hz-portrait{position:relative;width:min(38vw,560px);aspect-ratio:4/5;background:var(--line);overflow:hidden}
+.hz-portrait img{object-fit:cover}
+.hz-quote{font-family:var(--font-display);font-style:italic;font-weight:400;font-size:clamp(2.2rem,5.5vw,4.6rem);line-height:1.16;color:var(--ink);max-width:16ch;margin:0}
+
+@keyframes hzFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+.hz-panel-intro .hz-label{animation:hzFadeUp .7s ease .1s both}
+.hz-panel-intro .hz-name{animation:hzFadeUp .8s ease .25s both}
+.hz-panel-intro .hz-statement{animation:hzFadeUp .8s ease .45s both}
+.hz-panel-intro .hz-hint{animation:hzFadeUp .8s ease .65s both}
+.hz-panel-image .hz-portrait{animation:hzFadeUp .9s ease .2s both}
+.hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s both}
+
+@media(prefers-reduced-motion:reduce){
+  .hz-panel *{animation:none!important;opacity:1!important;transform:none!important}
+  .hz-track{scroll-behavior:auto}
+}
+
+@media(max-width:900px){
+  .hz-stage{height:calc(100dvh - 78px)}
+  .hz-portrait{width:min(55vw,420px)}
+}
+
+@media(max-width:620px){
+  .hz-stage{height:calc(100dvh - 70px)}
+  .hz-portrait{width:min(72vw,320px)}
+  .hz-hint{display:none}
+}

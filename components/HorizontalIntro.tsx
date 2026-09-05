@@ -26,12 +26,14 @@ export function HorizontalIntro() {
     <div className="hz-stage">
       <div className="hz-track" ref={trackRef}>
         <section className="hz-panel hz-panel-intro">
+          <p className="hz-statement">Working at the intersection of data and technology to build things that are useful, clear, and impactful.</p>
+
           <h1 className="hz-name">Sakina<br />Saifuddin</h1>
 
           <div className="hz-bottom-row">
-            <span className="hz-bottom-item hz-bottom-left">{profile.location}</span>
-            <span className="hz-bottom-item hz-bottom-center">Open for early-career roles</span>
-            <span className="hz-bottom-item hz-bottom-right">Scroll</span>
+            <span className="hz-bottom-left">{profile.location}</span>
+            <span className="hz-bottom-center">Open for early-career roles</span>
+            <span className="hz-bottom-right">Scroll</span>
           </div>
         </section>
 

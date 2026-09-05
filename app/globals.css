@@ -896,7 +896,7 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
   font-size:.9rem;
   font-weight:600;
   letter-spacing:.06em;
-  color:var(--red);
+  color:var(--muted);
 }
 .nav-overlay.is-open .nav-overlay-links a{
   opacity:1;
@@ -1046,33 +1046,34 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
 .hz-stage{height:100dvh;overflow:hidden;background:var(--paper);position:relative}
 
 .hz-nav{position:fixed;inset:0;z-index:300;pointer-events:none}
-.hz-nav-hamburger{position:absolute;top:24px;left:24px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--ink);cursor:pointer;pointer-events:auto;transition:color .25s ease}
-.hz-nav-hamburger:hover{color:var(--red)}
-.hz-nav-vertical{position:absolute;left:26px;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--font-sans);font-size:.7rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;white-space:nowrap;text-decoration:none;pointer-events:auto}
-.hz-nav-vertical-top{top:78px;color:var(--muted)}
-.hz-nav-vertical-bottom{bottom:24px;color:var(--ink);transition:color .25s ease}
-.hz-nav-vertical-bottom:hover{color:var(--red)}
-.hz-nav[data-menu-open="true"] .hz-nav-vertical-top,
-.hz-nav[data-menu-open="true"] .hz-nav-vertical-bottom{opacity:0;transition:opacity .3s ease}
+.hz-rail-line{position:absolute;top:0;left:72px;width:1px;height:100%;background:var(--line)}
+.hz-nav-hamburger{position:absolute;top:24px;left:24px;width:40px;height:40px;display:flex;align-items:center;justify-content:center;border:0;background:transparent;color:var(--ink);cursor:pointer;pointer-events:auto;transition:opacity .25s ease}
+.hz-nav-hamburger:hover{opacity:.6}
+.hz-nav-vertical{position:absolute;left:28px;writing-mode:vertical-rl;transform:rotate(180deg);font-family:var(--font-cinzel);font-size:.7rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;white-space:nowrap;text-decoration:none;pointer-events:auto;color:var(--ink)}
+.hz-nav-label{top:80px;color:var(--muted)}
+.hz-nav-name{top:50%;transform:translateY(-50%) rotate(180deg);font-size:.78rem;transition:opacity .25s ease}
+.hz-nav-name:hover{opacity:.6}
+.hz-nav-year{bottom:24px;color:var(--muted);font-weight:500}
+.hz-nav[data-menu-open="true"] .hz-nav-label,
+.hz-nav[data-menu-open="true"] .hz-nav-name,
+.hz-nav[data-menu-open="true"] .hz-nav-year{opacity:0;transition:opacity .3s ease}
 .hz-track{display:flex;height:100%;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scroll-behavior:smooth;scrollbar-width:none}
 .hz-track::-webkit-scrollbar{display:none}
-.hz-panel{flex:0 0 100vw;height:100%;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 clamp(24px,6vw,90px);position:relative}
-.hz-panel-intro{align-items:flex-start}
-.hz-label{display:flex;align-items:baseline;gap:1rem;margin-bottom:1.5rem}
-.hz-eyebrow{font-family:var(--font-sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--red)}
-.hz-eyebrow-title{font-family:var(--font-sans);font-size:.72rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
-.hz-name{font-size:clamp(3rem,8.5vw,7.4rem);line-height:1.05;letter-spacing:.01em;font-weight:600;margin:0 0 1.5rem}
-.hz-statement{font-family:var(--font-sans);font-size:clamp(1.1rem,2vw,1.5rem);color:var(--muted);max-width:32ch;line-height:1.5;margin:0}
-.hz-hint{position:absolute;right:clamp(24px,6vw,90px);bottom:clamp(20px,4vw,42px);font-family:var(--font-cinzel);font-size:.68rem;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.hz-panel{flex:0 0 100vw;height:100%;scroll-snap-align:start;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:0 clamp(24px,6vw,90px) 0 clamp(72px,9vw,120px);position:relative}
+.hz-panel-intro{align-items:flex-start;justify-content:flex-start;padding-top:clamp(120px,20vh,220px)}
+.hz-name{font-size:clamp(3rem,8.5vw,7.4rem);line-height:1.05;letter-spacing:.01em;font-weight:600;margin:0}
 .hz-portrait{position:relative;width:min(38vw,560px);aspect-ratio:4/5;background:var(--line);overflow:hidden}
 .hz-portrait img{object-fit:cover}
 .hz-quote{font-family:var(--font-cinzel);font-style:normal;font-weight:500;font-size:clamp(2rem,5vw,4.2rem);line-height:1.28;color:var(--ink);max-width:16ch;margin:0}
 
+.hz-bottom-row{position:absolute;left:clamp(72px,9vw,120px);right:clamp(24px,6vw,90px);bottom:clamp(24px,5vh,48px);display:flex;align-items:baseline;justify-content:space-between;gap:1rem}
+.hz-bottom-item{font-family:var(--font-cinzel);font-size:.72rem;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);white-space:nowrap}
+.hz-bottom-center{position:absolute;left:50%;transform:translateX(-50%)}
+.hz-bottom-right{color:var(--ink)}
+
 @keyframes hzFadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
-.hz-panel-intro .hz-label{animation:hzFadeUp .7s ease .1s both}
-.hz-panel-intro .hz-name{animation:hzFadeUp .8s ease .25s both}
-.hz-panel-intro .hz-statement{animation:hzFadeUp .8s ease .45s both}
-.hz-panel-intro .hz-hint{animation:hzFadeUp .8s ease .65s both}
+.hz-panel-intro .hz-name{animation:hzFadeUp .8s ease .2s both}
+.hz-panel-intro .hz-bottom-row{animation:hzFadeUp .8s ease .5s both}
 .hz-panel-image .hz-portrait{animation:hzFadeUp .9s ease .2s both}
 .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s both}
 
@@ -1087,6 +1088,11 @@ footer{max-width:var(--max);margin:auto;border-top:0;background:transparent}
 
 @media(max-width:620px){
   .hz-portrait{width:min(72vw,320px)}
-  .hz-hint{display:none}
-  .hz-nav-vertical-top{display:none}
+  .hz-nav-label{display:none}
+  .hz-panel{padding-left:clamp(56px,14vw,90px)}
+  .hz-panel-intro{padding-top:clamp(100px,18vh,160px)}
+  .hz-bottom-row{flex-direction:column;align-items:flex-start;gap:.5rem;bottom:24px}
+  .hz-bottom-center{position:static;transform:none}
+  .hz-rail-line{left:56px}
+  .hz-nav-hamburger,.hz-nav-vertical{left:18px}
 }

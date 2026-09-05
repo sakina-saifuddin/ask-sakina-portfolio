@@ -3,7 +3,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Menu, X } from "lucide-react";
-import { profile } from "@/data/portfolio";
 
 const chapters = [
   { num: "01", title: "Intro", href: "/#intro" },
@@ -36,6 +35,8 @@ export function Header() {
   return (
     <>
       <div className="hz-nav" data-menu-open={open}>
+        <span className="hz-rail-line" aria-hidden="true" />
+
         <button
           type="button"
           className="hz-nav-hamburger"
@@ -47,11 +48,13 @@ export function Header() {
           {open ? <X size={20} strokeWidth={1.6} /> : <Menu size={20} strokeWidth={1.6} />}
         </button>
 
-        <span className="hz-nav-vertical hz-nav-vertical-top">Portfolio</span>
+        <span className="hz-nav-vertical hz-nav-label">Folio — Edition</span>
 
-        <Link className="hz-nav-vertical hz-nav-vertical-bottom" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
+        <Link className="hz-nav-vertical hz-nav-name" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
           Sakina Saifuddin
         </Link>
+
+        <span className="hz-nav-vertical hz-nav-year">© 2026</span>
       </div>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
@@ -70,8 +73,6 @@ export function Header() {
           ))}
         </nav>
       </div>
-
-      <a className="hire-tab" href={`mailto:${profile.email}?subject=Opportunity for Sakina Saifuddin`}>Hire Sakina ↗</a>
     </>
   );
 }

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useEffect, useRef } from "react";
+import { profile } from "@/data/portfolio";
 
 export function HorizontalIntro() {
   const trackRef = useRef<HTMLDivElement>(null);
@@ -25,13 +26,13 @@ export function HorizontalIntro() {
     <div className="hz-stage">
       <div className="hz-track" ref={trackRef}>
         <section className="hz-panel hz-panel-intro">
-          <div className="hz-label">
-            <span className="hz-eyebrow">Chapter I</span>
-            <span className="hz-eyebrow-title">Introduction</span>
-          </div>
           <h1 className="hz-name">Sakina<br />Saifuddin</h1>
-          <p className="hz-statement">AI, data, software, and automation — built with curiosity and intention.</p>
-          <span className="hz-hint">Scroll to continue →</span>
+
+          <div className="hz-bottom-row">
+            <span className="hz-bottom-item hz-bottom-left">{profile.location}</span>
+            <span className="hz-bottom-item hz-bottom-center">Open for early-career roles</span>
+            <span className="hz-bottom-item hz-bottom-right">Scroll</span>
+          </div>
         </section>
 
         <section className="hz-panel hz-panel-image">

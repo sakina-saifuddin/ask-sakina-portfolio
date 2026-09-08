@@ -7,7 +7,7 @@ export default function Resume() {
   return (
     <>
       <ScrollAnimations />
-      <Header />
+      <Header theme="light" />
       <main className="subpage">
         <div className="page-intro reveal"><span className="neon-label">RESUME</span><h1>Resume<span>.</span></h1><p>View the complete resume directly inside the portfolio. Download it only if you want a copy.</p></div>
         <div className="resume-layout reveal">

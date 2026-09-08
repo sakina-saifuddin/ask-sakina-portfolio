@@ -47,12 +47,12 @@ export type ExperienceItem = {
 
 export const experience: ExperienceItem[] = [
   {
-    period: "May 2026 — Present",
+    period: "May 2026 — Sep 2026",
     role: "AI Automation Engineer (Intern)",
     company: "Dental-X AI",
     companyUrl: "https://dental-x.ai/",
     location: "Los Angeles, CA · Remote",
-    intro: "I work on healthcare automation for dental insurance workflows, bringing data from APIs, SQL sources, practice-management systems, and payer responses into one consistent structure.",
+    intro: "I worked on healthcare automation for dental insurance workflows, bringing data from APIs, SQL sources, practice-management systems, and payer responses into one consistent structure.",
     stats: [
       { value: "15–20", label: "data sources integrated" },
       { value: "~2 hrs", label: "manual lookup reduced per case" },
@@ -85,24 +85,6 @@ export const experience: ExperienceItem[] = [
       "Built a monthly Oracle-to-Excel conversion and fiscal-year merge workflow that prepares validated data for SharePoint, Power Automate, and Power BI.",
     ],
     tools: ["Power BI", "PowerApps", "Python", "SQL", "PeopleSoft", "Power Automate", "SharePoint"],
-  },
-  {
-    period: "Dec 2025 — Feb 2026",
-    role: "Graduate Research Assistant",
-    company: "University of Houston — Department of Mathematics",
-    companyUrl: "https://www.uh.edu/nsm/math/",
-    location: "Houston, TX",
-    intro: "I used computer vision and machine learning to make microscopy-image analysis more repeatable and less manual.",
-    stats: [
-      { value: "1,000+", label: "microscopy images processed" },
-      { value: "91%", label: "classification accuracy" },
-    ],
-    bullets: [
-      "Built a Python and OpenCV processing pipeline that automated extraction across more than 1,000 microscopy images.",
-      "Created reproducible batch-processing workflows for scientific imagery.",
-      "Trained SVM and CNN classifiers that reached 91% accuracy.",
-    ],
-    tools: ["Python", "OpenCV", "Scikit-learn", "SVM", "CNN", "Keras"],
   },
   {
     period: "Aug 2025 — Jan 2026",
@@ -279,6 +261,41 @@ const ganSlides: ProjectEvidence[] = Array.from({ length: 20 }, (_, i) => {
 
 export const projects: Project[] = [
   {
+    slug: "sakina-job-os",
+    category: "AGENTIC AI · AUTOMATION · JOB SEARCH",
+    title: "Sakina Job OS — Agentic AI Job Search & Outreach Platform",
+    problem: "How can job discovery, fit-checking, application materials, and warm-path outreach be run as one automated pipeline instead of dozens of manual, repetitive steps, while still keeping a human in control of what actually gets sent?",
+    summary: "Built a 12-stage n8n agentic automation that discovers and deduplicates job postings, verifies the official listing, checks fit with Claude, generates resumes and cover letters, matches first-degree LinkedIn connections for warm outreach, drafts follow-ups, and logs everything to Airtable behind a human-review gate before anything is sent.",
+    headlineMetric: "12-stage",
+    headlineLabel: "agentic job search & outreach pipeline",
+    approach: [
+      "Pulled source-of-truth rules and resume/brief data from Google Drive into one shared \"brain\" object used by every downstream stage.",
+      "Discovered and deduplicated postings, then verified each one against the official employer/ATS page before spending any reasoning budget on it.",
+      "Used a Claude-based fit and strong-job gate to filter for real matches before generating tailored resumes and cover letters.",
+      "Matched first-degree LinkedIn connections at the company for warm-path outreach, then drafted personalized outreach and follow-ups.",
+      "Logged jobs, materials, and outreach status to Airtable, with a required human-review step before any message is auto-sent."
+    ],
+    evaluation: ["12 pipeline stages, from discovery to human review", "Official-listing verification before reasoning/generation stages", "Claude-based fit + strong-job gating", "First-degree LinkedIn connection matching for warm outreach", "Airtable as the operational system of record", "Human-approval gate before outreach or follow-ups send"],
+    outcomes: [
+      { value: "12", label: "pipeline stages" },
+      { value: "n8n", label: "automation engine" },
+      { value: "Human", label: "review gate before send" },
+      { value: "Airtable", label: "operational system of record" }
+    ],
+    caseStudySections: [
+      { title: "The challenge", text: "A real job search involves the same repetitive steps over and over: find postings, check whether they're still real and official, decide if they're actually a fit, write tailored materials, find a warm path in, and follow up. Doing this by hand does not scale, but fully automated outreach without a human check is risky." },
+      { title: "What I built", text: "I designed a 12-stage n8n workflow that treats job search as a pipeline: a shared \"brain\" of source-of-truth rules feeds discovery and deduplication, an official-verification stage filters out stale or unofficial postings, and a Claude-based reasoning and strong-job gate decides what is worth pursuing before any resume or cover letter is generated." },
+      { title: "Keeping a human in the loop", text: "Application materials, connection research, and outreach drafts are all prepared automatically, but the workflow ends at a human-review stage — nothing is auto-sent without approval. Airtable is used as the operational database so every job, material, and outreach action is tracked in one place." },
+      { title: "What the screenshot shows", text: "The screenshot is the actual n8n automation graph: source ingestion and the shared brain object on the left, discovery/verification/reasoning stages in the middle, application-materials and connection-matching branches, and outreach/QA/Airtable/human-review stages on the right." }
+    ],
+    limitations: "This is a personal automation project rather than a client deliverable, so the evidence shown is the internal n8n workflow graph itself rather than live outreach metrics.",
+    tech: ["n8n", "Claude / Anthropic API", "Google Drive", "Airtable", "LinkedIn Data", "Workflow Automation", "Agentic AI"],
+    evidence: [
+      { type: "image", src: "/projects/job-os-placeholder.png", label: "Main automation workflow", caption: "The full 12-stage n8n pipeline: brain/source ingestion, discovery, official verification, Claude reasoning and fit gating, application materials, connection matching, outreach, QA, Airtable, and human review." }
+    ],
+    links: []
+  },
+  {
     slug: "retail-demand-forecasting",
     category: "MACHINE LEARNING · TIME SERIES · RETAIL",
     title: "AI-Driven Retail Inventory Forecasting & Autonomous Inventory Optimization",
@@ -333,7 +350,7 @@ export const projects: Project[] = [
     category: "POWER BI · POWERAPPS · FINANCIAL ANALYTICS",
     title: "Grant Financial Reconciliation & Verification System",
     problem: "How can grant and cost-center managers review budget, expense, commitments, payroll, and monthly activity without working through hundreds of separate recurring reports?",
-    summary: "Built a centralized Power BI and PowerApps financial reconciliation system for grant and cost-center review, monthly verification, payroll drilldown, and discrepancy follow-up.",
+    summary: "Built a centralized Power BI and PowerApps financial reconciliation system for grant and cost-center review, monthly verification, payroll drilldown, and discrepancy follow-up. I'm now designing a Power Apps and Power Automate workflow so managers can verify monthly records, flag issues, and track resolutions in one place.",
     headlineMetric: "1,074",
     headlineLabel: "recurring reports automated",
     approach: [
@@ -359,9 +376,13 @@ export const projects: Project[] = [
     limitations: "The screenshots are work samples. Sensitive university financial or personnel data should remain protected in any public deployment.",
     tech: ["Power BI", "PowerApps", "DAX", "Power Query", "Python", "SQL", "PeopleSoft", "SharePoint"],
     evidence: [
+      { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview1.png", label: "Grant cost center overview", caption: "Grant cost center financial overview with total budget, expenses, commitments, available balance, and budget-vs-expenses breakdowns by status." },
       { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview.png", label: "Grant overview", caption: "High-level grant view with budget, expenses, commitments, balance, funding dates, and cost-center status." },
       { type: "image", src: "/project-evidence/financial-reconciliation/current-month.png", label: "Current-month verification", caption: "Monthly review screen for selecting a cost center and checking budget, payroll, non-payroll, and fiscal-period activity." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/payroll.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters." }
+      { type: "image", src: "/project-evidence/financial-reconciliation/payroll.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-1.svg", label: "Power Apps — Monthly Verification (placeholder)", caption: "Placeholder for the in-progress Power Apps monthly verification screen — will be replaced with a live screenshot." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-2.svg", label: "Power Automate — Issue Flagging (placeholder)", caption: "Placeholder for the in-progress Power Automate issue-flagging workflow — will be replaced with a live screenshot." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-3.svg", label: "Power Apps — Resolution Tracking (placeholder)", caption: "Placeholder for the in-progress Power Apps resolution-tracking view — will be replaced with a live screenshot." }
     ],
     links: []
   },
@@ -594,52 +615,47 @@ export const moreProjectsUrl = "https://github.com/sakina-saifuddin/Data-Science
 
 export const technologyGroups = [
   {
-    title: "Programming & Software",
+    title: "AI & ML",
     items: [
-      { name: "Python", icon: "https://cdn.simpleicons.org/python" },
-      { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript" },
-      { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript" },
-      { name: "Java", icon: "https://cdn.simpleicons.org/openjdk" },
-      { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs" },
-      { name: "React", icon: "https://cdn.simpleicons.org/react" },
-      { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs" },
-      { name: "MongoDB", icon: "https://cdn.simpleicons.org/mongodb" },
-      { name: "Git", icon: "https://cdn.simpleicons.org/git" },
-      { name: "Docker", icon: "https://cdn.simpleicons.org/docker" },
+      { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch", blurb: "Used to train deep learning models for computer vision and sequence tasks." },
+      { name: "TensorFlow", icon: "https://cdn.simpleicons.org/tensorflow", blurb: "Used with Keras for classification, forecasting, and generative models." },
+      { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn", blurb: "Used for classical ML models like Random Forest and Linear Regression." },
+      { name: "OpenCV", icon: "https://cdn.simpleicons.org/opencv", blurb: "Used for image preprocessing and computer vision pipelines." },
+      { name: "Hugging Face", icon: "https://cdn.simpleicons.org/huggingface", blurb: "Used for transformer models and NLP experimentation." },
+      { name: "OpenAI / LLM APIs", icon: "https://cdn.simpleicons.org/openai", blurb: "Used to integrate LLMs into production chatbots and data workflows." },
     ],
   },
   {
-    title: "Machine Learning & AI",
+    title: "Data & BI",
     items: [
-      { name: "PyTorch", icon: "https://cdn.simpleicons.org/pytorch" },
-      { name: "TensorFlow", icon: "https://cdn.simpleicons.org/tensorflow" },
-      { name: "Scikit-learn", icon: "https://cdn.simpleicons.org/scikitlearn" },
-      { name: "OpenCV", icon: "https://cdn.simpleicons.org/opencv" },
-      { name: "Hugging Face", icon: "https://cdn.simpleicons.org/huggingface" },
-      { name: "OpenAI / LLM APIs", icon: "https://cdn.simpleicons.org/openai" },
-      { name: "CNN / GAN / SVM", icon: "" },
-      { name: "Random Forest", icon: "" },
-      { name: "Linear Regression", icon: "" },
-      { name: "LightGBM / DQN", icon: "" },
+      { name: "SQL", icon: "https://cdn.simpleicons.org/postgresql", blurb: "Used to query and structure data across healthcare and BI projects." },
+      { name: "Pandas", icon: "https://cdn.simpleicons.org/pandas", blurb: "Used for data cleaning, transformation, and analysis in Python." },
+      { name: "Power BI", icon: "/tech/power-bi.svg", blurb: "Used to build dashboards for grant, financial, and performance reporting." },
+      { name: "Tableau", icon: "/tech/tableau.svg", blurb: "Used to build dashboards over 500K+ records for client reporting." },
+      { name: "BigQuery", icon: "https://cdn.simpleicons.org/googlebigquery", blurb: "Used for large-scale data warehousing and analysis." },
+      { name: "DAX / Power Query", icon: "", blurb: "Used for data modeling and calculated measures inside Power BI." },
     ],
   },
   {
-    title: "Data, BI & Cloud",
+    title: "Software",
     items: [
-      { name: "SQL", icon: "https://cdn.simpleicons.org/postgresql" },
-      { name: "Pandas", icon: "https://cdn.simpleicons.org/pandas" },
-      { name: "BigQuery", icon: "https://cdn.simpleicons.org/googlebigquery" },
-      { name: "PowerApps", icon: "" },
-      { name: "DAX / Power Query", icon: "" },
-      { name: "Teradata / HiveQL", icon: "" },
-      { name: "REST APIs", icon: "" },
-
-      { name: "Power BI", icon: "/tech/power-bi.svg" },
-{ name: "Tableau", icon: "/tech/tableau.svg" },
-{ name: "AWS", icon: "/tech/aws.svg" },
-{ name: "Power Automate", icon: "/tech/power-automate.svg" },
-{ name: "SharePoint", icon: "/tech/sharepoint.svg" },
-
+      { name: "JavaScript", icon: "https://cdn.simpleicons.org/javascript", blurb: "Used to build interactive interfaces and application logic." },
+      { name: "TypeScript", icon: "https://cdn.simpleicons.org/typescript", blurb: "Used for type-safe application and API development." },
+      { name: "React", icon: "https://cdn.simpleicons.org/react", blurb: "Used to build production user interfaces across her projects." },
+      { name: "Next.js", icon: "https://cdn.simpleicons.org/nextdotjs", blurb: "Used to build full-stack web applications, including this portfolio." },
+      { name: "Node.js", icon: "https://cdn.simpleicons.org/nodedotjs", blurb: "Used for backend services and API development." },
+      { name: "MongoDB", icon: "https://cdn.simpleicons.org/mongodb", blurb: "Used as a database layer for full-stack applications." },
+      { name: "Git", icon: "https://cdn.simpleicons.org/git", blurb: "Used for version control across all software projects." },
+    ],
+  },
+  {
+    title: "Cloud & Automation",
+    items: [
+      { name: "AWS", icon: "/tech/aws.svg", blurb: "Used for cloud infrastructure and deployment." },
+      { name: "Docker", icon: "https://cdn.simpleicons.org/docker", blurb: "Used to containerize applications for consistent deployment." },
+      { name: "Power Automate", icon: "/tech/power-automate.svg", blurb: "Used to automate recurring reporting and data workflows." },
+      { name: "SharePoint", icon: "/tech/sharepoint.svg", blurb: "Used to feed automated reporting into shared team workflows." },
+      { name: "REST APIs", icon: "", blurb: "Used to integrate services and exchange data across systems." },
     ],
   },
 ];
@@ -673,19 +689,19 @@ export const qaItems = [
     question: "What is her Power BI and analytics experience?",
     answer: "At TMAC / NIST-MEP, she automated 1,074 recurring reports and built 10+ Power BI / PowerApps dashboards for grant and financial review. At BluTech Consulting, she built Power BI and Tableau dashboards over 500K+ records for UBL and reduced reporting turnaround by 25%.",
     facts: ["10+ dashboards", "500K+ records", "25% faster reporting"],
-    links: [{ label: "Financial case study", href: "/projects/financial-reconciliation" }],
+    links: [{ label: "Financial case study", href: "/projects#work-financial-reconciliation" }],
   },
   {
     question: "What healthcare work has she done?",
     answer: "At Dental-X AI, she works on dental insurance and eligibility automation. Her work combines DentalXchange, CareStack, SQL, JSON, APIs, and payer-specific mapping rules into a consistent patient-level structure and includes validation of the classic and new Benefit Summary UI.",
     facts: ["15–20 sources", "7 deployments", "UI mapping"],
-    links: [{ label: "Healthcare project", href: "/projects/healthcare-eligibility-pipeline" }],
+    links: [{ label: "Healthcare project", href: "/projects#work-healthcare-eligibility-pipeline" }],
   },
   {
     question: "What automation work has she done?",
     answer: "She built an Oracle/PeopleSoft ETL workflow that converts legacy XML-based .xls exports to .xlsx, merges monthly data into fiscal-year workbooks using worksheet-specific rules, validates the output, and feeds SharePoint, Power Automate, and Power BI reporting.",
     facts: ["Oracle → XLSX", "SAFE TEST", "Power Automate"],
-    links: [{ label: "Oracle ETL project", href: "/projects/oracle-financial-etl" }],
+    links: [{ label: "Oracle ETL project", href: "/projects#work-oracle-financial-etl" }],
   },
   {
     question: "What are her strongest project results?",
@@ -710,5 +726,11 @@ export const qaItems = [
     answer: "Her work covers both engineering and analysis. She has shipped production applications, built dashboards, automated manual workflows, integrated healthcare data, worked with clients and campaign performance, and trained machine-learning models. The portfolio links those claims to screenshots, metrics, code, and case studies.",
     facts: ["Production software", "Analytics", "Machine learning"],
     links: [{ label: "Review the work", href: "/projects" }],
+  },
+  {
+    question: "What tools and technologies has she worked with?",
+    answer: "Across AI & ML, Data & BI, Software, and Cloud & Automation she has worked with PyTorch, TensorFlow, Scikit-learn, OpenCV, Hugging Face, and OpenAI / LLM APIs; SQL, Pandas, Power BI, Tableau, BigQuery, and DAX / Power Query; JavaScript, TypeScript, React, Next.js, Node.js, MongoDB, and Git; and AWS, Docker, Power Automate, SharePoint, and REST APIs.",
+    facts: ["24 tools", "4 categories", "AI to cloud"],
+    links: [],
   },
 ];

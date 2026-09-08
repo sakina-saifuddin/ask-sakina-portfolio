@@ -1,14 +1,19 @@
 import type { Metadata } from "next";
-import { Cinzel, Inter } from "next/font/google";
+import { Instrument_Serif, Instrument_Sans } from "next/font/google";
+import { IntroLoader } from "@/components/IntroLoader";
+import { PageCurtain } from "@/components/PageCurtain";
+import { ProjectImageTransition } from "@/components/ProjectImageTransition";
+import { ClipWipeCurtain } from "@/components/ClipWipeCurtain";
 import "./globals.css";
 
-const cinzel = Cinzel({
+const displaySerif = Instrument_Serif({
   subsets: ["latin"],
   variable: "--font-cinzel",
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400"],
+  style: ["normal", "italic"],
 });
 
-const inter = Inter({
+const bodySans = Instrument_Sans({
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
   variable: "--font-sans",
@@ -22,5 +27,15 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  return <html lang="en" className={`${cinzel.variable} ${inter.variable}`}><body>{children}</body></html>;
+  return (
+    <html lang="en" className={`${displaySerif.variable} ${bodySans.variable}`}>
+      <body>
+        {children}
+        <IntroLoader />
+        <PageCurtain />
+        <ProjectImageTransition />
+        <ClipWipeCurtain />
+      </body>
+    </html>
+  );
 }

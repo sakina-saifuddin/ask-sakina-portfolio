@@ -1,8 +1,12 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+
+const EASE = [0.16, 1, 0.3, 1] as const;
+const MotionLink = motion.create(Link);
 
 const chapters = [
   { num: "01", title: "Intro", href: "/#intro" },
@@ -14,8 +18,33 @@ const chapters = [
   { num: "07", title: "Contact", href: "/#contact" },
 ];
 
-export function Header() {
+export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
   const [open, setOpen] = useState(false);
+  const [dockHidden, setDockHidden] = useState(false);
+  const lastScrollY = useRef(0);
+
+  useEffect(() => {
+    if (!theme) return;
+    document.documentElement.dataset.navTheme = theme;
+    return () => {
+      delete document.documentElement.dataset.navTheme;
+    };
+  }, [theme]);
+
+  useEffect(() => {
+    lastScrollY.current = window.scrollY;
+
+    function onScroll() {
+      const y = window.scrollY;
+      const delta = y - lastScrollY.current;
+      if (Math.abs(delta) < 6) return;
+      setDockHidden(delta > 0 && y > 80);
+      lastScrollY.current = y;
+    }
+
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     document.body.style.overflow = open ? "hidden" : "";
@@ -45,17 +74,72 @@ export function Header() {
           aria-controls="navbar-overlay"
           onClick={() => setOpen((value) => !value)}
         >
-          {open ? <X size={20} strokeWidth={1.6} /> : <Menu size={20} strokeWidth={1.6} />}
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={open ? "x" : "menu"}
+              initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+              transition={{ duration: 0.25, ease: EASE }}
+              style={{ display: "inline-flex" }}
+            >
+              {open ? <X size={20} strokeWidth={1.6} /> : <Menu size={20} strokeWidth={1.6} />}
+            </motion.span>
+          </AnimatePresence>
         </button>
 
-        <span className="hz-nav-vertical hz-nav-label">Folio — Edition</span>
+        <motion.span
+          className="hz-nav-vertical hz-nav-label"
+          initial={{ opacity: 0, rotate: 180, y: -14 }}
+          animate={{ opacity: open ? 0 : 1, rotate: 180, y: 0 }}
+          transition={open ? { duration: 0.3, ease: EASE } : { duration: 0.7, ease: EASE, delay: 0.1 }}
+        >
+          Folio — Edition
+        </motion.span>
 
-        <Link className="hz-nav-vertical hz-nav-name" href="/" aria-label="Sakina Saifuddin home" onClick={() => setOpen(false)}>
+        <MotionLink
+          className="hz-nav-vertical hz-nav-name"
+          href="/"
+          aria-label="Sakina Saifuddin home"
+          onClick={() => setOpen(false)}
+          initial={{ opacity: 0, rotate: 180, y: "calc(-50% + 14px)" }}
+          animate={{ opacity: open ? 0 : 1, rotate: 180, y: "-50%" }}
+          transition={open ? { duration: 0.3, ease: EASE } : { duration: 0.7, ease: EASE, delay: 0.2 }}
+        >
           Sakina Saifuddin
-        </Link>
+        </MotionLink>
 
-        <span className="hz-nav-vertical hz-nav-year">© 2026</span>
+        <motion.span
+          className="hz-nav-vertical hz-nav-year"
+          initial={{ opacity: 0, rotate: 180, y: 14 }}
+          animate={{ opacity: open ? 0 : 1, rotate: 180, y: 0 }}
+          transition={open ? { duration: 0.3, ease: EASE } : { duration: 0.7, ease: EASE, delay: 0.3 }}
+        >
+          © 2026
+        </motion.span>
       </div>
+
+      <button
+        type="button"
+        className={`mobile-dock${dockHidden && !open ? " is-hidden" : ""}`}
+        aria-label={open ? "Close menu" : "Open menu"}
+        aria-expanded={open}
+        aria-controls="navbar-overlay"
+        onClick={() => setOpen((value) => !value)}
+      >
+        <AnimatePresence mode="wait" initial={false}>
+          <motion.span
+            key={open ? "x" : "menu"}
+            initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+            transition={{ duration: 0.25, ease: EASE }}
+            style={{ display: "inline-flex" }}
+          >
+            {open ? <X size={22} strokeWidth={1.7} /> : <Menu size={22} strokeWidth={1.7} />}
+          </motion.span>
+        </AnimatePresence>
+      </button>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
         <nav className="nav-overlay-links">

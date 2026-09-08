@@ -7,7 +7,7 @@ export default function Certificates() {
   return (
     <>
       <ScrollAnimations />
-      <Header />
+      <Header theme="light" />
       <main className="subpage">
         <div className="page-intro reveal">
           <span className="neon-label">CERTIFICATE</span>

@@ -1,9 +1,20 @@
+"use client";
+
+import type { MouseEvent } from "react";
 import Link from "next/link";
+import { triggerPageCurtain } from "@/components/PageCurtain";
 import { profile } from "@/data/portfolio";
+
+function navigate(href: string) {
+  return (event: MouseEvent) => {
+    event.preventDefault();
+    triggerPageCurtain(href);
+  };
+}
 
 export function Footer() {
   return (
-    <footer className="site-footer">
+    <footer className="site-footer reveal">
       <div className="footer-grid">
         <div className="footer-brand">
           <div className="footer-name"><span>SAKINA</span> <b>SAIFUDDIN.</b></div>
@@ -12,13 +23,13 @@ export function Footer() {
         </div>
         <div className="footer-column">
           <b>Explore</b>
-          <Link href="/#about">About</Link>
-          <Link href="/#experience">Experience</Link>
-          <Link href="/projects">Projects</Link>
-          <Link href="/#ask-resume">Ask My Resume</Link>
-          <Link href="/resume">Resume</Link>
-          <Link href="/certificates">Certificates</Link>
-          <Link href="/appreciation">Appreciation</Link>
+          <Link href="/#about" onClick={navigate("/#about")}>About</Link>
+          <Link href="/#experience" onClick={navigate("/#experience")}>Experience</Link>
+          <Link href="/projects" onClick={navigate("/projects")}>Projects</Link>
+          <Link href="/#ask-resume" onClick={navigate("/#ask-resume")}>Ask My Resume</Link>
+          <Link href="/resume" onClick={navigate("/resume")}>Resume</Link>
+          <Link href="/certificates" onClick={navigate("/certificates")}>Certificates</Link>
+          <Link href="/appreciation" onClick={navigate("/appreciation")}>Appreciation</Link>
         </div>
         <div className="footer-column">
           <b>Connect</b>

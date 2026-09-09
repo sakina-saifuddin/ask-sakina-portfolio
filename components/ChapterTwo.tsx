@@ -63,7 +63,8 @@ export function ChapterTwo() {
   return (
     <section className="hz-panel hz-panel-related-work" data-nav-theme="light" data-panel-id="chapter-two">
       <div className="ch2-heading">
-        <span>
+        <span className="ch2-heading-eyebrow">All Related Work</span>
+        <span className="ch2-heading-number">
           <HeaderWordsReveal text="Chapter II" active={entered} />
         </span>
         <h2>

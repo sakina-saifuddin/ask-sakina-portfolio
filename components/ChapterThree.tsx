@@ -50,9 +50,12 @@ export function ChapterThree() {
 
   return (
     <section className="hz-panel hz-panel-what-i-do" data-nav-theme="dark" data-panel-id="chapter-three">
-      <span className="wid-chapter-label">
-        <HeaderWordsReveal text="Chapter III" active={entered} />
-      </span>
+      <div className="wid-chapter-block">
+        <span className="wid-chapter-eyebrow">What I Do?</span>
+        <span className="wid-chapter-label">
+          <HeaderWordsReveal text="Chapter III" active={entered} />
+        </span>
+      </div>
 
       <motion.div
         className="wid-intro"

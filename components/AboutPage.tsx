@@ -173,6 +173,16 @@ export function AboutPage() {
 
         <section className="hz-panel about-timeline" data-nav-theme="dark">
           <motion.div
+            className="about-timeline-photo-mobile"
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.4 }}
+            transition={{ duration: 0.8, ease: EASE }}
+          >
+            <Image src="/pic2.JPG" alt="Sakina Saifuddin" fill sizes="100vw" style={{ objectFit: "cover", objectPosition: "50% 20%" }} />
+          </motion.div>
+
+          <motion.div
             className="about-timeline-header"
             initial={{ opacity: 0, y: 70 }}
             whileInView={{ opacity: 1, y: 0 }}
@@ -202,18 +212,6 @@ export function AboutPage() {
               </motion.div>
             ))}
           </div>
-        </section>
-
-        <section className="hz-panel about-photo" data-nav-theme="dark">
-          <motion.div
-            className="about-photo-media"
-            initial={{ opacity: 0, scale: 1.1 }}
-            whileInView={{ opacity: 1, scale: 1 }}
-            viewport={{ once: true, amount: 0.3 }}
-            transition={{ duration: 1, ease: EASE }}
-          >
-            <Image src="/pic2.JPG" alt="Sakina Saifuddin working" fill sizes="100vw" style={{ objectFit: "cover", objectPosition: "50% 20%" }} />
-          </motion.div>
         </section>
 
         <section className="hz-panel about-beyond" data-nav-theme="light">

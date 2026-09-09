@@ -9,8 +9,8 @@ import { Typewriter } from "@/components/Typewriter";
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 const timeline = [
-  { period: "May 2026 — Sep 2026", role: "AI Automation Engineer", company: "Dental-X AI" },
   { period: "Feb 2026 — Present", role: "BI & Automation Intern", company: "TMAC / NIST-MEP" },
+  { period: "May 2026 — Sep 2026", role: "AI Automation Engineer", company: "Dental-X AI" },
   { period: "May 2024 — Aug 2025", role: "Business Intelligence Consultant", company: "BluTech Consulting" },
   { period: "Aug 2022 — Sep 2025", role: "Sr. Performance Management Analyst", company: "The Walnut Agency" },
   { period: "Jan 2021 — May 2024", role: "Software Engineer", company: "SoftSyncDev" },

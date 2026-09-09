@@ -67,9 +67,6 @@ export function ChapterTwo() {
         <span className="ch2-heading-number">
           <HeaderWordsReveal text="Chapter II" active={entered} />
         </span>
-        <h2>
-          <HeaderWordsReveal text="Related Work" active={entered} />
-        </h2>
       </div>
 
       <div className="ch2-preview-box">

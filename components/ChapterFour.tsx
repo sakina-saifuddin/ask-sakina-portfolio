@@ -5,6 +5,7 @@ import Image from "next/image";
 import { motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
 import { usePanelEntered } from "@/components/usePanelEntered";
+import { HeaderWordsReveal } from "@/components/HeaderWordsReveal";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -21,10 +22,19 @@ export function ChapterFour() {
 
   return (
     <section className="hz-panel hz-panel-experience" data-nav-theme="light" data-panel-id="chapter-four">
-      <span className="exp-chapter-label">Chapter IV</span>
+      <span className="exp-chapter-label">
+        <HeaderWordsReveal text="Chapter IV" active={entered} />
+      </span>
 
       <div className="exp-list-wrap">
-        <span className="exp-eyebrow">Selected Experience</span>
+        <motion.span
+          className="exp-eyebrow"
+          initial={{ opacity: 0, y: 20 }}
+          animate={entered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
+        >
+          Selected Experience
+        </motion.span>
         <ul className="exp-list">
           {profile.organizations.map((org, index) => (
             <motion.li
@@ -77,7 +87,14 @@ export function ChapterFour() {
         </ul>
       </div>
 
-      <p className="exp-footnote">Work spanning healthcare, finance, retail, and marketing teams.</p>
+      <motion.p
+        className="exp-footnote"
+        initial={{ opacity: 0, y: 20 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: 0.6, ease: EASE, delay: 0.15 + (profile.organizations.length + 1) * 0.08 }}
+      >
+        Work spanning healthcare, finance, retail, and marketing teams.
+      </motion.p>
     </section>
   );
 }

@@ -2,17 +2,20 @@
 
 import { motion } from "framer-motion";
 import { Typewriter } from "@/components/Typewriter";
+import { usePanelEntered } from "@/components/usePanelEntered";
 import { profile } from "@/data/portfolio";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
 export function ChapterFive() {
+  const entered = usePanelEntered("chapter-five");
+
   return (
-    <section className="hz-panel hz-panel-next" data-nav-theme="dark">
+    <section className="hz-panel hz-panel-next" data-nav-theme="dark" data-panel-id="chapter-five">
       <motion.div
         className="next-social"
-        initial={{ opacity: 0, y: -10 }}
-        animate={{ opacity: 1, y: 0 }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.6, ease: EASE }}
       >
         <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
@@ -21,17 +24,17 @@ export function ChapterFive() {
 
       <h2 className="next-heading">
         <span className="next-heading-line">
-          <Typewriter text="Next" speed={45} startDelay={200} sound showCursor={false} />
+          {entered && <Typewriter text="Next" speed={45} startDelay={200} sound showCursor={false} />}
         </span>
         <span className="next-heading-highlight">
-          <Typewriter text="Chapter" speed={45} startDelay={200 + 4 * 45} sound />
+          {entered && <Typewriter text="Chapter" speed={45} startDelay={200 + 4 * 45} sound />}
         </span>
       </h2>
 
       <motion.div
         className="next-footer"
         initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
       >
         <div className="next-contact">

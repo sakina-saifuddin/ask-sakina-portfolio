@@ -2,6 +2,7 @@
 
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { MagneticButton } from "@/components/MagneticButton";
 
 type Particle = {
   id: number;
@@ -52,15 +53,17 @@ export function ConfettiButton() {
 
   return (
     <span className="confetti-button-wrap">
-      <a
-        href="/resume.pdf"
-        download="Sakina-Saifuddin-Resume.pdf"
-        className="confetti-button"
-        onClick={handleClick}
-        aria-label="Download Sakina Saifuddin's resume"
-      >
-        Click Me
-      </a>
+      <MagneticButton>
+        <a
+          href="/resume.pdf"
+          download="Sakina-Saifuddin-Resume.pdf"
+          className="confetti-button"
+          onClick={handleClick}
+          aria-label="Download Sakina Saifuddin's resume"
+        >
+          Click Me
+        </a>
+      </MagneticButton>
 
       <AnimatePresence>
         {particles.map((p) => (

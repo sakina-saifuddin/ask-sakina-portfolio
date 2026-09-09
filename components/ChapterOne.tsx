@@ -9,6 +9,7 @@ import { triggerPageCurtain } from "@/components/PageCurtain";
 import { AskResumeTerminal } from "@/components/AskResumeTerminal";
 import { ToolStackGrid } from "@/components/ToolStackGrid";
 import { usePanelEntered } from "@/components/usePanelEntered";
+import { WordReveal } from "@/components/WordReveal";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -37,7 +38,10 @@ export function ChapterOne() {
         >
           <span className="hz-chapter-quick-intro">Quick Intro</span>
           <p className="hz-chapter-intro-text">
-            Hi, I&rsquo;m Sakina — I work across AI, data, software, and automation, building systems that are useful, clear, and impactful.
+            <WordReveal
+              text="Hi, I’m Sakina — I work across AI, data, software, and automation, building systems that are useful, clear, and impactful."
+              active={chapterEntered}
+            />
           </p>
           <p className="hz-chapter-tagline">
             &ldquo;Work for money.<br />Data for love.&rdquo;

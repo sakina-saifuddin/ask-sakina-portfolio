@@ -5,6 +5,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { triggerClipWipeCurtain } from "@/components/ClipWipeCurtain";
+import { usePanelEntered } from "@/components/usePanelEntered";
+import { HeaderWordsReveal } from "@/components/HeaderWordsReveal";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -56,19 +58,18 @@ const relatedWork: RelatedWorkItem[] = [
 
 export function ChapterTwo() {
   const [active, setActive] = useState<RelatedWorkItem | null>(null);
+  const entered = usePanelEntered("chapter-two");
 
   return (
-    <section className="hz-panel hz-panel-related-work" data-nav-theme="light">
-      <motion.div
-        className="ch2-heading"
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.5 }}
-        transition={{ duration: 0.7, ease: EASE }}
-      >
-        <span>Chapter II</span>
-        <h2>Related Work</h2>
-      </motion.div>
+    <section className="hz-panel hz-panel-related-work" data-nav-theme="light" data-panel-id="chapter-two">
+      <div className="ch2-heading">
+        <span>
+          <HeaderWordsReveal text="Chapter II" active={entered} />
+        </span>
+        <h2>
+          <HeaderWordsReveal text="Related Work" active={entered} />
+        </h2>
+      </div>
 
       <div className="ch2-preview-box">
         {active && (
@@ -86,7 +87,7 @@ export function ChapterTwo() {
       </div>
 
       <ul className="ch2-list">
-        {relatedWork.map((item) => {
+        {relatedWork.map((item, index) => {
           const content = (
             <>
               <span className="ch2-list-number">{item.number}</span>
@@ -97,7 +98,13 @@ export function ChapterTwo() {
           const isDimmed = active !== null && !isActive;
           const stateClass = isActive ? " is-active" : isDimmed ? " ch2-list-item-dimmed" : "";
           return (
-            <li key={item.number} className="ch2-list-row">
+            <motion.li
+              key={item.number}
+              className="ch2-list-row"
+              initial={{ opacity: 0, y: 20 }}
+              animate={entered ? { opacity: 1, y: 0 } : undefined}
+              transition={{ duration: 0.5, ease: EASE, delay: 0.15 + index * 0.06 }}
+            >
               {item.href ? (
                 <Link
                   href={item.href}
@@ -120,23 +127,37 @@ export function ChapterTwo() {
                   {content}
                 </div>
               )}
-            </li>
+            </motion.li>
           );
         })}
       </ul>
 
-      <span className="ch2-disclaimer">❋ Live site unavailable for some inactive or incomplete projects</span>
-
-      <Link
-        href="/works"
-        className="ch2-view-all"
-        onClick={(event) => {
-          event.preventDefault();
-          triggerClipWipeCurtain("/works");
-        }}
+      <motion.span
+        className="ch2-disclaimer"
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.15 + relatedWork.length * 0.06 }}
       >
-        View All Work →
-      </Link>
+        ❋ Live site unavailable for some inactive or incomplete projects
+      </motion.span>
+
+      <motion.div
+        style={{ display: "inline-block" }}
+        initial={{ opacity: 0, y: 16 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
+        transition={{ duration: 0.5, ease: EASE, delay: 0.2 + relatedWork.length * 0.06 }}
+      >
+        <Link
+          href="/works"
+          className="ch2-view-all"
+          onClick={(event) => {
+            event.preventDefault();
+            triggerClipWipeCurtain("/works");
+          }}
+        >
+          View All Work →
+        </Link>
+      </motion.div>
     </section>
   );
 }

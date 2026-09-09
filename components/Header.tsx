@@ -90,7 +90,7 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
 
         <motion.span
           className="hz-nav-vertical hz-nav-label"
-          initial={{ opacity: 0, rotate: 180, y: -14 }}
+          initial={{ opacity: 0, rotate: 180, y: 14 }}
           animate={{ opacity: open ? 0 : 1, rotate: 180, y: 0 }}
           transition={open ? { duration: 0.3, ease: EASE } : { duration: 0.7, ease: EASE, delay: 0.1 }}
         >

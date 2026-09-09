@@ -1,6 +1,8 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { usePanelEntered } from "@/components/usePanelEntered";
+import { HeaderWordsReveal } from "@/components/HeaderWordsReveal";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -44,14 +46,18 @@ function pad(n: number) {
 }
 
 export function ChapterThree() {
+  const entered = usePanelEntered("chapter-three");
+
   return (
-    <section className="hz-panel hz-panel-what-i-do" data-nav-theme="dark">
-      <span className="wid-chapter-label">Chapter III</span>
+    <section className="hz-panel hz-panel-what-i-do" data-nav-theme="dark" data-panel-id="chapter-three">
+      <span className="wid-chapter-label">
+        <HeaderWordsReveal text="Chapter III" active={entered} />
+      </span>
 
       <motion.div
         className="wid-intro"
         initial={{ opacity: 0, y: 24 }}
-        animate={{ opacity: 1, y: 0 }}
+        animate={entered ? { opacity: 1, y: 0 } : undefined}
         transition={{ duration: 0.7, ease: EASE }}
       >
         <span className="wid-intro-eyebrow">What I Do?</span>
@@ -66,7 +72,7 @@ export function ChapterThree() {
             className="wid-column"
             key={item.title}
             initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
+            animate={entered ? { opacity: 1, y: 0 } : undefined}
             transition={{ duration: 0.6, ease: EASE, delay: 0.15 + index * 0.08 }}
           >
             {item.blurredImage ? (

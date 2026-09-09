@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu } from "lucide-react";
+import { attachAudioUnlock, playWheelTick } from "@/components/sound";
 
 const YEARS = [2021, 2022, 2023, 2024, 2025, 2026];
 const STEP_MS = 400;
@@ -31,6 +32,14 @@ export function IntroLoader() {
   const [exiting, setExiting] = useState(false);
   const [mounted, setMounted] = useState(true);
   const reducedRef = useRef(false);
+
+  useEffect(() => {
+    attachAudioUnlock();
+  }, []);
+
+  useEffect(() => {
+    if (index > 0) playWheelTick();
+  }, [index]);
 
   useEffect(() => {
     reducedRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;

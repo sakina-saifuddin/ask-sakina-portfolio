@@ -37,15 +37,17 @@ export function ChapterOne() {
           transition={{ duration: 0.7, ease: EASE, delay: 0.15 }}
         >
           <span className="hz-chapter-quick-intro">Quick Intro</span>
-          <p className="hz-chapter-intro-text">
-            <WordReveal
-              text="Hi, I’m Sakina — I work across AI, data, software, and automation, building systems that are useful, clear, and impactful."
-              active={chapterEntered}
-            />
-          </p>
-          <p className="hz-chapter-tagline">
-            &ldquo;Work for money.<br />Data for love.&rdquo;
-          </p>
+          <div className="hz-chapter-intro-row">
+            <p className="hz-chapter-intro-text">
+              <WordReveal
+                text="Hi, I’m Sakina — I work across AI, data, software, and automation, building systems that are useful, clear, and impactful."
+                active={chapterEntered}
+              />
+            </p>
+            <p className="hz-chapter-tagline">
+              &ldquo;Work for money.<br />Data for love.&rdquo;
+            </p>
+          </div>
 
           <div className="hz-chapter-photo-row">
             <Link

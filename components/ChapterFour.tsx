@@ -22,19 +22,14 @@ export function ChapterFour() {
 
   return (
     <section className="hz-panel hz-panel-experience" data-nav-theme="light" data-panel-id="chapter-four">
-      <span className="exp-chapter-label">
-        <HeaderWordsReveal text="Chapter IV" active={entered} />
-      </span>
+      <div className="exp-chapter-block">
+        <span className="exp-chapter-eyebrow">Selected Experiences</span>
+        <span className="exp-chapter-label">
+          <HeaderWordsReveal text="Chapter IV" active={entered} />
+        </span>
+      </div>
 
       <div className="exp-list-wrap">
-        <motion.span
-          className="exp-eyebrow"
-          initial={{ opacity: 0, y: 20 }}
-          animate={entered ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.6, ease: EASE, delay: 0.1 }}
-        >
-          Selected Experience
-        </motion.span>
         <ul className="exp-list">
           {profile.organizations.map((org, index) => (
             <motion.li

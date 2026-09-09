@@ -4,6 +4,8 @@ import { IntroLoader } from "@/components/IntroLoader";
 import { PageCurtain } from "@/components/PageCurtain";
 import { ProjectImageTransition } from "@/components/ProjectImageTransition";
 import { ClipWipeCurtain } from "@/components/ClipWipeCurtain";
+import { GlobalClickSound } from "@/components/GlobalClickSound";
+import { CustomCursor } from "@/components/CustomCursor";
 import "./globals.css";
 
 const displaySerif = Instrument_Serif({
@@ -35,6 +37,8 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <PageCurtain />
         <ProjectImageTransition />
         <ClipWipeCurtain />
+        <GlobalClickSound />
+        <CustomCursor />
       </body>
     </html>
   );

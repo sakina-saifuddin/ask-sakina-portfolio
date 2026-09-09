@@ -74,6 +74,53 @@ export async function playTypewriterTick() {
   osc.stop(now + 0.03);
 }
 
+export async function playClickTick() {
+  const ctx = getAudioContext();
+  if (!ctx || !(await ensureRunning(ctx))) return;
+
+  const now = ctx.currentTime;
+  const osc = ctx.createOscillator();
+  const gain = ctx.createGain();
+
+  osc.type = "sine";
+  osc.frequency.setValueAtTime(900, now);
+  osc.frequency.exponentialRampToValueAtTime(240, now + 0.05);
+
+  gain.gain.setValueAtTime(0.07, now);
+  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.06);
+
+  osc.connect(gain);
+  gain.connect(ctx.destination);
+  osc.start(now);
+  osc.stop(now + 0.06);
+}
+
+export async function playCelebrationChime() {
+  const ctx = getAudioContext();
+  if (!ctx || !(await ensureRunning(ctx))) return;
+
+  const now = ctx.currentTime;
+  const notes = [523.25, 659.25, 783.99, 1046.5]; // C5, E5, G5, C6 — bright ascending arpeggio
+
+  notes.forEach((freq, i) => {
+    const start = now + i * 0.07;
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(freq, start);
+
+    gain.gain.setValueAtTime(0.0001, start);
+    gain.gain.exponentialRampToValueAtTime(0.09, start + 0.015);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.35);
+
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start(start);
+    osc.stop(start + 0.36);
+  });
+}
+
 export async function playWheelTick() {
   const ctx = getAudioContext();
   if (!ctx || !(await ensureRunning(ctx))) return;

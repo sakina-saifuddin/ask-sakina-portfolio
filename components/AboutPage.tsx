@@ -33,6 +33,28 @@ const interestImages: Record<Interest, string> = {
   dancing: "/interests/dancing.jfif",
 };
 
+function PopWords({ text, startDelay = 0 }: { text: string; startDelay?: number }) {
+  const words = text.split(" ");
+  return (
+    <>
+      {words.map((word, index) => (
+        <span key={`${word}-${index}`}>
+          <motion.span
+            style={{ display: "inline-block" }}
+            initial={{ opacity: 0, scale: 0.4, y: 18 }}
+            whileInView={{ opacity: 1, scale: 1, y: 0 }}
+            viewport={{ once: true, amount: 0.6 }}
+            transition={{ type: "spring", stiffness: 420, damping: 12, delay: startDelay + index * 0.09 }}
+          >
+            {word}
+          </motion.span>
+          {index < words.length - 1 ? " " : null}
+        </span>
+      ))}
+    </>
+  );
+}
+
 export function AboutPage() {
   const trackRef = useRef<HTMLDivElement>(null);
   const [activeInterest, setActiveInterest] = useState<Interest | null>(null);
@@ -162,10 +184,11 @@ export function AboutPage() {
             Philosophy
           </motion.span>
           <p className="about-quote-text">
-            &ldquo;<Typewriter text="Work for money." speed={40} startDelay={300} />
+            &ldquo;
+            <PopWords text="Work for money." />
             <br />
             <span className="about-quote-highlight">
-              <Typewriter text="Data for love." speed={40} startDelay={1900} />
+              <PopWords text="Data for love." startDelay={0.7} />
             </span>
             &rdquo;
           </p>
@@ -212,6 +235,18 @@ export function AboutPage() {
               </motion.div>
             ))}
           </div>
+        </section>
+
+        <section className="hz-panel about-photo" data-nav-theme="dark">
+          <motion.div
+            className="about-photo-media"
+            initial={{ opacity: 0, scale: 1.1 }}
+            whileInView={{ opacity: 1, scale: 1 }}
+            viewport={{ once: true, amount: 0.3 }}
+            transition={{ duration: 1, ease: EASE }}
+          >
+            <Image src="/pic2.JPG" alt="Sakina Saifuddin working" fill sizes="100vw" style={{ objectFit: "cover", objectPosition: "50% 20%" }} />
+          </motion.div>
         </section>
 
         <section className="hz-panel about-beyond" data-nav-theme="light">

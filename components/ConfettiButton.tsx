@@ -3,6 +3,7 @@
 import { useRef, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MagneticButton } from "@/components/MagneticButton";
+import { playCelebrationChime } from "@/components/sound";
 
 type Particle = {
   id: number;
@@ -49,6 +50,8 @@ export function ConfettiButton() {
       setParticles(burst);
       window.setTimeout(() => setParticles([]), 1200);
     }
+
+    playCelebrationChime();
   }
 
   return (

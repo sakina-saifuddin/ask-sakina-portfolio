@@ -130,32 +130,34 @@ export function ChapterTwo() {
         })}
       </ul>
 
-      <motion.span
-        className="ch2-disclaimer"
-        initial={{ opacity: 0, y: 16 }}
-        animate={entered ? { opacity: 1, y: 0 } : undefined}
-        transition={{ duration: 0.5, ease: EASE, delay: 0.15 + relatedWork.length * 0.06 }}
-      >
-        ❋ Live site unavailable for some inactive or incomplete projects
-      </motion.span>
-
-      <motion.div
-        style={{ display: "inline-block" }}
-        initial={{ opacity: 0, y: 16 }}
-        animate={entered ? { opacity: 1, y: 0 } : undefined}
-        transition={{ duration: 0.5, ease: EASE, delay: 0.2 + relatedWork.length * 0.06 }}
-      >
-        <Link
-          href="/works"
-          className="ch2-view-all"
-          onClick={(event) => {
-            event.preventDefault();
-            triggerClipWipeCurtain("/works");
-          }}
+      <div className="ch2-footer-row">
+        <motion.span
+          className="ch2-disclaimer"
+          initial={{ opacity: 0, y: 16 }}
+          animate={entered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.15 + relatedWork.length * 0.06 }}
         >
-          View All Work →
-        </Link>
-      </motion.div>
+          ❋ Live site unavailable for some inactive or incomplete projects
+        </motion.span>
+
+        <motion.div
+          style={{ display: "inline-block" }}
+          initial={{ opacity: 0, y: 16 }}
+          animate={entered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.2 + relatedWork.length * 0.06 }}
+        >
+          <Link
+            href="/works"
+            className="ch2-view-all"
+            onClick={(event) => {
+              event.preventDefault();
+              triggerClipWipeCurtain("/works");
+            }}
+          >
+            View All Work →
+          </Link>
+        </motion.div>
+      </div>
     </section>
   );
 }

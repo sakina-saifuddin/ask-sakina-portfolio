@@ -1439,7 +1439,9 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .hz-panel-related-work{overflow-y:auto}
   .ch2-preview-box{display:none}
   .ch2-list{position:static;transform:none;width:100%;margin-top:clamp(160px,26vh,220px)}
-  .ch2-view-all{position:static;display:block;margin:2rem clamp(24px,6vw,90px) clamp(40px,6vh,64px)}
+  .ch2-footer-row{display:flex;flex-direction:row;align-items:center;justify-content:space-between;gap:1rem;width:100%;margin:2rem clamp(24px,6vw,90px) clamp(40px,6vh,64px)}
+  .ch2-disclaimer{position:static;width:auto;max-width:55%;text-align:left}
+  .ch2-view-all{position:static;display:block;margin:0;flex-shrink:0}
 }
 
 /* --- chapter III: what i do (fixed intro + scrolling image columns) --- */

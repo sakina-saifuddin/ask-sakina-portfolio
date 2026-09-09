@@ -16,17 +16,65 @@ export function HorizontalIntro() {
     const el = trackRef.current;
     if (!el) return;
     const mobileQuery = window.matchMedia("(max-width: 900px)");
+    const panels = Array.from(el.querySelectorAll<HTMLElement>(".hz-panel"));
+
+    const COMMIT_THRESHOLD = 50;
+    const GESTURE_IDLE_MS = 250;
+    const TRANSITION_MS = 550;
+
+    let accumulated = 0;
+    let lastWheelTime = 0;
+    let locked = false;
+    let unlockTimer: ReturnType<typeof setTimeout> | null = null;
+
+    function nearestPanelIndex() {
+      const current = el!.scrollLeft;
+      let index = 0;
+      let nearestDist = Infinity;
+      panels.forEach((panel, i) => {
+        const dist = Math.abs(panel.offsetLeft - current);
+        if (dist < nearestDist) {
+          nearestDist = dist;
+          index = i;
+        }
+      });
+      return index;
+    }
+
+    function commit(direction: 1 | -1) {
+      const targetIndex = Math.min(Math.max(nearestPanelIndex() + direction, 0), panels.length - 1);
+      const target = panels[targetIndex];
+      if (!target) return;
+      locked = true;
+      accumulated = 0;
+      el!.scrollTo({ left: target.offsetLeft, behavior: "smooth" });
+      if (unlockTimer) clearTimeout(unlockTimer);
+      unlockTimer = setTimeout(() => {
+        locked = false;
+      }, TRANSITION_MS);
+    }
 
     function onWheel(event: WheelEvent) {
       if (mobileQuery.matches) return;
-      if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
-        event.preventDefault();
-        el!.scrollBy({ left: event.deltaY, behavior: "instant" });
+      if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      event.preventDefault();
+      if (locked) return;
+
+      const now = performance.now();
+      if (now - lastWheelTime > GESTURE_IDLE_MS) accumulated = 0;
+      lastWheelTime = now;
+      accumulated += event.deltaY;
+
+      if (Math.abs(accumulated) >= COMMIT_THRESHOLD) {
+        commit(accumulated > 0 ? 1 : -1);
       }
     }
 
     el.addEventListener("wheel", onWheel, { passive: false });
-    return () => el.removeEventListener("wheel", onWheel);
+    return () => {
+      el.removeEventListener("wheel", onWheel);
+      if (unlockTimer) clearTimeout(unlockTimer);
+    };
   }, []);
 
   useEffect(() => {

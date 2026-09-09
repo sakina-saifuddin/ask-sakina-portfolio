@@ -1279,15 +1279,12 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .about-hero-intro{position:static;max-width:100%;margin:1rem clamp(24px,6vw,40px) 0}
   .about-quote{min-height:auto;padding:clamp(64px,12vh,100px) clamp(24px,6vw,40px);border-bottom:1px solid #423b33}
   .about-philosophy-grid{flex-direction:column;gap:1.2rem}
-  .about-timeline{background:#F5F0E6;padding-top:2rem}
   .about-timeline-photo-mobile{display:block;position:relative;width:calc(100% - clamp(48px,12vw,80px));height:34vh;flex-shrink:0;margin:0 0 .5rem}
   .about-timeline-photo-mobile img{filter:grayscale(1) contrast(1.05)}
   .about-timeline-header{flex-direction:column;align-items:flex-start;gap:1rem}
-  .about-timeline-header h2{color:#171310}
-  .about-timeline-header p{text-align:left;color:#8a8071}
-  .about-timeline-row{grid-template-columns:1fr;gap:.3rem;text-align:left;border-top-color:#e4e0d6}
-  .about-timeline-period,.about-timeline-role{color:#171310;text-align:left}
-  .about-timeline-company{color:#8a8071;text-align:left}
+  .about-timeline-header p{text-align:left}
+  .about-timeline-row{grid-template-columns:1fr;gap:.3rem;text-align:left}
+  .about-timeline-role,.about-timeline-company{text-align:left}
   .about-footer-row{flex-direction:column;align-items:flex-start;gap:1rem}
 }
 

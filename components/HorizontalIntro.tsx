@@ -21,7 +21,7 @@ export function HorizontalIntro() {
       if (mobileQuery.matches) return;
       if (Math.abs(event.deltaY) > Math.abs(event.deltaX)) {
         event.preventDefault();
-        el!.scrollLeft += event.deltaY;
+        el!.scrollBy({ left: event.deltaY, behavior: "instant" });
       }
     }
 

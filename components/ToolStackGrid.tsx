@@ -2,10 +2,12 @@
 
 import { useRef, useState } from "react";
 import type { MouseEvent } from "react";
-import { motion, useMotionValue, useSpring } from "framer-motion";
+import { motion, useMotionValue, useSpring, useAnimate } from "framer-motion";
 import { technologyGroups } from "@/data/portfolio";
+import { usePanelEntered } from "@/components/usePanelEntered";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
+const BOUNCE = { type: "spring", stiffness: 300, damping: 15, mass: 0.6 } as const;
 
 type ToolItem = { name: string; icon: string; blurb: string };
 
@@ -32,15 +34,25 @@ function ToolIcon({ item, className }: { item: ToolItem; className: string }) {
   );
 }
 
-function TiltStackRow({ item, onSelect }: { item: ToolItem; onSelect: () => void }) {
-  const ref = useRef<HTMLButtonElement>(null);
+function TiltStackRow({
+  item,
+  onSelect,
+  entered,
+  index,
+}: {
+  item: ToolItem;
+  onSelect: () => void;
+  entered: boolean;
+  index: number;
+}) {
+  const [scope, animateScope] = useAnimate<HTMLButtonElement>();
   const rotateX = useMotionValue(0);
   const rotateY = useMotionValue(0);
   const springX = useSpring(rotateX, { stiffness: 220, damping: 16, mass: 0.4 });
   const springY = useSpring(rotateY, { stiffness: 220, damping: 16, mass: 0.4 });
 
   function handleMouseMove(event: MouseEvent<HTMLButtonElement>) {
-    const el = ref.current;
+    const el = scope.current;
     if (!el) return;
     const rect = el.getBoundingClientRect();
     const px = (event.clientX - rect.left) / rect.width - 0.5;
@@ -54,18 +66,29 @@ function TiltStackRow({ item, onSelect }: { item: ToolItem; onSelect: () => void
     rotateY.set(0);
   }
 
+  function handleClick() {
+    animateScope(scope.current, { scale: [1, 1.16, 0.92, 1.04, 1] }, { duration: 0.5, ease: "easeOut" });
+    onSelect();
+  }
+
   return (
     <motion.button
-      ref={ref}
+      ref={scope}
       type="button"
       className="stack-row"
-      onClick={onSelect}
+      onClick={handleClick}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ rotateX: springX, rotateY: springY, transformPerspective: 500 }}
+      initial={{ opacity: 0, y: 24 }}
+      animate={entered ? { opacity: 1, y: 0 } : undefined}
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.96 }}
-      transition={{ type: "spring", stiffness: 260, damping: 18 }}
+      transition={{
+        opacity: { duration: 0.5, delay: index * 0.05, ease: EASE },
+        y: { duration: 0.5, delay: index * 0.05, ease: EASE },
+        scale: { type: "spring", stiffness: 260, damping: 18 },
+      }}
     >
       <span className="stack-row-icon-wrap">
         <ToolIcon item={item} className="stack-row-icon" />
@@ -77,6 +100,8 @@ function TiltStackRow({ item, onSelect }: { item: ToolItem; onSelect: () => void
 
 export function ToolStackGrid() {
   const [active, setActive] = useState<ToolItem | null>(null);
+  const entered = usePanelEntered("chapter-one-stack");
+  let rowIndex = 0;
 
   return (
     <div className="stack-canvas">
@@ -95,9 +120,18 @@ export function ToolStackGrid() {
           <div className="stack-column" key={group.title}>
             <span className="stack-column-title">{group.title}</span>
 
-            {group.items.map((item) => (
-              <TiltStackRow key={item.name} item={item} onSelect={() => setActive(item)} />
-            ))}
+            {group.items.map((item) => {
+              const index = rowIndex++;
+              return (
+                <TiltStackRow
+                  key={item.name}
+                  item={item}
+                  entered={entered}
+                  index={index}
+                  onSelect={() => setActive(item)}
+                />
+              );
+            })}
           </div>
         ))}
       </div>
@@ -106,9 +140,9 @@ export function ToolStackGrid() {
         <div className="stack-backdrop" onClick={() => setActive(null)}>
           <motion.div
             className="stack-detail-card"
-            initial={{ opacity: 0, scale: 0.96, y: 10 }}
+            initial={{ opacity: 0, scale: 0.85, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.3, ease: [0.16, 1, 0.3, 1] }}
+            transition={BOUNCE}
             onClick={(event) => event.stopPropagation()}
           >
             <button type="button" className="stack-detail-close" onClick={() => setActive(null)} aria-label="Close">

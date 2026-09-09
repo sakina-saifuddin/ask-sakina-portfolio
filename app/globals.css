@@ -1107,8 +1107,8 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .hz-panel{padding-left:clamp(56px,14vw,90px)}
   .hz-portrait{width:min(55vw,420px)}
   .hz-panel-intro{min-height:65vh;padding-top:0;padding-left:0}
-  .hz-name{font-size:clamp(2.6rem,15vw,4.5rem);order:1;margin-top:14vh;margin-left:0;align-self:flex-start;text-align:left}
-  .hz-statement{position:static;order:2;align-self:flex-end;text-align:left;margin-top:18vh;max-width:62vw;font-size:.85rem}
+  .hz-name{font-size:clamp(2.6rem,15vw,4.5rem);order:1;margin-top:14vh;margin-left:clamp(24px,6vw,40px);align-self:flex-start;text-align:left}
+  .hz-statement{position:static;order:2;align-self:flex-end;text-align:left;margin-top:1.25rem;max-width:68vw;font-size:.95rem;line-height:1.5}
   .hz-bottom-row{left:clamp(24px,6vw,56px);right:clamp(24px,6vw,56px);bottom:20px;gap:.5rem}
   .hz-bottom-left,.hz-bottom-center,.hz-bottom-right{font-size:.72rem}
 }

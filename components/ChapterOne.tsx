@@ -92,7 +92,7 @@ export function ChapterOne() {
         </motion.div>
       </section>
 
-      <section className="hz-panel hz-panel-stack" data-nav-theme="light">
+      <section className="hz-panel hz-panel-stack" data-nav-theme="light" data-panel-id="chapter-one-stack">
         <ToolStackGrid />
       </section>
 

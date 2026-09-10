@@ -22,6 +22,7 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
   const [open, setOpen] = useState(false);
   const [dockHidden, setDockHidden] = useState(false);
   const lastScrollY = useRef(0);
+  const progressRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (!theme) return;
@@ -34,16 +35,28 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
   useEffect(() => {
     lastScrollY.current = window.scrollY;
 
+    function updateProgress() {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const pct = max > 0 ? Math.min(100, Math.max(0, (window.scrollY / max) * 100)) : 0;
+      if (progressRef.current) progressRef.current.style.width = `${pct}%`;
+    }
+
     function onScroll() {
       const y = window.scrollY;
       const delta = y - lastScrollY.current;
+      updateProgress();
       if (Math.abs(delta) < 6) return;
       setDockHidden(delta > 0 && y > 80);
       lastScrollY.current = y;
     }
 
+    updateProgress();
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    window.addEventListener("resize", updateProgress);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", updateProgress);
+    };
   }, []);
 
   useEffect(() => {
@@ -150,6 +163,10 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
             </motion.span>
           </AnimatePresence>
         </button>
+
+        <div className="scroll-progress-track" aria-hidden="true">
+          <div className="scroll-progress-line" ref={progressRef} />
+        </div>
       </div>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>

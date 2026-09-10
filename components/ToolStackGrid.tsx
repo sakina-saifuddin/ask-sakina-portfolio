@@ -100,6 +100,7 @@ function TiltStackRow({
 
 export function ToolStackGrid() {
   const [active, setActive] = useState<ToolItem | null>(null);
+  const [openGroup, setOpenGroup] = useState<string | null>(null);
   const entered = usePanelEntered("chapter-one-stack");
   let rowIndex = 0;
 
@@ -117,8 +118,15 @@ export function ToolStackGrid() {
 
       <div className="stack-grid">
         {technologyGroups.map((group) => (
-          <div className="stack-column" key={group.title}>
-            <span className="stack-column-title">{group.title}</span>
+          <div className={`stack-column${openGroup === group.title ? " is-open" : ""}`} key={group.title}>
+            <button
+              type="button"
+              className="stack-column-title"
+              aria-expanded={openGroup === group.title}
+              onClick={() => setOpenGroup((current) => (current === group.title ? null : group.title))}
+            >
+              {group.title}
+            </button>
 
             {group.items.map((item) => {
               const index = rowIndex++;

@@ -12,37 +12,52 @@ export function ChapterFive() {
 
   return (
     <section className="hz-panel hz-panel-next" data-nav-theme="dark" data-panel-id="chapter-five">
-      <motion.div
-        className="next-social"
-        initial={{ opacity: 0, y: 16 }}
-        animate={entered ? { opacity: 1, y: 0 } : undefined}
-        transition={{ duration: 0.6, ease: EASE }}
-      >
-        <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
-        <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a>
-      </motion.div>
+      <div className="next-top-group">
+        <motion.div
+          className="next-social"
+          initial={{ opacity: 0, y: 16 }}
+          animate={entered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.6, ease: EASE }}
+        >
+          <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+          <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a>
+        </motion.div>
 
-      <h2 className="next-heading">
-        <span className="next-heading-line">
-          {entered && <Typewriter text="Next" speed={45} startDelay={200} sound showCursor={false} />}
-        </span>
-        <span className="next-heading-highlight">
-          {entered && <Typewriter text="Chapter" speed={45} startDelay={200 + 4 * 45} sound />}
-        </span>
-      </h2>
+        <span className="next-top-tagline">{profile.availability}</span>
 
-      <motion.div
-        className="next-footer"
-        initial={{ opacity: 0, y: 20 }}
-        animate={entered ? { opacity: 1, y: 0 } : undefined}
-        transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
-      >
-        <div className="next-contact">
-          <span>Contact</span>
-          <a href={`mailto:${profile.email}`}>{profile.email}</a>
-        </div>
-        <span className="next-tagline">{profile.availability}</span>
-      </motion.div>
+        <h2 className="next-heading">
+          <span className="next-heading-line">
+            {entered && <Typewriter text="Next" speed={45} startDelay={200} sound showCursor={false} />}
+          </span>
+          <span className="next-heading-highlight">
+            {entered && <Typewriter text="Chapter" speed={45} startDelay={200 + 4 * 45} sound />}
+          </span>
+        </h2>
+
+        <motion.div
+          className="next-footer"
+          initial={{ opacity: 0, y: 20 }}
+          animate={entered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.3 }}
+        >
+          <div className="next-contact">
+            <span>Contact</span>
+            <a href={`mailto:${profile.email}`}>{profile.email}</a>
+
+            <div className="next-contact-social">
+              <span className="next-contact-social-label">Social</span>
+              <a href={profile.linkedin} target="_blank" rel="noreferrer">LinkedIn</a>
+              <a href={profile.github} target="_blank" rel="noreferrer">GitHub</a>
+            </div>
+          </div>
+          <span className="next-tagline">{profile.availability}</span>
+        </motion.div>
+      </div>
+
+      <div className="next-bottom-bar">
+        <span>© 2026 Sakina Saifuddin</span>
+        <span>Folio — Edition</span>
+      </div>
     </section>
   );
 }

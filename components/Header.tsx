@@ -119,27 +119,38 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
         </motion.span>
       </div>
 
-      <button
-        type="button"
-        className={`mobile-dock${dockHidden && !open ? " is-hidden" : ""}`}
-        aria-label={open ? "Close menu" : "Open menu"}
-        aria-expanded={open}
-        aria-controls="navbar-overlay"
-        onClick={() => setOpen((value) => !value)}
-      >
-        <AnimatePresence mode="wait" initial={false}>
-          <motion.span
-            key={open ? "x" : "menu"}
-            initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
-            animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
-            transition={{ duration: 0.25, ease: EASE }}
-            style={{ display: "inline-flex" }}
-          >
-            {open ? <X size={22} strokeWidth={1.7} /> : <Menu size={22} strokeWidth={1.7} />}
-          </motion.span>
-        </AnimatePresence>
-      </button>
+      <div className={`mobile-topbar${dockHidden && !open ? " is-hidden" : ""}`}>
+        <Link
+          href="/"
+          className="mobile-topbar-brand"
+          aria-label="Sakina Saifuddin home"
+          onClick={() => setOpen(false)}
+        >
+          SS
+        </Link>
+
+        <button
+          type="button"
+          className="mobile-dock"
+          aria-label={open ? "Close menu" : "Open menu"}
+          aria-expanded={open}
+          aria-controls="navbar-overlay"
+          onClick={() => setOpen((value) => !value)}
+        >
+          <AnimatePresence mode="wait" initial={false}>
+            <motion.span
+              key={open ? "x" : "menu"}
+              initial={{ opacity: 0, rotate: -90, scale: 0.6 }}
+              animate={{ opacity: 1, rotate: 0, scale: 1 }}
+              exit={{ opacity: 0, rotate: 90, scale: 0.6 }}
+              transition={{ duration: 0.25, ease: EASE }}
+              style={{ display: "inline-flex" }}
+            >
+              {open ? <X size={22} strokeWidth={1.7} /> : <Menu size={22} strokeWidth={1.7} />}
+            </motion.span>
+          </AnimatePresence>
+        </button>
+      </div>
 
       <div id="navbar-overlay" className={`nav-overlay${open ? " is-open" : ""}`} aria-hidden={!open}>
         <nav className="nav-overlay-links">

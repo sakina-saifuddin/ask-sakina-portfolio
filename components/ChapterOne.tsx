@@ -45,7 +45,7 @@ export function ChapterOne() {
               />
             </p>
             <p className="hz-chapter-tagline">
-              &ldquo;Work for money.<br />Data for love.&rdquo;
+              &ldquo;Work for money. <br />Data for love.&rdquo;
             </p>
           </div>
 

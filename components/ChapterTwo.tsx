@@ -13,6 +13,7 @@ const EASE = [0.16, 1, 0.3, 1] as const;
 type RelatedWorkItem = {
   number: string;
   title: string;
+  shortTitle: string;
   image: string;
   href?: string;
   slug?: string;
@@ -22,6 +23,7 @@ const relatedWork: RelatedWorkItem[] = [
   {
     number: "01",
     title: "Sakina Job OS — Agentic AI Job Search & Outreach Platform",
+    shortTitle: "Agentic AI Job Platform",
     image: "/projects/job-os-placeholder.png",
     href: "/works/sakina-job-os",
     slug: "sakina-job-os",
@@ -29,6 +31,7 @@ const relatedWork: RelatedWorkItem[] = [
   {
     number: "02",
     title: "AI-Driven Retail Inventory Forecasting & Autonomous Inventory Optimization",
+    shortTitle: "AI Retail Demand Forecasting",
     image: "/project-evidence/retail-report/page-16.png",
     href: "/works/retail-demand-forecasting",
     slug: "retail-demand-forecasting",
@@ -36,6 +39,7 @@ const relatedWork: RelatedWorkItem[] = [
   {
     number: "03",
     title: "Financial Reconciliation & Grant Verification System",
+    shortTitle: "Financial Reconciliation System",
     image: "/project-evidence/financial-reconciliation/grants-overview1.png",
     href: "/works/financial-reconciliation",
     slug: "financial-reconciliation",
@@ -43,6 +47,7 @@ const relatedWork: RelatedWorkItem[] = [
   {
     number: "04",
     title: "Oracle Financial ETL Pipeline",
+    shortTitle: "Oracle Financial Data Pipeline",
     image: "/project-evidence/oracle-etl/conversion.png",
     href: "/works/oracle-financial-etl",
     slug: "oracle-financial-etl",
@@ -50,6 +55,7 @@ const relatedWork: RelatedWorkItem[] = [
   {
     number: "05",
     title: "GAN-Based Chest X-ray Augmentation for Pneumonia Detection",
+    shortTitle: "AI Pneumonia X-ray Detection",
     image: "/project-evidence/gan-deck/architecture.png",
     href: "/works/pneumonia-dcgan",
     slug: "pneumonia-dcgan",
@@ -89,7 +95,10 @@ export function ChapterTwo() {
           const content = (
             <>
               <span className="ch2-list-number">{item.number}</span>
-              <span className="ch2-list-title">{item.title}</span>
+              <span className="ch2-list-title">
+                <span className="ch2-list-title-full">{item.title}</span>
+                <span className="ch2-list-title-short">{item.shortTitle}</span>
+              </span>
             </>
           );
           const isActive = active?.number === item.number;

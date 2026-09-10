@@ -15,7 +15,7 @@ type WhatIDoItem = {
 
 const whatIDo: WhatIDoItem[] = [
   {
-    title: "AI & Machine Learning",
+    title: "AI &\nMachine Learning",
     description:
       "Training and shipping models — DCGANs, EEG classifiers, and production LLM integrations — built to hold up outside the notebook.",
     image: "/project-evidence/gan-deck/architecture.png",
@@ -28,7 +28,7 @@ const whatIDo: WhatIDoItem[] = [
     blurredImage: "/project-evidence/financial-reconciliation/grants-overview1-blurred.png",
   },
   {
-    title: "Software & Automation",
+    title: "Software &\nAutomation",
     description:
       "Full-stack apps and ETL pipelines that remove manual work — from a 1,000-user chatbot to a pipeline running on autopilot.",
     image: "/project-evidence/oracle-etl/power-automate.png",

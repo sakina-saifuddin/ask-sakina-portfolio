@@ -90,6 +90,17 @@ export function ChapterOne() {
             <strong>Beyond Coding:</strong> Long drives, food,<br />fashion, and dancing.
           </p>
         </motion.div>
+
+        <motion.div
+          className="hz-chapter-resume-wrap"
+          initial={{ opacity: 0, y: 20 }}
+          animate={chapterEntered ? { opacity: 1, y: 0 } : undefined}
+          transition={{ duration: 0.6, ease: EASE, delay: 0.35 }}
+        >
+          <a href="/resume.pdf" download className="hz-chapter-resume-cta">
+            Download Resume <ArrowUpRight size={16} strokeWidth={2} />
+          </a>
+        </motion.div>
       </section>
 
       <section className="hz-panel hz-panel-stack" data-nav-theme="light" data-panel-id="chapter-one-stack">
@@ -105,6 +116,7 @@ export function ChapterOne() {
         >
           <span>Folio — Edition</span>
           <h2>Ask My Resume</h2>
+          <p className="terminal-page-subtitle">Tap a command below to ask a question.</p>
         </motion.div>
 
         <motion.div

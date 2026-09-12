@@ -23,7 +23,7 @@ export const profile = {
     { name: "University of Houston", href: "https://www.uh.edu/", logo: "/company-logos/uh-user.png" },
     { name: "BluTech Consulting", href: "https://blutechconsulting.com/", logo: "/company-logos/blutech-user.png" },
     { name: "SoftSyncDev", href: "https://www.softsyncdev.com/", logo: "/company-logos/softsync-user.png" },
-    { name: "The Walnut Agency", href: "https://www.linkedin.com/company/the-walnut-agency/", logo: "/company-logos/walnut.webp" },
+    { name: "The Walnut Agency", href: "https://thewalnutagency.com/", logo: "/company-logos/walnut.webp" },
   ],
   heroStats: [
     { value: "3.5+", label: "years of experience" },
@@ -129,7 +129,7 @@ export const experience: ExperienceItem[] = [
     period: "Aug 2022 — Sep 2025",
     role: "Performance Management Analyst → Senior Performance Management Analyst",
     company: "The Walnut Agency",
-    companyUrl: "https://www.linkedin.com/company/the-walnut-agency/",
+    companyUrl: "https://thewalnutagency.com/",
     location: "Karachi, Pakistan · Remote",
     intro: "I progressed from Performance Management Analyst to Senior Performance Management Analyst, managing client accounts, campaign performance, content coordination, and regular reporting.",
     stats: [

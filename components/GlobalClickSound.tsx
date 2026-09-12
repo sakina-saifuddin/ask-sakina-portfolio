@@ -10,23 +10,27 @@ export function GlobalClickSound() {
     attachAudioUnlock();
 
     function fire() {
-      // touchend and the click it synthesizes both land here on mobile —
-      // collapse them into a single sound + buzz per tap.
+      // touchstart, touchend, and the click they synthesize can all land
+      // here on mobile — collapse them into a single sound + buzz per tap.
       const now = performance.now();
-      if (now - lastFireRef.current < 100) return;
+      if (now - lastFireRef.current < 150) return;
       lastFireRef.current = now;
 
-      playClickTick();
-
+      // Vibration must be triggered synchronously inside the gesture on
+      // some browsers, so fire it before anything async-ish.
       if (typeof navigator !== "undefined" && "vibrate" in navigator) {
         navigator.vibrate(12);
       }
+
+      playClickTick();
     }
 
     window.addEventListener("click", fire);
+    window.addEventListener("touchstart", fire, { passive: true });
     window.addEventListener("touchend", fire, { passive: true });
     return () => {
       window.removeEventListener("click", fire);
+      window.removeEventListener("touchstart", fire);
       window.removeEventListener("touchend", fire);
     };
   }, []);

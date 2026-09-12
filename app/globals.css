@@ -1353,9 +1353,10 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .terminal-cta .confetti-button-wrap{margin-left:0}
 
 @media(max-width:900px){
-  .hz-panel-terminal{gap:.6rem;align-items:flex-start;justify-content:flex-start;padding-top:210px;padding-bottom:32px;padding-left:clamp(16px,4.5vw,24px);padding-right:clamp(16px,4.5vw,24px);min-height:auto;height:auto}
+  .hz-panel-terminal{gap:.6rem;align-items:flex-start;justify-content:flex-start;padding-top:150px;padding-bottom:32px;padding-left:clamp(16px,4.5vw,24px);padding-right:clamp(16px,4.5vw,24px);min-height:auto;height:auto}
   .terminal-page-heading{left:clamp(16px,4.5vw,24px)}
   .terminal-window{width:100%;height:min(70vh,520px)}
+  .terminal-cta{width:100%;margin-top:.9rem}
   .terminal-commands{padding:.7rem}
   .terminal-command-btn{font-size:.7rem;padding:.4rem .6rem}
 }

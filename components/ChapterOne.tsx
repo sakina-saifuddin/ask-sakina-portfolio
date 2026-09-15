@@ -4,9 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUpRight } from "lucide-react";
-import { ConfettiButton } from "@/components/ConfettiButton";
 import { triggerPageCurtain } from "@/components/PageCurtain";
-import { AskResumeTerminal } from "@/components/AskResumeTerminal";
+import { AskSakinaChat } from "@/components/AskSakinaChat";
 import { ToolStackGrid } from "@/components/ToolStackGrid";
 import { usePanelEntered } from "@/components/usePanelEntered";
 import { WordReveal } from "@/components/WordReveal";
@@ -103,38 +102,19 @@ export function ChapterOne() {
         </motion.div>
       </section>
 
-      <section className="hz-panel hz-panel-stack" data-nav-theme="light" data-panel-id="chapter-one-stack">
-        <ToolStackGrid />
-      </section>
-
       <section className="hz-panel hz-panel-terminal" data-nav-theme="light" data-panel-id="chapter-one-terminal">
         <motion.div
-          className="terminal-page-heading"
-          initial={{ opacity: 0, y: 24 }}
+          className="ask-embed-wrap"
+          initial={{ opacity: 0, y: 20 }}
           animate={terminalEntered ? { opacity: 1, y: 0 } : undefined}
           transition={{ duration: 0.7, ease: EASE }}
         >
-          <span>Folio — Edition</span>
-          <h2>Ask My Resume</h2>
-          <p className="terminal-page-subtitle">Tap a command below to ask a question.</p>
+          <AskSakinaChat embedded />
         </motion.div>
+      </section>
 
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={terminalEntered ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.8, ease: EASE, delay: 0.15 }}
-        >
-          <AskResumeTerminal />
-        </motion.div>
-
-        <motion.div
-          className="terminal-cta"
-          initial={{ opacity: 0, y: 20 }}
-          animate={terminalEntered ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.7, ease: EASE, delay: 0.3 }}
-        >
-          <ConfettiButton />
-        </motion.div>
+      <section className="hz-panel hz-panel-stack" data-nav-theme="light" data-panel-id="chapter-one-stack">
+        <ToolStackGrid />
       </section>
     </>
   );

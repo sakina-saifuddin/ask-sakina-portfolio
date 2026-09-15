@@ -54,9 +54,27 @@ export function HorizontalIntro() {
       }, TRANSITION_MS);
     }
 
+    function findScrollableAncestor(node: EventTarget | null, deltaY: number): HTMLElement | null {
+      let current = node instanceof HTMLElement ? node : null;
+      while (current && current !== el) {
+        const style = window.getComputedStyle(current);
+        const canScrollY = /(auto|scroll)/.test(style.overflowY) && current.scrollHeight > current.clientHeight;
+        if (canScrollY) {
+          const atTop = current.scrollTop <= 0;
+          const atBottom = current.scrollTop + current.clientHeight >= current.scrollHeight - 1;
+          if ((deltaY < 0 && !atTop) || (deltaY > 0 && !atBottom)) return current;
+        }
+        current = current.parentElement;
+      }
+      return null;
+    }
+
     function onWheel(event: WheelEvent) {
       if (mobileQuery.matches) return;
       if (Math.abs(event.deltaY) <= Math.abs(event.deltaX)) return;
+      // Let an inner scrollable element (e.g. the AskSakina chat thread)
+      // handle its own scroll instead of hijacking it for panel navigation.
+      if (findScrollableAncestor(event.target, event.deltaY)) return;
       event.preventDefault();
       if (locked) return;
 

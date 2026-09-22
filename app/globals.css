@@ -1240,6 +1240,10 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .clip-wipe-panel{position:absolute;top:0;bottom:0;width:50%;background:var(--paper)}
 .clip-wipe-panel-left{left:0}
 .clip-wipe-panel-right{right:0}
+.clip-wipe-loader{position:absolute;left:50%;top:50%;z-index:1;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:.7rem;width:min(220px,60vw)}
+.clip-wipe-loader-label{font-family:var(--font-sans);font-size:.68rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#F2ECE0}
+.clip-wipe-loader-track{position:relative;width:100%;height:2px;background:rgba(242,236,224,.22);border-radius:999px;overflow:hidden}
+.clip-wipe-loader-fill{position:absolute;left:0;top:0;bottom:0;background:#F2ECE0;border-radius:999px}
 
 .pit-overlay{position:fixed;z-index:800;overflow:hidden;border-radius:4px;background:#F3F1EC;box-shadow:0 30px 90px rgba(0,0,0,.35);pointer-events:none}
 .pit-overlay img{width:100%;height:100%;object-fit:contain;display:block}

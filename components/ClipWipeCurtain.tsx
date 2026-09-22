@@ -72,6 +72,14 @@ export function ClipWipeCurtain() {
   if (phase === "idle") return null;
 
   const covered = phase === "covering" || phase === "covered";
+  // The page behind the curtain can take a few seconds to load (first
+  // visit to a route, image-heavy project pages, etc.) — "covered" has no
+  // fixed duration, it just waits for the route to actually finish
+  // navigating. Without something moving on screen that wait reads as a
+  // frozen page, so show a progress bar: it creeps toward ~85% while
+  // waiting (we don't know the real load progress) and only completes to
+  // 100% once the destination has actually mounted.
+  const finishing = phase === "revealing";
 
   return (
     <div className="clip-wipe-curtain" aria-hidden="true">
@@ -87,6 +95,23 @@ export function ClipWipeCurtain() {
         animate={{ clipPath: covered ? "inset(0 0 0 0%)" : "inset(0 0 0 100%)" }}
         transition={{ duration: PANEL_DURATION, ease: EASE }}
       />
+
+      <motion.div
+        className="clip-wipe-loader"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: covered ? 1 : 0 }}
+        transition={{ duration: 0.2, delay: finishing ? 0.15 : 0 }}
+      >
+        <span className="clip-wipe-loader-label">Loading</span>
+        <span className="clip-wipe-loader-track">
+          <motion.span
+            className="clip-wipe-loader-fill"
+            initial={{ width: "0%" }}
+            animate={{ width: finishing ? "100%" : "85%" }}
+            transition={finishing ? { duration: 0.25, ease: "easeOut" } : { duration: 4, ease: "easeOut" }}
+          />
+        </span>
+      </motion.div>
     </div>
   );
 }

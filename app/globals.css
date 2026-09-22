@@ -1792,6 +1792,29 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .ask-history-item:hover{background:rgba(23,19,16,.05);color:#171310}
 .ask-history-item.is-active{background:rgba(23,19,16,.08);color:#171310;font-weight:600}
 
+.ask-history-row{position:relative}
+.ask-history-row .ask-history-item{padding-right:2.2rem}
+.ask-history-actions{position:absolute;right:.3rem;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:.1rem}
+.ask-history-pin,.ask-history-more{display:flex;align-items:center;justify-content:center;width:22px;height:22px;flex:0 0 auto;border:0;border-radius:5px;background:transparent;color:#8a8071;cursor:pointer;opacity:0;pointer-events:none;transition:opacity .15s ease,background .15s ease,color .15s ease}
+.ask-history-row:hover .ask-history-pin,.ask-history-row:hover .ask-history-more,.ask-history-row.menu-open .ask-history-more,.ask-history-pin.is-pinned{opacity:1;pointer-events:auto}
+.ask-history-pin:hover,.ask-history-more:hover{background:rgba(23,19,16,.1);color:#171310}
+.ask-history-pin.is-pinned{color:#171310}
+
+.ask-history-menu-backdrop{position:fixed;inset:0;z-index:150;background:transparent;border:0;padding:0;cursor:default}
+.ask-history-menu{position:absolute;top:calc(100% + 2px);right:0;z-index:160;min-width:150px;background:#F5F0E6;border:1px solid #c9beac;border-radius:7px;padding:.3rem;box-shadow:0 12px 28px rgba(23,19,16,.2)}
+.ask-history-menu-delete{display:flex;align-items:center;gap:.5rem;width:100%;text-align:left;font-family:var(--font-sans);font-weight:600;font-size:.78rem;color:#b3261e;background:transparent;border:0;border-radius:5px;padding:.5rem .6rem;cursor:pointer;transition:background .15s ease}
+.ask-history-menu-delete:hover{background:rgba(179,38,30,.1)}
+
+.ask-modal-backdrop{position:fixed;inset:0;z-index:300;background:rgba(23,19,16,.45);display:flex;align-items:center;justify-content:center;padding:20px}
+.ask-modal{width:100%;max-width:340px;background:#F5F0E6;border:1px solid #4A4339;border-radius:8px;padding:1.5rem 1.5rem 1.2rem;box-shadow:0 24px 60px rgba(0,0,0,.35)}
+.ask-modal h3{font-family:var(--font-cinzel);font-weight:400;font-size:1.2rem;color:#171310;margin:0 0 .65rem}
+.ask-modal p{font-family:var(--font-sans);font-size:.85rem;line-height:1.55;color:#4a4339;margin:0 0 1.4rem}
+.ask-modal-actions{display:flex;justify-content:flex-end;gap:.6rem}
+.ask-modal-cancel{font-family:var(--font-sans);font-weight:600;font-size:.8rem;color:#171310;background:transparent;border:1px solid #c9beac;border-radius:6px;padding:.55rem 1.05rem;cursor:pointer;transition:border-color .2s ease}
+.ask-modal-cancel:hover{border-color:#171310}
+.ask-modal-delete{font-family:var(--font-sans);font-weight:700;font-size:.8rem;color:#F5F0E6;background:#b3261e;border:1px solid #b3261e;border-radius:6px;padding:.55rem 1.05rem;cursor:pointer;transition:background .2s ease}
+.ask-modal-delete:hover{background:#8f1e18}
+
 .ask-sidebar-back{display:flex;align-items:center;gap:.5rem;margin-top:.8rem;padding:.6rem .55rem;font-family:var(--font-sans);font-weight:600;font-size:.78rem;color:#8a8071;text-decoration:none;border-top:1px solid #e4e0d6;transition:color .2s ease}
 .ask-sidebar-back:hover{color:#171310}
 

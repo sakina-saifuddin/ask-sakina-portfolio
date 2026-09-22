@@ -3,7 +3,7 @@
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { ArrowLeft, ArrowUpRight, Menu, Mic, Plus, X } from "lucide-react";
+import { ArrowLeft, ArrowUpRight, Menu, Mic, MoreHorizontal, Pin, Plus, Trash2, X } from "lucide-react";
 import { qaItems, profile } from "@/data/portfolio";
 import { presetConversations, type PresetMessage } from "@/data/askConversations";
 import { playTypewriterTick, attachAudioUnlock } from "@/components/sound";
@@ -20,6 +20,7 @@ type Chat = {
   id: string;
   title: string;
   messages: Message[];
+  pinned?: boolean;
 };
 
 // Minimal surface of the (non-standard, webkit-prefixed) Web Speech API —
@@ -104,6 +105,94 @@ function AskLink({ href, label }: { href: string; label: string }) {
   );
 }
 
+function HistoryItem({
+  chat,
+  isActive,
+  menuOpen,
+  onSelect,
+  onTogglePin,
+  onToggleMenu,
+  onRequestDelete,
+}: {
+  chat: Chat;
+  isActive: boolean;
+  menuOpen: boolean;
+  onSelect: () => void;
+  onTogglePin: () => void;
+  onToggleMenu: () => void;
+  onRequestDelete: () => void;
+}) {
+  return (
+    <div className={`ask-history-row${menuOpen ? " menu-open" : ""}`}>
+      <button
+        type="button"
+        className={`ask-history-item${isActive ? " is-active" : ""}`}
+        onClick={onSelect}
+        title={chat.title}
+      >
+        {chat.title}
+      </button>
+
+      <div className="ask-history-actions">
+        <button
+          type="button"
+          className={`ask-history-pin${chat.pinned ? " is-pinned" : ""}`}
+          aria-label={chat.pinned ? "Unpin chat" : "Pin chat"}
+          aria-pressed={Boolean(chat.pinned)}
+          onClick={(event) => {
+            event.stopPropagation();
+            onTogglePin();
+          }}
+        >
+          <Pin size={13} strokeWidth={2} fill={chat.pinned ? "currentColor" : "none"} />
+        </button>
+
+        <button
+          type="button"
+          className="ask-history-more"
+          aria-label="Chat options"
+          aria-haspopup="menu"
+          aria-expanded={menuOpen}
+          onClick={(event) => {
+            event.stopPropagation();
+            onToggleMenu();
+          }}
+        >
+          <MoreHorizontal size={15} strokeWidth={2} />
+        </button>
+
+        {menuOpen && (
+          <>
+            <button
+              type="button"
+              className="ask-history-menu-backdrop"
+              aria-hidden="true"
+              tabIndex={-1}
+              onClick={(event) => {
+                event.stopPropagation();
+                onToggleMenu();
+              }}
+            />
+            <div className="ask-history-menu" role="menu">
+              <button
+                type="button"
+                role="menuitem"
+                className="ask-history-menu-delete"
+                onClick={(event) => {
+                  event.stopPropagation();
+                  onRequestDelete();
+                }}
+              >
+                <Trash2 size={13} strokeWidth={2} /> Delete chat
+              </button>
+            </div>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
 function AssistantBubble({ item, active }: { item: QaItem; active: boolean }) {
   const [count, setCount] = useState(active ? 0 : item.answer.length);
 
@@ -175,6 +264,8 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
   const [activeId, setActiveId] = useState<string>("");
   const [input, setInput] = useState("");
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [menuOpenId, setMenuOpenId] = useState<string | null>(null);
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const [loaded, setLoaded] = useState(false);
   const [listening, setListening] = useState(false);
   const [voiceSupported, setVoiceSupported] = useState(false);
@@ -367,6 +458,34 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
     setSidebarOpen(false);
   }
 
+  function togglePin(id: string) {
+    setDynamicChats((prev) => prev.map((c) => (c.id === id ? { ...c, pinned: !c.pinned } : c)));
+  }
+
+  function toggleMenu(id: string) {
+    setMenuOpenId((current) => (current === id ? null : id));
+  }
+
+  function requestDelete(id: string) {
+    setMenuOpenId(null);
+    setDeleteConfirmId(id);
+  }
+
+  function cancelDelete() {
+    setDeleteConfirmId(null);
+  }
+
+  function confirmDelete() {
+    if (!deleteConfirmId) return;
+    setDynamicChats((prev) => prev.filter((c) => c.id !== deleteConfirmId));
+    if (activeId === deleteConfirmId) setActiveId("");
+    setDeleteConfirmId(null);
+  }
+
+  const pinnedChats = dynamicChats.filter((c) => c.pinned);
+  const recentChats = dynamicChats.filter((c) => !c.pinned);
+  const chatPendingDelete = dynamicChats.find((c) => c.id === deleteConfirmId);
+
   const nameParts = profile.name.split(" ");
   const initials = `${nameParts[0]?.[0] ?? "S"}${nameParts[1]?.[0] ?? "S"}`;
 
@@ -404,19 +523,38 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
             );
           })}
 
-          {dynamicChats.length > 0 && (
+          {pinnedChats.length > 0 && (
+            <>
+              <span className="ask-history-label">Pinned</span>
+              {pinnedChats.map((chat) => (
+                <HistoryItem
+                  key={chat.id}
+                  chat={chat}
+                  isActive={chat.id === activeId}
+                  menuOpen={chat.id === menuOpenId}
+                  onSelect={() => handleSelect(chat.id)}
+                  onTogglePin={() => togglePin(chat.id)}
+                  onToggleMenu={() => toggleMenu(chat.id)}
+                  onRequestDelete={() => requestDelete(chat.id)}
+                />
+              ))}
+            </>
+          )}
+
+          {recentChats.length > 0 && (
             <>
               <span className="ask-history-label">Recent</span>
-              {dynamicChats.map((chat) => (
-                <button
+              {recentChats.map((chat) => (
+                <HistoryItem
                   key={chat.id}
-                  type="button"
-                  className={`ask-history-item${chat.id === activeId ? " is-active" : ""}`}
-                  onClick={() => handleSelect(chat.id)}
-                  title={chat.title}
-                >
-                  {chat.title}
-                </button>
+                  chat={chat}
+                  isActive={chat.id === activeId}
+                  menuOpen={chat.id === menuOpenId}
+                  onSelect={() => handleSelect(chat.id)}
+                  onTogglePin={() => togglePin(chat.id)}
+                  onToggleMenu={() => toggleMenu(chat.id)}
+                  onRequestDelete={() => requestDelete(chat.id)}
+                />
               ))}
             </>
           )}
@@ -549,6 +687,21 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
           </div>
         </div>
       </div>
+
+      {chatPendingDelete && (
+        <div className="ask-modal-backdrop" onClick={cancelDelete}>
+          <div className="ask-modal" role="alertdialog" aria-modal="true" aria-labelledby="ask-modal-title" onClick={(event) => event.stopPropagation()}>
+            <h3 id="ask-modal-title">Delete this chat?</h3>
+            <p>
+              Do you really want to delete &ldquo;{chatPendingDelete.title}&rdquo;? This removes it from your chat history and can&rsquo;t be undone.
+            </p>
+            <div className="ask-modal-actions">
+              <button type="button" className="ask-modal-cancel" onClick={cancelDelete}>Cancel</button>
+              <button type="button" className="ask-modal-delete" onClick={confirmDelete}>Delete</button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

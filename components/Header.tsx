@@ -127,9 +127,9 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
 
         <MotionLink
           className="hz-nav-vertical hz-nav-name"
-          href="/"
+          href="/#intro"
           aria-label="Sakina Saifuddin home"
-          onClick={() => setOpen(false)}
+          onClick={(event) => handleChapterClick(event, "/#intro")}
           initial={{ opacity: 0, rotate: 180, y: "calc(-50% + 14px)" }}
           animate={{ opacity: open ? 0 : 1, rotate: 180, y: "-50%" }}
           transition={open ? { duration: 0.3, ease: EASE } : { duration: 0.7, ease: EASE, delay: 0.2 }}
@@ -149,10 +149,10 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
 
       <div className={`mobile-topbar${dockHidden && !open ? " is-hidden" : ""}`}>
         <Link
-          href="/"
+          href="/#intro"
           className="mobile-topbar-brand"
           aria-label="Sakina Saifuddin home"
-          onClick={() => setOpen(false)}
+          onClick={(event) => handleChapterClick(event, "/#intro")}
         >
           SS
         </Link>

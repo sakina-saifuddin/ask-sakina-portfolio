@@ -1,6 +1,5 @@
 import { Header } from "@/components/Header";
 import { ScrollAnimations } from "@/components/ScrollAnimations";
-import { Footer } from "@/components/Footer";
 import { profile } from "@/data/portfolio";
 
 export default function Resume() {
@@ -49,7 +48,6 @@ export default function Resume() {
           </div>
         </div>
       </main>
-      <Footer />
     </>
   );
 }

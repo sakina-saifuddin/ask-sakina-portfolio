@@ -40,7 +40,7 @@ const relatedWork: RelatedWorkItem[] = [
     number: "03",
     title: "Financial Reconciliation & Grant Verification System",
     shortTitle: "Financial Reconciliation System",
-    image: "/project-evidence/financial-reconciliation/grants-overview1.png",
+    image: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
     href: "/works/financial-reconciliation",
     slug: "financial-reconciliation",
   },

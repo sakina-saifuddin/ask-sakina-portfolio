@@ -193,6 +193,10 @@ export type Project = {
   outcomes: { value: string; label: string }[];
   caseStudySections?: CaseStudySection[];
   limitations: string;
+  /** Shown as a standalone highlighted callout next to the evidence gallery
+   *  (not buried in prose) when a project's screenshots use fabricated
+   *  sample data in place of real/sensitive records. */
+  evidencePrivacyNotice?: string;
   tech: string[];
   evidence: ProjectEvidence[];
   links: { label: string; href: string }[];
@@ -373,13 +377,14 @@ export const projects: Project[] = [
       { title: "The result", text: "The system automated 1,074 recurring reports across 11+ departments and 50+ grant or financial datasets, while reducing manual review work by about 50%. Instead of jumping between separate files, reviewers can start with the grant overview and drill into current-month, payroll, and non-payroll details." },
       { title: "What the screenshots show", text: "The first dashboard is the grant overview, the second is the current-month verification screen, and the third is the payroll drilldown. Together they show the main path from summary review to transaction-level evidence." }
     ],
-    limitations: "The screenshots are work samples. Sensitive university financial or personnel data should remain protected in any public deployment.",
+    limitations: "The screenshots are work samples with all real figures, grant names, and employee data replaced by sample values — sensitive university financial and personnel records are not shown.",
+    evidencePrivacyNotice: "The dashboards below are real — every figure, name, and ID shown in them has been replaced with fabricated sample data. The actual grant, financial, and employee records are private and are not shown.",
     tech: ["Power BI", "PowerApps", "DAX", "Power Query", "Python", "SQL", "PeopleSoft", "SharePoint"],
     evidence: [
-      { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview1.png", label: "Grant cost center overview", caption: "Grant cost center financial overview with total budget, expenses, commitments, available balance, and budget-vs-expenses breakdowns by status." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview.png", label: "Grant overview", caption: "High-level grant view with budget, expenses, commitments, balance, funding dates, and cost-center status." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/current-month.png", label: "Current-month verification", caption: "Monthly review screen for selecting a cost center and checking budget, payroll, non-payroll, and fiscal-period activity." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/payroll.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png", label: "Grant cost center overview", caption: "Grant cost center financial overview with total budget, expenses, commitments, available balance, and budget-vs-expenses breakdowns by status. Underlying dollar figures are sample data for privacy; the charts reflect the real shape of the dashboard." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview-dummy.png", label: "Grant overview", caption: "High-level grant view with budget, expenses, commitments, balance, funding dates, and cost-center status. Shown with sample data to protect real grant and personnel records." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/current-month-dummy.png", label: "Current-month verification", caption: "Monthly review screen for selecting a cost center and checking budget, payroll, non-payroll, and fiscal-period activity. Shown with sample data to protect real financial records." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/payroll-dummy.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters. Shown with sample data to protect real employee payroll records." },
       { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-1.svg", label: "Power Apps — Monthly Verification (placeholder)", caption: "Placeholder for the in-progress Power Apps monthly verification screen — will be replaced with a live screenshot." },
       { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-2.svg", label: "Power Automate — Issue Flagging (placeholder)", caption: "Placeholder for the in-progress Power Automate issue-flagging workflow — will be replaced with a live screenshot." },
       { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-3.svg", label: "Power Apps — Resolution Tracking (placeholder)", caption: "Placeholder for the in-progress Power Apps resolution-tracking view — will be replaced with a live screenshot." }
@@ -671,43 +676,43 @@ export const qaItems = [
     question: "What has she built?",
     answer: "She has shipped 5+ full-stack applications, built healthcare pipelines across 15–20 data sources, automated 1,074 recurring financial reports, built 10+ BI dashboards, created an Oracle-to-Power-BI ETL workflow, and trained machine-learning models for forecasting, EEG classification, computer vision, and generative AI.",
     facts: ["5+ apps", "15–20 sources", "1,074 reports"],
-    links: [{ label: "See projects", href: "/projects" }, { label: "See experience", href: "/#experience" }],
+    links: [{ label: "See projects", href: "/works" }, { label: "See experience", href: "/#chapter-four" }],
   },
   {
     question: "What machine-learning models has she trained?",
     answer: "Her project work includes Linear Regression, Random Forest, LightGBM, SVMs, CNNs, bidirectional LSTMs, multilayer neural networks, DCGANs, and a Deep Q-Network decision layer. She has worked with both TensorFlow/Keras and PyTorch.",
     facts: ["CNN / Bi-LSTM", "DCGAN", "LightGBM / DQN"],
-    links: [{ label: "ML projects", href: "/projects" }],
+    links: [{ label: "ML projects", href: "/works" }],
   },
   {
     question: "Has she worked with LLMs and RAG?",
     answer: "She has production experience with OpenAI API and LLM integrations, including a chatbot used by 1,000+ users and LLM-assisted data workflows. She is also expanding into retrieval-based AI work; the portfolio does not claim production RAG experience that is not yet supported by project evidence.",
     facts: ["1,000+ chatbot users", "LLM integration", "RAG: expanding"],
-    links: [{ label: "Experience", href: "/#experience" }],
+    links: [{ label: "Experience", href: "/#chapter-four" }],
   },
   {
     question: "What is her Power BI and analytics experience?",
     answer: "At TMAC / NIST-MEP, she automated 1,074 recurring reports and built 10+ Power BI / PowerApps dashboards for grant and financial review. At BluTech Consulting, she built Power BI and Tableau dashboards over 500K+ records for UBL and reduced reporting turnaround by 25%.",
     facts: ["10+ dashboards", "500K+ records", "25% faster reporting"],
-    links: [{ label: "Financial case study", href: "/projects#work-financial-reconciliation" }],
+    links: [{ label: "Financial case study", href: "/works/financial-reconciliation" }],
   },
   {
     question: "What healthcare work has she done?",
     answer: "At Dental-X AI, she works on dental insurance and eligibility automation. Her work combines DentalXchange, CareStack, SQL, JSON, APIs, and payer-specific mapping rules into a consistent patient-level structure and includes validation of the classic and new Benefit Summary UI.",
     facts: ["15–20 sources", "7 deployments", "UI mapping"],
-    links: [{ label: "Healthcare project", href: "/projects#work-healthcare-eligibility-pipeline" }],
+    links: [{ label: "Healthcare project", href: "/works/healthcare-eligibility-pipeline" }],
   },
   {
     question: "What automation work has she done?",
     answer: "She built an Oracle/PeopleSoft ETL workflow that converts legacy XML-based .xls exports to .xlsx, merges monthly data into fiscal-year workbooks using worksheet-specific rules, validates the output, and feeds SharePoint, Power Automate, and Power BI reporting.",
     facts: ["Oracle → XLSX", "SAFE TEST", "Power Automate"],
-    links: [{ label: "Oracle ETL project", href: "/projects#work-oracle-financial-etl" }],
+    links: [{ label: "Oracle ETL project", href: "/works/oracle-financial-etl" }],
   },
   {
     question: "What are her strongest project results?",
     answer: "Her current project evidence includes 94% mean accuracy for EEG seizure detection, a DCGAN project that improved chest X-ray classifier accuracy from 73.56% to 82.21%, 1,074 automated financial reports, and a retail forecasting workflow over 3M+ sales records.",
     facts: ["94% EEG accuracy", "82.21% X-ray accuracy", "1,074 reports"],
-    links: [{ label: "Project archive", href: "/projects" }],
+    links: [{ label: "Project archive", href: "/works" }],
   },
   {
     question: "When will she graduate and where is she based?",
@@ -725,7 +730,13 @@ export const qaItems = [
     question: "Why should we interview Sakina?",
     answer: "Her work covers both engineering and analysis. She has shipped production applications, built dashboards, automated manual workflows, integrated healthcare data, worked with clients and campaign performance, and trained machine-learning models. The portfolio links those claims to screenshots, metrics, code, and case studies.",
     facts: ["Production software", "Analytics", "Machine learning"],
-    links: [{ label: "Review the work", href: "/projects" }],
+    links: [{ label: "Review the work", href: "/works" }],
+  },
+  {
+    question: "What's a mistake she's made, and what did she learn from it?",
+    answer: "On her DCGAN chest X-ray project, her first experiment made things worse: she added 500 synthetic images straight into the already-larger pneumonia class without controlling for image quality or class balance, and test accuracy actually fell from 82.85% to 75%, with normal-case recall dropping from 0.57 to 0.34. Instead of dropping that result, she kept it in the write-up, used it to diagnose the real problem, and rebuilt the class-balancing strategy, training settings, and regularization for a second experiment — which reached 82.21% accuracy with far stronger recall. She applies the same habit elsewhere in the portfolio: flagging, rather than smoothing over, places where her own evidence doesn't fully support a bigger claim.",
+    facts: ["Experiment 1 got worse", "Diagnosed & rebuilt approach", "82.21% on retry"],
+    links: [{ label: "See the case study", href: "/works/pneumonia-dcgan" }],
   },
   {
     question: "What tools and technologies has she worked with?",

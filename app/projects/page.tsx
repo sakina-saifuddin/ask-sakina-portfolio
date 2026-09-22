@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, ShieldAlert } from "lucide-react";
 import { Header } from "@/components/Header";
 import { ScrollAnimations } from "@/components/ScrollAnimations";
 import { Footer } from "@/components/Footer";
@@ -61,6 +61,16 @@ export default function Projects() {
                       <li key={step}>{step}</li>
                     ))}
                   </ul>
+                )}
+
+                {project.evidencePrivacyNotice && (
+                  <div className="pd-privacy-notice reveal">
+                    <ShieldAlert size={18} strokeWidth={2} />
+                    <div>
+                      <strong>Sample data</strong>
+                      <p>{project.evidencePrivacyNotice}</p>
+                    </div>
+                  </div>
                 )}
 
                 <div className="work-detail-media">

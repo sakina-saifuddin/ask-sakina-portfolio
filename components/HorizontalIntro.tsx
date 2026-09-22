@@ -8,9 +8,15 @@ import { ChapterThree } from "@/components/ChapterThree";
 import { ChapterFour } from "@/components/ChapterFour";
 import { ChapterFive } from "@/components/ChapterFive";
 import { Typewriter } from "@/components/Typewriter";
+import { usePanelScrollMemory } from "@/components/usePanelScrollMemory";
 
 export function HorizontalIntro() {
   const trackRef = useRef<HTMLDivElement>(null);
+
+  // Lands on the right panel on arrival — either an explicit "#panel-id"
+  // nav link, or (e.g. after the browser's back button) the panel the user
+  // was last on before they navigated away.
+  usePanelScrollMemory();
 
   useEffect(() => {
     const el = trackRef.current;
@@ -153,7 +159,7 @@ export function HorizontalIntro() {
   return (
     <div className="hz-stage">
       <div className="hz-track" ref={trackRef}>
-        <section className="hz-panel hz-panel-intro">
+        <section className="hz-panel hz-panel-intro" data-panel-id="intro">
           <p className="hz-statement">
             <Typewriter text="Working at the intersection of data and technology to build things that are useful, clear, and impactful." />
           </p>

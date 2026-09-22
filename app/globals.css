@@ -1695,6 +1695,10 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 
 .pd-right{position:fixed;top:0;right:0;width:40%;height:100vh;overflow-y:auto;overscroll-behavior:contain;display:flex;flex-direction:column;scrollbar-width:none;-ms-overflow-style:none}
 .pd-right::-webkit-scrollbar{display:none}
+.pd-privacy-notice{display:flex;gap:.7rem;align-items:flex-start;margin:1.25rem;padding:1rem 1.1rem;background:#FBF0DE;border:1px solid #E3B872;border-left:4px solid #C97A2B;border-radius:6px;color:#171310}
+.pd-privacy-notice svg{flex:0 0 auto;color:#C97A2B;margin-top:.15rem}
+.pd-privacy-notice strong{display:block;font-family:var(--font-sans);font-size:.78rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:#8a5a1e;margin-bottom:.25rem}
+.pd-privacy-notice p{margin:0;font-family:var(--font-sans);font-size:.86rem;line-height:1.55;color:#3a3128}
 .pd-right-media{width:100%;transition:opacity .2s ease}
 .pd-right-media img{width:100%;height:auto;display:block}
 .pd-right-video{width:100%;background:#000}

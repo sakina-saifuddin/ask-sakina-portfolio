@@ -5,6 +5,7 @@ import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { profile } from "@/data/portfolio";
 import { Typewriter } from "@/components/Typewriter";
+import { usePanelScrollMemory } from "@/components/usePanelScrollMemory";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -60,6 +61,11 @@ export function AboutPage() {
   const [activeInterest, setActiveInterest] = useState<Interest | null>(null);
   const [brokenImages, setBrokenImages] = useState<Set<Interest>>(new Set());
 
+  // Lands on the right panel on arrival — either an explicit "#panel-id"
+  // nav link (e.g. clicking "Experience" from another page), or the panel
+  // the user was last on before navigating away (e.g. the back button).
+  usePanelScrollMemory();
+
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
@@ -78,20 +84,54 @@ export function AboutPage() {
   useEffect(() => {
     const el = trackRef.current;
     if (!el) return;
+    const mobileQuery = window.matchMedia("(max-width: 900px)");
 
     const panels = Array.from(el.querySelectorAll<HTMLElement>(".hz-panel"));
 
-    function updateNavTheme() {
-      const width = el!.clientWidth || 1;
-      const index = Math.round(el!.scrollLeft / width);
-      const panel = panels[Math.min(Math.max(index, 0), panels.length - 1)];
+    function announceActive(panel: HTMLElement | undefined) {
       document.documentElement.dataset.navTheme = panel?.dataset.navTheme || "dark";
+      const panelId = panel?.dataset.panelId;
+      if (panelId) {
+        window.dispatchEvent(new CustomEvent("hz-panel-enter", { detail: panelId }));
+      }
     }
 
-    updateNavTheme();
-    el.addEventListener("scroll", updateNavTheme, { passive: true });
+    function updateNavThemeDesktop() {
+      if (mobileQuery.matches) return;
+      const width = el!.clientWidth || 1;
+      const index = Math.round(el!.scrollLeft / width);
+      announceActive(panels[Math.min(Math.max(index, 0), panels.length - 1)]);
+    }
+
+    function updateNavThemeMobile() {
+      if (!mobileQuery.matches) return;
+      const viewportMid = window.innerHeight / 2;
+      let closest = panels[0];
+      let closestDist = Infinity;
+      panels.forEach((panel) => {
+        const rect = panel.getBoundingClientRect();
+        const dist = Math.abs(rect.top + rect.height / 2 - viewportMid);
+        if (dist < closestDist) {
+          closestDist = dist;
+          closest = panel;
+        }
+      });
+      announceActive(closest);
+    }
+
+    function update() {
+      updateNavThemeDesktop();
+      updateNavThemeMobile();
+    }
+
+    update();
+    el.addEventListener("scroll", updateNavThemeDesktop, { passive: true });
+    window.addEventListener("scroll", updateNavThemeMobile, { passive: true });
+    window.addEventListener("resize", update);
     return () => {
-      el.removeEventListener("scroll", updateNavTheme);
+      el.removeEventListener("scroll", updateNavThemeDesktop);
+      window.removeEventListener("scroll", updateNavThemeMobile);
+      window.removeEventListener("resize", update);
       delete document.documentElement.dataset.navTheme;
     };
   }, []);
@@ -101,7 +141,7 @@ export function AboutPage() {
   return (
     <div className="hz-stage">
       <div className="hz-track" ref={trackRef}>
-        <section className="hz-panel about-hero" data-nav-theme="light">
+        <section className="hz-panel about-hero" data-nav-theme="light" data-panel-id="about-hero">
           <div className="about-rail-mask" aria-hidden="true" />
 
           <motion.div
@@ -139,7 +179,7 @@ export function AboutPage() {
           </motion.div>
         </section>
 
-        <section className="hz-panel about-philosophy-text" data-nav-theme="light">
+        <section className="hz-panel about-philosophy-text" data-nav-theme="light" data-panel-id="about-philosophy">
           <motion.p
             className="about-philosophy-lead"
             initial={{ opacity: 0, y: 60 }}
@@ -173,7 +213,7 @@ export function AboutPage() {
           </div>
         </section>
 
-        <section className="hz-panel about-quote" data-nav-theme="dark">
+        <section className="hz-panel about-quote" data-nav-theme="dark" data-panel-id="about-quote">
           <motion.span
             className="about-kicker about-kicker-center"
             initial={{ opacity: 0, y: 20 }}
@@ -194,7 +234,7 @@ export function AboutPage() {
           </p>
         </section>
 
-        <section className="hz-panel about-timeline" data-nav-theme="dark">
+        <section className="hz-panel about-timeline" data-nav-theme="dark" data-panel-id="career-journey">
           <motion.div
             className="about-timeline-photo-mobile"
             initial={{ opacity: 0, y: 30 }}
@@ -237,7 +277,7 @@ export function AboutPage() {
           </div>
         </section>
 
-        <section className="hz-panel about-photo" data-nav-theme="dark">
+        <section className="hz-panel about-photo" data-nav-theme="dark" data-panel-id="about-photo">
           <motion.div
             className="about-photo-media"
             initial={{ opacity: 0, scale: 1.1 }}
@@ -249,7 +289,7 @@ export function AboutPage() {
           </motion.div>
         </section>
 
-        <section className="hz-panel about-beyond" data-nav-theme="light">
+        <section className="hz-panel about-beyond" data-nav-theme="light" data-panel-id="about-beyond">
           <motion.p
             className="about-beyond-text"
             initial={{ opacity: 0, y: 60 }}

@@ -1635,9 +1635,9 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 
 /* --- /works: horizontal carousel --- */
 .works-grid-page{width:100%;background:#F5F0E6;min-height:100vh}
-.works-grid-inner{max-width:1680px;margin:0 auto;padding:clamp(120px,16vh,160px) clamp(20px,5vw,80px) 8rem clamp(72px,9vw,120px)}
-.works-grid-kicker{display:block;font-family:var(--font-sans);font-weight:400;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8071;margin-bottom:.75rem}
-.works-grid-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(2rem,6vh,4rem)}
+.works-grid-inner{max-width:1680px;margin:0 auto;padding:clamp(84px,9vh,110px) clamp(20px,5vw,80px) 8rem clamp(72px,9vw,120px)}
+.works-grid-kicker{display:block;font-family:var(--font-sans);font-weight:400;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8071;margin-bottom:.5rem}
+.works-grid-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(1rem,3vh,1.75rem)}
 .works-grid-heading h1{font-family:var(--font-cinzel);font-weight:400;font-size:clamp(3rem,8vw,7rem);letter-spacing:-.02em;text-transform:uppercase;color:#171310;margin:0;line-height:.95}
 .works-grid-heading span{font-family:var(--font-cinzel);font-size:clamp(1.6rem,3vw,2.6rem);color:#171310}
 
@@ -1645,7 +1645,7 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .works-carousel-track{display:flex;flex-wrap:nowrap;gap:clamp(1.5rem,3vw,3rem);overflow-x:auto;scroll-snap-type:x proximity;scrollbar-width:none;padding-bottom:.5rem}
 .works-carousel-track::-webkit-scrollbar{display:none}
 .works-carousel-card{flex:0 0 clamp(220px,26vw,340px);display:flex;flex-direction:column;gap:1.1rem;text-decoration:none;color:inherit;scroll-snap-align:start}
-.works-carousel-arrows{display:flex;gap:.75rem;justify-content:flex-end;margin-top:clamp(1.5rem,3vw,2.5rem)}
+.works-carousel-arrows{display:flex;gap:.75rem;justify-content:flex-end;margin-top:clamp(.75rem,1.5vw,1.25rem)}
 .works-carousel-arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line,#4A4339);background:transparent;color:#171310;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,color .25s ease}
 .works-carousel-arrows button:hover{background:#171310;color:#fff}
 

@@ -61,18 +61,17 @@ export default function Works() {
                     event.preventDefault();
                     triggerClipWipeCurtain(`/works/${project.slug}`);
                   }}
-                  initial={{ opacity: 0, y: 24 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6, ease: EASE, delay: index * 0.05 }}
+                  initial={{ opacity: 0, y: 30, scale: 0.92 }}
+                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                  viewport={{ root: trackRef, amount: 0.45, once: false }}
+                  transition={{ duration: 0.5, ease: EASE }}
+                  whileHover={{ y: -12, scale: 1.035, transition: { type: "spring", stiffness: 340, damping: 20 } }}
+                  whileTap={{ scale: 0.98 }}
                 >
-                  <motion.div
-                    className="works-grid-media"
-                    initial={{ clipPath: "inset(0 100% 0 0)" }}
-                    animate={{ clipPath: "inset(0 0% 0 0)" }}
-                    transition={{ duration: 0.7, ease: EASE, delay: 0.12 + index * 0.05 }}
-                  >
+                  <div className="works-grid-media">
                     {project.evidence[0]?.src && (
                       <Image
+                        className="works-grid-media-img"
                         src={project.evidence[0].src}
                         alt={project.title}
                         fill
@@ -80,7 +79,7 @@ export default function Works() {
                         style={{ objectFit: "contain" }}
                       />
                     )}
-                  </motion.div>
+                  </div>
                   <div className="works-grid-meta">
                     <span className="works-grid-number">{pad(index + 1)}.</span>
                     <div>

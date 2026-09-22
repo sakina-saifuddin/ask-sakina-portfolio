@@ -1,8 +1,10 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState, type FormEvent } from "react";
+import { createPortal } from "react-dom";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import { ArrowLeft, ArrowUpRight, Menu, Mic, MoreHorizontal, Pin, Plus, Trash2, X } from "lucide-react";
 import { qaItems, profile } from "@/data/portfolio";
 import { presetConversations, type PresetMessage } from "@/data/askConversations";
@@ -122,6 +124,25 @@ function HistoryItem({
   onToggleMenu: () => void;
   onRequestDelete: () => void;
 }) {
+  const moreBtnRef = useRef<HTMLButtonElement>(null);
+  const [menuPos, setMenuPos] = useState<{ top: number; left: number } | null>(null);
+
+  // Position the popup itself (fixed to the viewport, anchored off the real
+  // button position) instead of letting it sit inside the scrollable/clipped
+  // history list — that's what was causing it to overlap neighboring chats.
+  useLayoutEffect(() => {
+    if (!menuOpen) {
+      setMenuPos(null);
+      return;
+    }
+    const rect = moreBtnRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    const MENU_WIDTH = 160;
+    const fitsOnRight = window.innerWidth - rect.right >= MENU_WIDTH + 12;
+    const left = fitsOnRight ? rect.right + 8 : Math.max(8, rect.left - MENU_WIDTH - 8);
+    setMenuPos({ top: rect.top, left });
+  }, [menuOpen]);
+
   return (
     <div className={`ask-history-row${menuOpen ? " menu-open" : ""}`}>
       <button
@@ -148,6 +169,7 @@ function HistoryItem({
         </button>
 
         <button
+          ref={moreBtnRef}
           type="button"
           className="ask-history-more"
           aria-label="Chat options"
@@ -160,8 +182,11 @@ function HistoryItem({
         >
           <MoreHorizontal size={15} strokeWidth={2} />
         </button>
+      </div>
 
-        {menuOpen && (
+      {menuOpen &&
+        menuPos &&
+        createPortal(
           <>
             <button
               type="button"
@@ -173,7 +198,14 @@ function HistoryItem({
                 onToggleMenu();
               }}
             />
-            <div className="ask-history-menu" role="menu">
+            <motion.div
+              className="ask-history-menu"
+              style={{ top: menuPos.top, left: menuPos.left }}
+              role="menu"
+              initial={{ opacity: 0, scale: 0.9, x: -6 }}
+              animate={{ opacity: 1, scale: 1, x: 0 }}
+              transition={{ duration: 0.16, ease: [0.16, 1, 0.3, 1] }}
+            >
               <button
                 type="button"
                 role="menuitem"
@@ -185,10 +217,10 @@ function HistoryItem({
               >
                 <Trash2 size={13} strokeWidth={2} /> Delete chat
               </button>
-            </div>
-          </>
+            </motion.div>
+          </>,
+          document.body
         )}
-      </div>
     </div>
   );
 }

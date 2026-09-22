@@ -1649,11 +1649,14 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .works-carousel-arrows button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line,#4A4339);background:transparent;color:#171310;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .25s ease,color .25s ease}
 .works-carousel-arrows button:hover{background:#171310;color:#fff}
 
-.works-grid-media{position:relative;width:100%;aspect-ratio:1;background:#F3F1EC;border-radius:4px;overflow:hidden}
+.works-grid-media{position:relative;width:100%;aspect-ratio:1;background:#F3F1EC;border-radius:4px;overflow:hidden;transition:box-shadow .4s ease}
+.works-carousel-card:hover .works-grid-media{box-shadow:0 20px 36px rgba(23,19,16,.2)}
+.works-grid-media-img{transition:transform .5s cubic-bezier(.16,1,.3,1) !important}
+.works-carousel-card:hover .works-grid-media-img{transform:scale(1.09)}
 .works-grid-meta{display:flex;align-items:flex-start;gap:.8rem}
 .works-grid-number{font-family:var(--font-cinzel);font-size:1.6rem;color:#171310;line-height:1}
 .works-grid-category{display:block;font-family:var(--font-sans);font-size:.7rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#8a8071}
-.works-grid-title{font-family:var(--font-sans);font-weight:700;font-size:1.1rem;color:#171310;margin:.2rem 0 0}
+.works-grid-title{font-family:var(--font-sans);font-weight:700;font-size:1.1rem;color:#171310;margin:.2rem 0 0;transition:opacity .25s ease}
 .works-carousel-card:hover .works-grid-title{opacity:.6}
 
 @media(max-width:560px){
@@ -1801,7 +1804,7 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .ask-history-pin.is-pinned{color:#171310}
 
 .ask-history-menu-backdrop{position:fixed;inset:0;z-index:150;background:transparent;border:0;padding:0;cursor:default}
-.ask-history-menu{position:absolute;top:calc(100% + 2px);right:0;z-index:160;min-width:150px;background:#F5F0E6;border:1px solid #c9beac;border-radius:7px;padding:.3rem;box-shadow:0 12px 28px rgba(23,19,16,.2)}
+.ask-history-menu{position:fixed;z-index:160;min-width:150px;background:#F5F0E6;border:1px solid #c9beac;border-radius:7px;padding:.3rem;box-shadow:0 14px 32px rgba(23,19,16,.28)}
 .ask-history-menu-delete{display:flex;align-items:center;gap:.5rem;width:100%;text-align:left;font-family:var(--font-sans);font-weight:600;font-size:.78rem;color:#b3261e;background:transparent;border:0;border-radius:5px;padding:.5rem .6rem;cursor:pointer;transition:background .15s ease}
 .ask-history-menu-delete:hover{background:rgba(179,38,30,.1)}
 

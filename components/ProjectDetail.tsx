@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import type { MouseEvent } from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ArrowLeft, ExternalLink, ShieldAlert } from "lucide-react";
+import { ArrowLeft, ExternalLink } from "lucide-react";
 import { Header } from "@/components/Header";
 import { ScrollAnimations } from "@/components/ScrollAnimations";
 import { triggerPageCurtain } from "@/components/PageCurtain";
@@ -162,11 +162,8 @@ export function ProjectDetail({ project, index, next }: { project: Project; inde
           <div className="pd-right">
             {project.evidencePrivacyNotice && (
               <div className="pd-privacy-notice reveal">
-                <ShieldAlert size={18} strokeWidth={2} />
-                <div>
-                  <strong>Sample data</strong>
-                  <p>{project.evidencePrivacyNotice}</p>
-                </div>
+                <strong>Evidence note — sample data</strong>
+                <p>{project.evidencePrivacyNotice}</p>
               </div>
             )}
 

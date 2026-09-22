@@ -1635,7 +1635,7 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 
 /* --- /works: horizontal carousel --- */
 .works-grid-page{width:100%;background:#F5F0E6;min-height:100vh}
-.works-grid-inner{max-width:1680px;margin:0 auto;padding:0 clamp(20px,5vw,80px) 8rem clamp(72px,9vw,120px)}
+.works-grid-inner{max-width:1680px;margin:0 auto;padding:15px clamp(20px,5vw,80px) 8rem clamp(72px,9vw,120px)}
 .works-grid-kicker{display:block;font-family:var(--font-sans);font-weight:400;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8071;margin-bottom:.5rem}
 .works-grid-heading{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:clamp(1rem,3vh,1.75rem)}
 .works-grid-heading h1{font-family:var(--font-cinzel);font-weight:400;font-size:clamp(3rem,8vw,7rem);letter-spacing:-.02em;text-transform:uppercase;color:#171310;margin:0;line-height:.95}
@@ -1660,7 +1660,7 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 .works-carousel-card:hover .works-grid-title{opacity:.6}
 
 @media(max-width:900px){
-  .works-grid-inner{padding-top:0}
+  .works-grid-inner{padding-top:15px}
 }
 
 @media(max-width:560px){

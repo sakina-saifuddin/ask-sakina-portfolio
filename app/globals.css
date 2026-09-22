@@ -1719,6 +1719,40 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .pd-right{position:static;width:100%;height:auto;overflow:visible}
 }
 
+/* --- /resume: matches the pd-page / works cream editorial theme --- */
+.resume-page{width:100%;background:#F5F0E6;min-height:100vh}
+.resume-inner{max-width:1400px;margin:0 auto;padding:clamp(120px,16vh,160px) clamp(20px,5vw,80px) 6rem}
+.resume-eyebrow{display:block;font-family:var(--font-sans);font-weight:400;font-size:.9rem;letter-spacing:.06em;text-transform:uppercase;color:#8a8071;margin-bottom:.75rem}
+.resume-title{font-family:var(--font-cinzel);font-weight:400;font-size:clamp(2.6rem,6vw,4.5rem);letter-spacing:-.02em;color:#171310;margin:0 0 .85rem;line-height:.98}
+.resume-subtitle{font-family:var(--font-sans);font-size:1rem;line-height:1.7;color:#4a4339;max-width:640px;margin:0}
+
+.resume-layout-grid{display:grid;grid-template-columns:1.35fr .65fr;gap:2rem;margin-top:2.5rem}
+.resume-pdf-frame{height:1050px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:.5rem}
+.resume-pdf-frame iframe{width:100%;height:100%;border:0}
+
+.resume-side-panel{border:1px solid var(--line);border-radius:10px;padding:1.8rem;align-self:start;position:sticky;top:110px;background:rgba(255,255,255,.5)}
+.resume-side-label{display:block;font-family:var(--font-sans);font-size:.68rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#8a8071;margin-bottom:.5rem}
+.resume-side-name{font-family:var(--font-cinzel);font-weight:400;font-size:1.4rem;color:#171310;margin:0 0 .5rem}
+.resume-side-text{font-family:var(--font-sans);font-size:.88rem;line-height:1.6;color:#4a4339;margin:0 0 .3rem}
+.resume-side-divider{border:0;border-top:1px solid var(--line);margin:1.4rem 0}
+
+.resume-tag-row{display:flex;flex-wrap:wrap;gap:.5rem}
+.resume-tag-pill{padding:.42rem .75rem;border:1px solid var(--line);border-radius:999px;font-family:var(--font-sans);font-size:.76rem;color:#171310;background:transparent}
+
+.resume-stat-row{display:flex;align-items:baseline;justify-content:space-between;gap:.6rem;border-top:1px solid var(--line);padding:.7rem 0}
+.resume-stat-value{font-family:var(--font-sans);font-weight:700;font-size:1.15rem;color:#171310}
+.resume-stat-label{font-family:var(--font-sans);font-size:.7rem;color:#8a8071;text-align:right}
+
+.resume-download-btn{display:inline-flex;align-items:center;justify-content:center;width:100%;margin-top:1.6rem;padding:.9rem 1.1rem;border-radius:6px;background:#171310;color:#F2ECE0;font-family:var(--font-sans);font-weight:700;font-size:.85rem;text-decoration:none;transition:opacity .2s ease}
+.resume-download-btn:hover{opacity:.75}
+
+@media(max-width:900px){
+  .resume-inner{padding-top:90px}
+  .resume-layout-grid{grid-template-columns:1fr}
+  .resume-side-panel{position:static}
+  .resume-pdf-frame{height:720px}
+}
+
 /* --- Chapter I redesign (duplicated experimental page) --- */
 .duo-hero{position:relative;min-height:100vh;background:#F5F0E6;overflow:hidden;padding:0}
 .duo-name-layer{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:clamp(190px,33vh,360px);z-index:1;pointer-events:none}

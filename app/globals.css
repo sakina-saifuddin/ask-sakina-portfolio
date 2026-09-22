@@ -1668,7 +1668,7 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 }
 
 /* --- /works/[slug]: project detail (scrolling specs + independently-scrolling gallery) --- */
-.pd-page{background:#F5F0E6}
+.pd-page{background:#F5F0E6;min-height:100vh}
 .pd-layout{position:relative}
 .pd-left{width:60%;padding:clamp(100px,13vh,140px) clamp(1.75rem,3vw,3.5rem) clamp(4rem,8vh,6rem) clamp(72px,9vw,120px);border-right:1px solid var(--line)}
 .pd-back{display:inline-flex;align-items:center;gap:.4rem;font-family:var(--font-sans);font-size:.8rem;font-weight:600;color:#8a8071;text-decoration:none;width:fit-content;transition:gap .25s ease,color .25s ease}

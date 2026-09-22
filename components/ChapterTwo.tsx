@@ -144,7 +144,7 @@ export function ChapterTwo() {
           className="ch2-disclaimer"
           initial={{ opacity: 0, y: 16 }}
           animate={entered ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.5, ease: EASE, delay: 0.15 + relatedWork.length * 0.06 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.3 }}
         >
           ❋ Live site unavailable for some inactive or incomplete projects
         </motion.span>
@@ -153,7 +153,7 @@ export function ChapterTwo() {
           style={{ display: "inline-block" }}
           initial={{ opacity: 0, y: 16 }}
           animate={entered ? { opacity: 1, y: 0 } : undefined}
-          transition={{ duration: 0.5, ease: EASE, delay: 0.2 + relatedWork.length * 0.06 }}
+          transition={{ duration: 0.5, ease: EASE, delay: 0.35 }}
         >
           <Link
             href="/works"

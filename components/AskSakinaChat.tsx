@@ -165,7 +165,7 @@ function HistoryItem({
             onTogglePin();
           }}
         >
-          <Pin size={13} strokeWidth={2} fill={chat.pinned ? "currentColor" : "none"} />
+          <Pin size={15} strokeWidth={2} fill={chat.pinned ? "currentColor" : "none"} />
         </button>
 
         <button
@@ -180,7 +180,7 @@ function HistoryItem({
             onToggleMenu();
           }}
         >
-          <MoreHorizontal size={15} strokeWidth={2} />
+          <MoreHorizontal size={16} strokeWidth={2} />
         </button>
       </div>
 

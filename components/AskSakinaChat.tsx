@@ -15,7 +15,11 @@ type QaItem = (typeof qaItems)[number];
 
 type Message =
   | { id: number; role: "user"; text: string }
-  | { id: number; role: "assistant"; item: QaItem }
+  // Stores just the question text, not a snapshot of the QaItem — the
+  // actual answer/facts/links are resolved from the live qaItems array at
+  // render time (see resolveItem), so a chat saved to localStorage months
+  // ago always shows today's content instead of freezing stale links.
+  | { id: number; role: "assistant"; question: string }
   | { id: number; role: "assistant-fallback" };
 
 type Chat = {
@@ -52,11 +56,19 @@ const STORAGE_KEY = "ask-sakina-chats";
 const STOPWORDS = new Set(["what", "when", "where", "which", "who", "why", "how", "does", "she", "her", "has", "have", "with", "about", "sakina", "tell", "that", "this", "been", "being", "work", "worked", "roles"]);
 
 function findAnswer(input: string): QaItem | null {
-  const words = input
+  const cleanWords = input
     .toLowerCase()
     .replace(/[^a-z0-9\s]/g, "")
     .split(/\s+/)
-    .filter((w) => w.length > 2 && !STOPWORDS.has(w));
+    .filter((w) => w.length > 2);
+
+  // A short, valid question can be made entirely of stopwords (e.g. "Tell
+  // me about Sakina." is just "tell"/"about"/"sakina", all filtered out),
+  // which would otherwise leave zero keywords and wrongly fall back to
+  // "that's not in my portfolio yet." Only drop stopwords if doing so
+  // still leaves something to match on.
+  const stopwordFiltered = cleanWords.filter((w) => !STOPWORDS.has(w));
+  const words = stopwordFiltered.length > 0 ? stopwordFiltered : cleanWords;
 
   if (words.length === 0) return null;
 
@@ -76,6 +88,13 @@ function findAnswer(input: string): QaItem | null {
   }
 
   return bestScore > 0 ? best : null;
+}
+
+// Looks up the *current* QaItem for a saved question, so edits to answers,
+// facts, or links in data/portfolio.ts are reflected even in chats that
+// were asked (and persisted to localStorage) before the edit.
+function resolveItem(question: string): QaItem | null {
+  return qaItems.find((q) => q.question === question) ?? findAnswer(question);
 }
 
 function makeTitle(text: string) {
@@ -317,8 +336,22 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
       const saved = localStorage.getItem(STORAGE_KEY);
       if (saved) {
         const parsed: Chat[] = JSON.parse(saved);
-        setDynamicChats(parsed);
-        idRef.current = parsed.reduce((max, c) => Math.max(max, ...c.messages.map((m) => m.id), max), 0) + 1;
+        // Migrate chats saved before assistant messages stored just the
+        // question text: old entries have a full `item` snapshot instead
+        // of `question`, which would otherwise crash resolveItem/findAnswer
+        // on undefined input.
+        const migrated = parsed.map((chat) => ({
+          ...chat,
+          messages: chat.messages.map((m) => {
+            if (m.role === "assistant" && !("question" in m) && "item" in m) {
+              const legacy = m as unknown as { id: number; role: "assistant"; item: QaItem };
+              return { id: legacy.id, role: "assistant" as const, question: legacy.item.question };
+            }
+            return m;
+          }),
+        }));
+        setDynamicChats(migrated);
+        idRef.current = migrated.reduce((max, c) => Math.max(max, ...c.messages.map((m) => m.id), max), 0) + 1;
       }
     } catch {}
     setLoaded(true);
@@ -437,7 +470,7 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
   const activeTitle = activePreset?.title ?? activeDynamic?.title ?? "AskSakina";
   const hasMessages = Boolean(activePreset) || (activeDynamic ? activeDynamic.messages.length > 0 : false);
 
-  function ask(question: string) {
+  function ask(question: string, knownItem?: QaItem) {
     const trimmed = question.trim();
     if (!trimmed) return;
 
@@ -450,7 +483,14 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
       setActiveId(chat.id);
     }
 
-    const match = findAnswer(trimmed);
+    // Clicking a suggested-question pill already tells us exactly which
+    // QaItem it is — use it directly instead of re-deriving it through the
+    // fuzzy matcher below, whose stopword list can strip a short, valid
+    // question (e.g. "Tell me about Sakina.") down to zero keywords and
+    // wrongly fall back to "that's not in my portfolio yet." Only actual
+    // free-typed text needs the fuzzy match, since there's no known item
+    // to fall back on there.
+    const match = knownItem ?? findAnswer(trimmed);
     const userId = idRef.current++;
     const replyId = idRef.current++;
     lastAddedIdRef.current = replyId;
@@ -465,7 +505,7 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
           messages: [
             ...c.messages,
             { id: userId, role: "user", text: trimmed },
-            match ? { id: replyId, role: "assistant", item: match } : { id: replyId, role: "assistant-fallback" },
+            match ? { id: replyId, role: "assistant", question: match.question } : { id: replyId, role: "assistant-fallback" },
           ],
         };
       })
@@ -650,7 +690,18 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
                     </div>
                   );
                 }
-                return <AssistantBubble key={msg.id} item={msg.item} active={msg.id === lastAddedIdRef.current} />;
+                const liveItem = resolveItem(msg.question);
+                if (!liveItem) {
+                  return (
+                    <div key={msg.id} className="ask-msg ask-msg-assistant">
+                      <p>
+                        That&rsquo;s not in my portfolio yet — try one of the questions below, or{" "}
+                        <a href={`mailto:${profile.email}`}>email Sakina directly</a>.
+                      </p>
+                    </div>
+                  );
+                }
+                return <AssistantBubble key={msg.id} item={liveItem} active={msg.id === lastAddedIdRef.current} />;
               })}
             </div>
           )}
@@ -660,7 +711,7 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
               <span className="ask-suggestions-label">Popular questions</span>
               <div className="ask-pill-grid">
                 {qaItems.map((item) => (
-                  <button key={item.question} type="button" className="ask-pill" onClick={() => ask(item.question)}>
+                  <button key={item.question} type="button" className="ask-pill" onClick={() => ask(item.question, item)}>
                     {item.question}
                   </button>
                 ))}

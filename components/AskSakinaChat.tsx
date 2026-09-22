@@ -2,10 +2,12 @@
 
 import { useEffect, useMemo, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { ArrowLeft, ArrowUpRight, Menu, Mic, Plus, X } from "lucide-react";
 import { qaItems, profile } from "@/data/portfolio";
 import { presetConversations, type PresetMessage } from "@/data/askConversations";
 import { playTypewriterTick, attachAudioUnlock } from "@/components/sound";
+import { scrollToPanel } from "@/components/panelScroll";
 
 type QaItem = (typeof qaItems)[number];
 
@@ -82,6 +84,26 @@ function newChat(): Chat {
   return { id: `${Date.now()}-${Math.random().toString(36).slice(2, 8)}`, title: "New chat", messages: [] };
 }
 
+// A link that either navigates normally (case studies, /resume, /works) or,
+// for an in-page panel link (e.g. "/#chapter-four"), scrolls the horizontal
+// track directly when already on the home page — matching Header's nav.
+function AskLink({ href, label }: { href: string; label: string }) {
+  const pathname = usePathname();
+
+  function handleClick(event: React.MouseEvent) {
+    if (!href.startsWith("/#")) return;
+    if (pathname !== "/") return; // let Link navigate to "/#panelId" normally
+    event.preventDefault();
+    scrollToPanel(href.slice(2));
+  }
+
+  return (
+    <Link href={href} className="ask-link" onClick={handleClick}>
+      {label} <ArrowUpRight size={13} strokeWidth={2} />
+    </Link>
+  );
+}
+
 function AssistantBubble({ item, active }: { item: QaItem; active: boolean }) {
   const [count, setCount] = useState(active ? 0 : item.answer.length);
 
@@ -116,9 +138,7 @@ function AssistantBubble({ item, active }: { item: QaItem; active: boolean }) {
           {item.links.length > 0 && (
             <div className="ask-links">
               {item.links.map((link) => (
-                <Link key={link.href} href={link.href} className="ask-link">
-                  {link.label} <ArrowUpRight size={13} strokeWidth={2} />
-                </Link>
+                <AskLink key={link.href} href={link.href} label={link.label} />
               ))}
             </div>
           )}
@@ -142,9 +162,7 @@ function PresetBubble({ msg }: { msg: Extract<PresetMessage, { role: "assistant"
       {msg.links && msg.links.length > 0 && (
         <div className="ask-links">
           {msg.links.map((link) => (
-            <Link key={link.href} href={link.href} className="ask-link">
-              {link.label} <ArrowUpRight size={13} strokeWidth={2} />
-            </Link>
+            <AskLink key={link.href} href={link.href} label={link.label} />
           ))}
         </div>
       )}

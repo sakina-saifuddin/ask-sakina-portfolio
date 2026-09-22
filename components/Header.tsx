@@ -4,18 +4,23 @@ import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
+import { scrollToPanel } from "@/components/panelScroll";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 const MotionLink = motion.create(Link);
 
+// `href` is either "/#panelId" (a section on the home page) or
+// "/other-page#panelId" (a section on another page). Either way, `panelId`
+// must match a `data-panel-id` on the corresponding `.hz-panel`. There is
+// currently no dedicated Recognition section, so it's left out rather than
+// pointed at the wrong content.
 const chapters = [
   { num: "01", title: "Intro", href: "/#intro" },
-  { num: "02", title: "Work", href: "/#work" },
-  { num: "03", title: "What I Build", href: "/#build" },
-  { num: "04", title: "Experience", href: "/#experience" },
-  { num: "05", title: "Expertise", href: "/#expertise" },
-  { num: "06", title: "Recognition", href: "/#recognition" },
-  { num: "07", title: "Contact", href: "/#contact" },
+  { num: "02", title: "Work", href: "/#chapter-two" },
+  { num: "03", title: "What I Build", href: "/#chapter-three" },
+  { num: "04", title: "Experience", href: "/about#career-journey" },
+  { num: "05", title: "Expertise", href: "/#chapter-one-stack" },
+  { num: "06", title: "Contact", href: "/#chapter-five" },
 ];
 
 export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
@@ -23,6 +28,16 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
   const [dockHidden, setDockHidden] = useState(false);
   const lastScrollY = useRef(0);
   const progressRef = useRef<HTMLDivElement>(null);
+
+  function handleChapterClick(event: React.MouseEvent, href: string) {
+    setOpen(false);
+    const panelId = href.split("#")[1];
+    // If the target panel already exists in the current DOM (i.e. we're
+    // already on the page that holds it), scroll straight to it. Otherwise
+    // let the Link navigate to the other page; its mount effect picks up
+    // the hash and scrolls once it lands.
+    if (panelId && scrollToPanel(panelId)) event.preventDefault();
+  }
 
   useEffect(() => {
     if (!theme) return;
@@ -177,7 +192,7 @@ export function Header({ theme }: { theme?: "light" | "dark" } = {}) {
               href={chapter.href}
               tabIndex={open ? 0 : -1}
               style={{ transitionDelay: open ? `${0.08 + index * 0.06}s` : "0s" }}
-              onClick={() => setOpen(false)}
+              onClick={(event) => handleChapterClick(event, chapter.href)}
             >
               <span className="nav-overlay-index">{chapter.num}</span>
               {chapter.title}

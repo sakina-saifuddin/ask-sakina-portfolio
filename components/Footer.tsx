@@ -23,10 +23,10 @@ export function Footer() {
         </div>
         <div className="footer-column">
           <b>Explore</b>
-          <Link href="/#about" onClick={navigate("/#about")}>About</Link>
-          <Link href="/#experience" onClick={navigate("/#experience")}>Experience</Link>
-          <Link href="/projects" onClick={navigate("/projects")}>Projects</Link>
-          <Link href="/#ask-resume" onClick={navigate("/#ask-resume")}>Ask My Resume</Link>
+          <Link href="/#chapter-one" onClick={navigate("/#chapter-one")}>About</Link>
+          <Link href="/#chapter-four" onClick={navigate("/#chapter-four")}>Experience</Link>
+          <Link href="/works" onClick={navigate("/works")}>Projects</Link>
+          <Link href="/#chapter-one-terminal" onClick={navigate("/#chapter-one-terminal")}>Ask My Resume</Link>
           <Link href="/resume" onClick={navigate("/resume")}>Resume</Link>
           <Link href="/certificates" onClick={navigate("/certificates")}>Certificates</Link>
           <Link href="/appreciation" onClick={navigate("/appreciation")}>Appreciation</Link>

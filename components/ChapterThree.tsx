@@ -24,8 +24,8 @@ const whatIDo: WhatIDoItem[] = [
     title: "Data & Business Intelligence",
     description:
       "Turning millions of rows into dashboards people actually use — Power BI, Tableau, and SQL behind 1,074 automated reports.",
-    image: "/project-evidence/financial-reconciliation/grants-overview1.png",
-    blurredImage: "/project-evidence/financial-reconciliation/grants-overview1-blurred.png",
+    image: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
+    blurredImage: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
   },
   {
     title: "Software &\nAutomation",

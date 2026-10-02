@@ -38,8 +38,8 @@ const relatedWork: RelatedWorkItem[] = [
   },
   {
     number: "03",
-    title: "Financial Reconciliation & Grant Verification System",
-    shortTitle: "Financial Reconciliation System",
+    title: "Grant Financial Analytics & Reporting Dashboards",
+    shortTitle: "Power BI Grant Dashboards",
     image: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
     href: "/works/financial-reconciliation",
     slug: "financial-reconciliation",

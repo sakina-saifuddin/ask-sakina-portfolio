@@ -18,7 +18,8 @@ function pad(n: number) {
 
 const shortTitles: Record<string, string> = {
   "retail-demand-forecasting": "Retail Inventory Forecasting",
-  "financial-reconciliation": "Financial Reconciliation",
+  "financial-reconciliation": "Grant Financial Dashboards",
+  "cost-center-verification": "Cost Center Verification App",
   "healthcare-eligibility-pipeline": "Healthcare Eligibility Pipeline",
   "oracle-financial-etl": "Oracle Financial ETL",
   "pneumonia-dcgan": "Pneumonia X-ray GAN",

@@ -55,7 +55,7 @@ export const presetConversations: PresetConversation[] = [
         role: "assistant",
         text: "At TMAC / NIST-MEP, she built Python and SQL pipelines over PeopleSoft data to automate 1,074 recurring reports across 11+ departments and 50+ grant and financial datasets, plus 10+ Power BI / PowerApps dashboards for financial review and a monthly Oracle-to-Excel fiscal-year merge workflow — cutting manual workload roughly in half.",
         facts: ["1,074 reports", "11+ departments", "50% less manual work"],
-        links: [{ label: "Financial case study", href: "/works/financial-reconciliation" }],
+        links: [{ label: "Power BI case study", href: "/works/financial-reconciliation" }],
       },
       { role: "user", text: "That's just one role — what does her full experience look like?" },
       {

@@ -351,24 +351,24 @@ export const projects: Project[] = [
   },
   {
     slug: "financial-reconciliation",
-    category: "POWER BI · POWERAPPS · FINANCIAL ANALYTICS",
-    title: "Grant Financial Reconciliation & Verification System",
+    category: "POWER BI · DAX · FINANCIAL ANALYTICS",
+    title: "Grant Financial Analytics & Reporting Dashboards",
     problem: "How can grant and cost-center managers review budget, expense, commitments, payroll, and monthly activity without working through hundreds of separate recurring reports?",
-    summary: "Built a centralized Power BI and PowerApps financial reconciliation system for grant and cost-center review, monthly verification, payroll drilldown, and discrepancy follow-up. I'm now designing a Power Apps and Power Automate workflow so managers can verify monthly records, flag issues, and track resolutions in one place.",
+    summary: "Built a centralized Power BI reporting system for grant and cost-center review: one data model with DAX measures and Power Query transformations behind a grant overview, current-month verification, and payroll / non-payroll drilldowns.",
     headlineMetric: "1,074",
     headlineLabel: "recurring reports automated",
     approach: [
       "Combined budget, revenue, expense, payroll, commitment, award, project, and cost-center data into one reporting model.",
       "Built Power Query transformations and DAX measures for fiscal periods, budget available, commitments, project dates, and review filters.",
       "Created separate grant overview, current-month verification, payroll, non-payroll, and drilldown experiences.",
-      "Connected dashboard review to verification and discrepancy workflows so users could review and act from the same system."
+      "Designed the dashboards as the evidence layer for the monthly cost center verification workflow, which became its own Power Apps project."
     ],
-    evaluation: ["1,074 recurring reports automated", "11+ departments supported", "50+ grants / financial datasets", "50% manual workload reduction", "10+ Power BI / PowerApps dashboards and views"],
+    evaluation: ["1,074 recurring reports automated", "11+ departments supported", "50+ grants / financial datasets", "50% manual workload reduction", "10+ Power BI dashboards and views"],
     outcomes: [
       { value: "1,074", label: "reports automated" },
       { value: "50%", label: "manual work reduced" },
       { value: "11+", label: "departments" },
-      { value: "10+", label: "dashboard / app views" }
+      { value: "10+", label: "dashboard views" }
     ],
     caseStudySections: [
       { title: "The challenge", text: "Financial review was spread across recurring reports and different types of financial data. A reviewer needed to understand budget, actual expenses, open and soft commitments, payroll, project dates, and the current month before confirming that a cost center looked correct." },
@@ -379,17 +379,68 @@ export const projects: Project[] = [
     ],
     limitations: "The screenshots are work samples with all real figures, grant names, and employee data replaced by sample values — sensitive university financial and personnel records are not shown.",
     evidencePrivacyNotice: "The dashboards below are real — every figure, name, and ID shown in them has been replaced with fabricated sample data. The actual grant, financial, and employee records are private and are not shown.",
-    tech: ["Power BI", "PowerApps", "DAX", "Power Query", "Python", "SQL", "PeopleSoft", "SharePoint"],
+    tech: ["Power BI", "DAX", "Power Query", "Python", "SQL", "PeopleSoft"],
     evidence: [
       { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png", label: "Grant cost center overview", caption: "Grant cost center financial overview with total budget, expenses, commitments, available balance, and budget-vs-expenses breakdowns by status. Underlying dollar figures are sample data for privacy; the charts reflect the real shape of the dashboard." },
       { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview-dummy.png", label: "Grant overview", caption: "High-level grant view with budget, expenses, commitments, balance, funding dates, and cost-center status. Shown with sample data to protect real grant and personnel records." },
       { type: "image", src: "/project-evidence/financial-reconciliation/current-month-dummy.png", label: "Current-month verification", caption: "Monthly review screen for selecting a cost center and checking budget, payroll, non-payroll, and fiscal-period activity. Shown with sample data to protect real financial records." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/payroll-dummy.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters. Shown with sample data to protect real employee payroll records." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-1.svg", label: "Power Apps — Monthly Verification (placeholder)", caption: "Placeholder for the in-progress Power Apps monthly verification screen — will be replaced with a live screenshot." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-2.svg", label: "Power Automate — Issue Flagging (placeholder)", caption: "Placeholder for the in-progress Power Automate issue-flagging workflow — will be replaced with a live screenshot." },
-      { type: "image", src: "/project-evidence/financial-reconciliation/power-apps-placeholder-3.svg", label: "Power Apps — Resolution Tracking (placeholder)", caption: "Placeholder for the in-progress Power Apps resolution-tracking view — will be replaced with a live screenshot." }
+      { type: "image", src: "/project-evidence/financial-reconciliation/payroll-dummy.png", label: "Payroll expense drilldown", caption: "Detailed employee-level payroll view with award, project, speed type, fiscal year, period, and date filters. Shown with sample data to protect real employee payroll records." }
     ],
     links: []
+  },
+  {
+    slug: "cost-center-verification",
+    category: "POWER APPS · SHAREPOINT · WORKFLOW AUTOMATION",
+    title: "Cost Center Verification App — Monthly Manager & DBA Sign-off",
+    problem: "University policy requires every active cost center to be verified every month: a Department Business Administrator (DBA) checks the transactions and the cost center manager reviews and approves them. How do you run that sign-off for every manager in a college every month, without email chains and spreadsheets, and with a clear record of who confirmed what?",
+    summary: "Designing and building a Power Apps canvas app for the Cullen College of Engineering at the University of Houston. Each month every cost center manager gets one review listing all of their active cost centers. They answer Yes or No for each one. Anything marked No is routed to the department's DBA, who records how it was fixed. Then the review locks as complete.",
+    headlineMetric: "2-step",
+    headlineLabel: "manager → DBA verification workflow",
+    approach: [
+      "Modelled one SharePoint list row per manager per month, holding the reporting month, due date, manager, DBA(s), department, status, and the month's active cost centers as a JSON array with each answer, comment, and DBA resolution.",
+      "Built the manager screen: Yes / No for every cost center, a required comment for No, filters (All / Not answered / Marked No / Marked Yes), and a Submit button that stays disabled until every cost center has an answer.",
+      "Built the DBA screen: only the cost centers marked No, a resolution note for each, and a Resolve button that stays disabled until every flagged item has one.",
+      "Encoded the business rules in the app: an all-Yes review skips the DBA and completes immediately; after Submit or Resolve the review is read-only and cannot be reopened; only the assigned manager or a listed DBA can make changes.",
+      "Designed role-based navigation (home, My Reviews, Awaiting Submission, Completed, Assigned, Needs Resolution, Resolved) plus a step-by-step guided tour on each screen for first-time users."
+    ],
+    evaluation: [
+      "2 roles: Cost Center Manager and Department Business Administrator",
+      "4 statuses: Initiated → Pending CCM Review → Pending DBA Review → Verify/Certify Complete",
+      "30-day window for managers and DBAs to finish each month's review",
+      "Departments can have several DBAs and a DBA can cover several departments. Any listed DBA can resolve",
+      "Every review is locked once submitted, which leaves an audit trail"
+    ],
+    outcomes: [
+      { value: "2", label: "roles (manager · DBA)" },
+      { value: "4", label: "workflow statuses" },
+      { value: "30 days", label: "review window" },
+      { value: "1", label: "review per manager / month" }
+    ],
+    caseStudySections: [
+      { title: "The challenge", text: "Under UH policy MAPP 05.04.02, every department has to verify transactions on every active cost center each month. The DBA checks the UGLS1074 verification worksheet, and the cost center manager reviews and approves it. Before this app, that sign-off depended on reports, emails, and follow-ups. It was hard to see which managers had finished, what was flagged, and whether each issue had actually been fixed." },
+      { title: "How the monthly cycle works", text: "PeopleSoft closes a month around the 15th of the following month. Between the 15th and the 25th, that month's reviews are generated: active cost centers come from Power BI, which is fed by the monthly 1074 upload. Each cost center's department code is mapped to its DBA(s) through a shared department / DBA table. Each manager then gets one review for the closed month, due 30 days after it is generated." },
+      { title: "What I built", text: "A role-based Power Apps canvas app on SharePoint. Managers open their review and mark each cost center Yes (correct) or No (something is wrong, with a comment). Submitting an all-Yes review completes it straight away. A review with any No goes to the DBA, who sees only the flagged cost centers, writes what they did to fix each one, and sends it back. The manager then sees the DBA's note next to every item they flagged." },
+      { title: "Design decisions", text: "Submit and Resolve stay disabled until every item has an answer, so half-finished reviews can't be sent. Reviews can't be reopened after they're submitted, which keeps a clean audit record. Status badges always show words as well as colour. Each screen has a short guided tour, and View details opens the cost center in Power BI so a reviewer can check the transactions before answering." },
+      { title: "A difficult part I solved", text: "DBA routing isn't one-to-one: a department can have several DBAs and a DBA can cover several departments, so a review can list several DBA emails. I stored them as a delimited list, let any listed DBA resolve, and filtered by status first so the SharePoint query stays delegable before the email match runs." },
+      { title: "Automation with Power Automate", text: "Five flows run behind the app. Submit and Resolve each go through a flow that re-checks who is calling and whether the review is complete before saving. A notifications flow emails the manager or the DBA depending on the status. A weekly flow reminds whoever's turn it is, and skips anyone notified in the last 6 days. A monthly flow refreshes the cost center and employee data. Next: rollout to managers, then Central Office screens." }
+    ],
+    limitations: "The app is in active development in a DEV environment and has not yet been rolled out to all managers, so there are no adoption metrics yet. All screenshots use test records (TEST- cost centers, a test department, and a test DBA); no real financial data is shown.",
+    evidencePrivacyNotice: "These screenshots come from the development build of the app and show test data only. The cost centers, department, comments, and DBA are test records, not real university data.",
+    tech: ["Power Apps", "Power Fx", "SharePoint", "Power Automate", "Power BI", "PeopleSoft", "JSON"],
+    evidence: [
+      { type: "image", src: "/project-evidence/cost-center-verification/home.png", label: "Role-based home", caption: "The home screen shows each person what they need to do this month: Cost Center Managers see reviews to answer and DBAs see items to fix. The reporting month and due date are shown up front, with the monthly reconciliation policy below. Shown with test data." },
+      { type: "image", src: "/project-evidence/cost-center-verification/my-reviews.png", label: "Manager's reviews", caption: "A manager's pending and completed monthly verifications, with progress, status badges, due dates, and completed reviews grouped by fiscal year. Shown with test data." },
+      { type: "image", src: "/project-evidence/cost-center-verification/manager-review.png", label: "Monthly cost center review", caption: "The manager answers Yes or No for every active cost center (a comment is required for No). Submit stays disabled until every cost center is answered, and all-Yes reviews complete immediately. Shown with test data." },
+      { type: "image", src: "/project-evidence/cost-center-verification/manager-complete.png", label: "Completed review", caption: "A finished review is read-only and shows the DBA's resolution next to each cost center the manager flagged. Shown with test data." },
+      { type: "image", src: "/project-evidence/cost-center-verification/dba-resolved-list.png", label: "DBA resolved reviews", caption: "The DBA's list of reviews they have fixed and sent back to managers, with how many flagged cost centers were resolved. Shown with test data." },
+      { type: "image", src: "/project-evidence/cost-center-verification/dba-resolve.png", label: "DBA resolution", caption: "The DBA sees only the cost centers marked No, records what they did to fix each one, and sends the review back. It then locks as complete. Shown with test data." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-automate-submit-review.png", label: "Power Automate — Submit flow", caption: "The CCV-SubmitReview flow, called from the app. It checks the caller is the review's manager, rejects unanswered or invalid cost centers, sets the status, saves, and notifies the DBA." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-automate-dba-resolve.png", label: "Power Automate — Resolve flow", caption: "The CCV-DBAResolve flow. It checks the caller, saves the DBA's fix notes, replies to the app, and emails the manager." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-automate-notifications.png", label: "Power Automate — Status notifications", caption: "Runs whenever a review is created or changed, and routes by status: Pending CCM Review, Pending DBA Review, or Verify/Certify Complete. Each email links to the app and to Power BI." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-automate-weekly-reminders.png", label: "Power Automate — Weekly reminders", caption: "A scheduled flow that finds open reviews and reminds whoever's turn it is, skipping anyone notified in the last 6 days." },
+      { type: "image", src: "/project-evidence/financial-reconciliation/power-automate-monthly-refresh.png", label: "Power Automate — Monthly data refresh", caption: "Each month, picks up the latest cost center (CC) and employee (EMP) files, runs an Excel refresh script on each, and writes the rows to SharePoint in batches." }
+    ],
+    links: [{ label: "Read as a book", href: "/book/cost-center-verification" }]
   },
   {
     slug: "healthcare-eligibility-pipeline",
@@ -694,7 +745,7 @@ export const qaItems = [
     question: "What is her Power BI and analytics experience?",
     answer: "At TMAC / NIST-MEP, she automated 1,074 recurring reports and built 10+ Power BI / PowerApps dashboards for grant and financial review. At BluTech Consulting, she built Power BI and Tableau dashboards over 500K+ records for UBL and reduced reporting turnaround by 25%.",
     facts: ["10+ dashboards", "500K+ records", "25% faster reporting"],
-    links: [{ label: "Financial case study", href: "/works/financial-reconciliation" }],
+    links: [{ label: "Power BI case study", href: "/works/financial-reconciliation" }],
   },
   {
     question: "What healthcare work has she done?",

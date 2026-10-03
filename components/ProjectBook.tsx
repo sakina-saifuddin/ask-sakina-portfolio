@@ -3,8 +3,11 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
+import type { CSSProperties } from "react";
 import type { Project } from "@/data/portfolio";
-import { BOOK_STAGES, getBookContent, type BookSpread, type ProjectBookContent } from "@/data/projectBooks";
+import { BOOK_STAGES, getBookContent, getBookStyle, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
+import { Header } from "@/components/Header";
+import { BackCover, FrontCover } from "@/components/BookCovers";
 import "./project-book.css";
 
 const TURN_MS = 1000;
@@ -31,14 +34,16 @@ function buildPages(content: ProjectBookContent): BookPage[] {
 
 export function ProjectBook({ project }: { project: Project }) {
   const content = useMemo(() => getBookContent(project), [project]);
+  const style = useMemo(() => getBookStyle(project), [project]);
   const pages = useMemo(() => buildPages(content), [content]);
   const leafCount = pages.length / 2;
 
   const [flipped, setFlipped] = useState(0);
   const [side, setSide] = useState<"left" | "right">("right");
-  const [turning, setTurning] = useState<number | null>(null);
+  // Every leaf currently mid-turn (several can be when pages are turned quickly), in the order they started.
+  const [turning, setTurning] = useState<number[]>([]);
   const [narrow, setNarrow] = useState(false);
-  const turnTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
+  const turnTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const touchX = useRef<number | null>(null);
 
   useEffect(() => {
@@ -50,10 +55,9 @@ export function ProjectBook({ project }: { project: Project }) {
   }, []);
 
   const turn = useCallback((leaf: number, nextFlipped: number) => {
-    setTurning(leaf);
+    setTurning((t) => [...t.filter((l) => l !== leaf), leaf]);
     setFlipped(nextFlipped);
-    clearTimeout(turnTimer.current);
-    turnTimer.current = setTimeout(() => setTurning(null), TURN_MS);
+    turnTimers.current.push(setTimeout(() => setTurning((t) => t.filter((l) => l !== leaf)), TURN_MS));
   }, []);
 
   const next = useCallback(() => {
@@ -89,7 +93,7 @@ export function ProjectBook({ project }: { project: Project }) {
     return () => window.removeEventListener("keydown", onKey);
   }, [next, prev]);
 
-  useEffect(() => () => clearTimeout(turnTimer.current), []);
+  useEffect(() => () => turnTimers.current.forEach(clearTimeout), []);
 
   const atStart = flipped === 0 && (!narrow || side === "right");
   const atEnd = flipped === leafCount;
@@ -107,7 +111,8 @@ export function ProjectBook({ project }: { project: Project }) {
   else status = content.spreads[flipped - 1].stage;
 
   return (
-    <main className="bk-root">
+    <main className="bk-root" style={{ "--bk-accent": style.cover } as CSSProperties}>
+      <Header theme="light" />
       <header className="bk-topbar">
         <Link href={`/works/${project.slug}`} className="bk-back">
           <ArrowLeft size={16} /> Case study
@@ -134,13 +139,17 @@ export function ProjectBook({ project }: { project: Project }) {
         }}
       >
         <div className="bk-book" style={{ transform: `translateX(${shift})` }}>
+          {/* Page edges: the stack of unread pages on the right, read pages on the left. */}
+          <span className="bk-edges bk-edges-right" style={{ width: `${((leafCount - flipped) / leafCount) * 12}px` }} />
+          <span className="bk-edges bk-edges-left" style={{ width: `${(flipped / leafCount) * 12}px` }} />
           {Array.from({ length: leafCount }, (_, i) => {
             const isFlipped = i < flipped;
-            const z = turning === i ? leafCount * 3 : isFlipped ? i + 1 : leafCount * 2 - i;
+            const turnOrder = turning.indexOf(i);
+            const z = turnOrder >= 0 ? leafCount * 3 + turnOrder : isFlipped ? i + 1 : leafCount * 2 - i;
             const classes = [
               "bk-leaf",
-              turning === i && "is-turning",
-              (turning === i || i === flipped || i === flipped - 1) && "is-top",
+              turnOrder >= 0 && "is-turning",
+              (turnOrder >= 0 || i === flipped || i === flipped - 1) && "is-top",
               (i === 0 || i === leafCount - 1) && "is-hard",
             ]
               .filter(Boolean)
@@ -152,10 +161,10 @@ export function ProjectBook({ project }: { project: Project }) {
                 style={{ zIndex: z, transform: `perspective(3200px) rotateY(${isFlipped ? -180 : 0}deg)` }}
               >
                 <div className="bk-face bk-front">
-                  <PageContent page={pages[i * 2]} index={i * 2} project={project} content={content} />
+                  <PageContent page={pages[i * 2]} index={i * 2} project={project} content={content} style={style} />
                 </div>
                 <div className="bk-face bk-reverse">
-                  <PageContent page={pages[i * 2 + 1]} index={i * 2 + 1} project={project} content={content} />
+                  <PageContent page={pages[i * 2 + 1]} index={i * 2 + 1} project={project} content={content} style={style} />
                 </div>
               </div>
             );
@@ -176,30 +185,33 @@ export function ProjectBook({ project }: { project: Project }) {
   );
 }
 
-type PageProps = { page: BookPage; index: number; project: Project; content: ProjectBookContent };
+type PageProps = { page: BookPage; index: number; project: Project; content: ProjectBookContent; style: BookStyle };
 
 function stop(e: React.MouseEvent) {
   e.stopPropagation();
 }
 
-function PageContent({ page, index, project, content }: PageProps) {
+function PageContent({ page, index, project, content, style }: PageProps) {
   switch (page.kind) {
     case "cover":
-      return (
-        <div className="bk-cover">
-          <div className="bk-cover-frame">
-            <h1>{project.title}</h1>
-          </div>
-        </div>
-      );
+      return <FrontCover style={style} />;
 
     case "picture":
       return (
         <div className="bk-paper bk-picture">
-          <a href={page.spread.image} target="_blank" rel="noreferrer" title="Open full size" onClick={stop}>
+          {/* Only the picture itself opens full size; clicking the paper around it turns the page. */}
+          <div className="bk-picture-frame">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src={page.spread.image} alt={page.spread.title} />
-          </a>
+            <img
+              src={page.spread.image}
+              alt={page.spread.title}
+              title="Open full size"
+              onClick={(e) => {
+                e.stopPropagation();
+                window.open(page.spread.image, "_blank", "noopener");
+              }}
+            />
+          </div>
           <span className="bk-fig">
             Fig. {page.n} — {page.spread.imageCaption ?? page.spread.title}
           </span>
@@ -297,17 +309,6 @@ function PageContent({ page, index, project, content }: PageProps) {
       );
 
     case "back":
-      return (
-        <div className="bk-cover bk-cover-back">
-          <div className="bk-cover-frame">
-            <span className="bk-ornament">❦</span>
-            <span className="bk-fin">Fin.</span>
-            <Link href={`/works/${project.slug}`} className="bk-back-link" onClick={stop}>
-              Read the full case study →
-            </Link>
-            <span className="bk-cover-author">Sakina Saifuddin</span>
-          </div>
-        </div>
-      );
+      return <BackCover project={project} style={style} onLinkClick={stop} />;
   }
 }

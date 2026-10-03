@@ -2,13 +2,15 @@
 
 import { useRef } from "react";
 import type { MouseEvent } from "react";
-import Image from "next/image";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { Header } from "@/components/Header";
 import { ScrollAnimations } from "@/components/ScrollAnimations";
 import { triggerClipWipeCurtain } from "@/components/ClipWipeCurtain";
 import { projects } from "@/data/portfolio";
+import { getBookStyle } from "@/data/projectBooks";
+import { FrontCover } from "@/components/BookCovers";
+import "@/components/project-book.css";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
 
@@ -69,17 +71,10 @@ export default function Books() {
                   whileHover={{ y: -12, scale: 1.035, transition: { type: "spring", stiffness: 340, damping: 20 } }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  <div className="works-grid-media">
-                    {project.evidence[0]?.src && (
-                      <Image
-                        className="works-grid-media-img"
-                        src={project.evidence[0].src}
-                        alt={project.title}
-                        fill
-                        sizes="320px"
-                        style={{ objectFit: "contain" }}
-                      />
-                    )}
+                  <div className="works-grid-media books-mock-stage">
+                    <div className="books-mock">
+                      <FrontCover style={getBookStyle(project)} />
+                    </div>
                   </div>
                   <div className="works-grid-meta">
                     <span className="works-grid-number">{pad(index + 1)}.</span>

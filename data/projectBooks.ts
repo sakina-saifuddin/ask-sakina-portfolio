@@ -29,6 +29,26 @@ export type ProjectBookContent = {
   note?: string;
 };
 
+/** Cover design per project: a short cover title, and colours picked from the project's own screenshots. */
+export type BookStyle = { cover: string; tint: string; short: string };
+
+const bookStyles: Record<string, BookStyle> = {
+  "sakina-job-os": { short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6" },
+  "retail-demand-forecasting": { short: "Retail Forecasting", cover: "#1f4e6b", tint: "#86b9d8" },
+  "financial-reconciliation": { short: "Grant Dashboards", cover: "#7a2840", tint: "#e095ab" },
+  "cost-center-verification": { short: "Cost Center Verification", cover: "#9b1b30", tint: "#ec98a5" },
+  "healthcare-eligibility-pipeline": { short: "Healthcare Eligibility", cover: "#155e63", tint: "#86cbcc" },
+  "oracle-financial-etl": { short: "Oracle Financial ETL", cover: "#233a63", tint: "#98add8" },
+  "pneumonia-dcgan": { short: "Pneumonia X-ray GAN", cover: "#2f5d46", tint: "#a2d0b3" },
+  "seizure-detection": { short: "EEG Seizure Detection", cover: "#4f2c5f", tint: "#c7a2d6" },
+  "vertebral-column-classification": { short: "Vertebral Classification", cover: "#3f3474", tint: "#b0a4e6" },
+  "fitness-video-optimization": { short: "Fitness Video", cover: "#a4405c", tint: "#f4b3c4" },
+};
+
+export function getBookStyle(project: Project): BookStyle {
+  return bookStyles[project.slug] ?? { short: project.title.split(/ — | – /)[0], cover: "#171310", tint: "#c9beac" };
+}
+
 const CCV = "/project-evidence/cost-center-verification";
 const PA = "/project-evidence/financial-reconciliation";
 

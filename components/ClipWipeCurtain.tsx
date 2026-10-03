@@ -3,17 +3,21 @@
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { motion } from "framer-motion";
+import { YearLoaderOverlay } from "@/components/YearLoader";
 
 const PANEL_DURATION = 0.4;
 const TOTAL_MS = PANEL_DURATION * 1000 + 20;
 const REVEAL_WAIT_MS = 30;
+// If the page took long enough for the year countdown to appear, hold briefly so the final year rolls in.
+const LOADER_DELAY_MS = 200;
+const FINAL_YEAR_HOLD_MS = 550;
 const EASE = [0.76, 0, 0.24, 1] as const;
 
 export function triggerClipWipeCurtain(href: string) {
   window.dispatchEvent(new CustomEvent<string>("clip-wipe-curtain", { detail: href }));
 }
 
-type Phase = "idle" | "covering" | "covered" | "revealing";
+type Phase = "idle" | "covering" | "covered" | "arrived" | "revealing";
 
 export function ClipWipeCurtain() {
   const router = useRouter();
@@ -22,6 +26,7 @@ export function ClipWipeCurtain() {
   const pendingHref = useRef<string | null>(null);
   const lastPathname = useRef(pathname);
   const reducedRef = useRef(false);
+  const coveredAt = useRef(0);
 
   useEffect(() => {
     reducedRef.current = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -47,6 +52,7 @@ export function ClipWipeCurtain() {
     if (phase !== "covering") return;
     const t = setTimeout(() => {
       if (pendingHref.current) router.push(pendingHref.current);
+      coveredAt.current = Date.now();
       setPhase("covered");
     }, TOTAL_MS);
     return () => clearTimeout(t);
@@ -56,9 +62,20 @@ export function ClipWipeCurtain() {
     if (phase !== "covered") return;
     if (pathname === lastPathname.current) return;
     lastPathname.current = pathname;
+    const loaderShown = Date.now() - coveredAt.current > LOADER_DELAY_MS;
+    if (loaderShown) {
+      setPhase("arrived");
+      return;
+    }
     const t = setTimeout(() => setPhase("revealing"), REVEAL_WAIT_MS);
     return () => clearTimeout(t);
   }, [phase, pathname]);
+
+  useEffect(() => {
+    if (phase !== "arrived") return;
+    const t = setTimeout(() => setPhase("revealing"), FINAL_YEAR_HOLD_MS);
+    return () => clearTimeout(t);
+  }, [phase]);
 
   useEffect(() => {
     if (phase !== "revealing") return;
@@ -71,15 +88,7 @@ export function ClipWipeCurtain() {
 
   if (phase === "idle") return null;
 
-  const covered = phase === "covering" || phase === "covered";
-  // The page behind the curtain can take a few seconds to load (first
-  // visit to a route, image-heavy project pages, etc.) — "covered" has no
-  // fixed duration, it just waits for the route to actually finish
-  // navigating. Without something moving on screen that wait reads as a
-  // frozen page, so show a progress bar: it creeps toward ~85% while
-  // waiting (we don't know the real load progress) and only completes to
-  // 100% once the destination has actually mounted.
-  const finishing = phase === "revealing";
+  const covered = phase === "covering" || phase === "covered" || phase === "arrived";
 
   return (
     <div className="clip-wipe-curtain" aria-hidden="true">
@@ -96,22 +105,8 @@ export function ClipWipeCurtain() {
         transition={{ duration: PANEL_DURATION, ease: EASE }}
       />
 
-      <motion.div
-        className="clip-wipe-loader"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: covered ? 1 : 0 }}
-        transition={{ duration: 0.2, delay: finishing ? 0.15 : 0 }}
-      >
-        <span className="clip-wipe-loader-label">Loading</span>
-        <span className="clip-wipe-loader-track">
-          <motion.span
-            className="clip-wipe-loader-fill"
-            initial={{ width: "0%" }}
-            animate={{ width: finishing ? "100%" : "85%" }}
-            transition={finishing ? { duration: 0.25, ease: "easeOut" } : { duration: 4, ease: "easeOut" }}
-          />
-        </span>
-      </motion.div>
+      {/* While the next page loads, show the same year countdown as the intro screen. */}
+      <YearLoaderOverlay show={phase === "covered" || phase === "arrived"} complete={phase === "arrived"} delayMs={LOADER_DELAY_MS} />
     </div>
   );
 }

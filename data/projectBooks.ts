@@ -29,24 +29,65 @@ export type ProjectBookContent = {
   note?: string;
 };
 
-/** Cover design per project: a short cover title, and colours picked from the project's own screenshots. */
-export type BookStyle = { cover: string; tint: string; short: string };
+/**
+ * Cover design per project, laid out like a paperback:
+ * - `title`: the big hook on the front ("|" marks line breaks), saying what the project achieved
+ * - `subtitle`: the white line under it, saying what it is and how it was built
+ * - `short`: the plain project name (back-cover heading and spine)
+ * - colours picked from the project's own screenshots
+ */
+export type BookStyle = { cover: string; tint: string; short: string; title: string; subtitle: string };
 
 const bookStyles: Record<string, BookStyle> = {
-  "sakina-job-os": { short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6" },
-  "retail-demand-forecasting": { short: "Retail Forecasting", cover: "#1f4e6b", tint: "#86b9d8" },
-  "financial-reconciliation": { short: "Grant Dashboards", cover: "#7a2840", tint: "#e095ab" },
-  "cost-center-verification": { short: "Cost Center Verification", cover: "#9b1b30", tint: "#ec98a5" },
-  "healthcare-eligibility-pipeline": { short: "Healthcare Eligibility", cover: "#155e63", tint: "#86cbcc" },
-  "oracle-financial-etl": { short: "Oracle Financial ETL", cover: "#233a63", tint: "#98add8" },
-  "pneumonia-dcgan": { short: "Pneumonia X-ray GAN", cover: "#2f5d46", tint: "#a2d0b3" },
-  "seizure-detection": { short: "EEG Seizure Detection", cover: "#4f2c5f", tint: "#c7a2d6" },
-  "vertebral-column-classification": { short: "Vertebral Classification", cover: "#3f3474", tint: "#b0a4e6" },
-  "fitness-video-optimization": { short: "Fitness Video", cover: "#a4405c", tint: "#f4b3c4" },
+  "sakina-job-os": {
+    short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6",
+    title: "A Job Search|That Runs|Itself", subtitle: "Agentic AI · 12-stage n8n pipeline with Claude",
+  },
+  "retail-demand-forecasting": {
+    short: "Retail Forecasting", cover: "#1f4e6b", tint: "#86b9d8",
+    title: "Predicting|What Stores|Will Sell", subtitle: "LightGBM forecasting on 3M+ sales records",
+  },
+  "financial-reconciliation": {
+    short: "Grant Dashboards", cover: "#7a2840", tint: "#e095ab",
+    title: "1,074 Reports|Into One|Dashboard", subtitle: "Power BI grant & cost center analytics",
+  },
+  "cost-center-verification": {
+    short: "Cost Center Verification", cover: "#9b1b30", tint: "#ec98a5",
+    title: "Monthly|Sign-off|Without the|Email Chains", subtitle: "Power Apps + Power Automate verification app",
+  },
+  "healthcare-eligibility-pipeline": {
+    short: "Healthcare Eligibility", cover: "#155e63", tint: "#86cbcc",
+    title: "20 Sources,|One Benefit|Summary", subtitle: "Healthcare eligibility data pipeline & QA",
+  },
+  "oracle-financial-etl": {
+    short: "Oracle Financial ETL", cover: "#233a63", tint: "#98add8",
+    title: "Oracle to|Power BI on|Autopilot", subtitle: "Python ETL · fiscal-year merge · Power Automate",
+  },
+  "pneumonia-dcgan": {
+    short: "Pneumonia X-ray GAN", cover: "#2f5d46", tint: "#a2d0b3",
+    title: "Synthetic|X-rays,|Real Gains", subtitle: "DCGAN augmentation · 73.6% → 82.2% accuracy",
+  },
+  "seizure-detection": {
+    short: "EEG Seizure Detection", cover: "#4f2c5f", tint: "#c7a2d6",
+    title: "Reading|Brainwaves|for Seizures", subtitle: "EEG classification · 94% mean accuracy",
+  },
+  "vertebral-column-classification": {
+    short: "Vertebral Classification", cover: "#3f3474", tint: "#b0a4e6",
+    title: "Spotting|Spine Disease|with AI", subtitle: "Neural network on 310 samples · 85.5% accuracy",
+  },
+  "fitness-video-optimization": {
+    short: "Fitness Video", cover: "#a4405c", tint: "#f4b3c4",
+    title: "From 5|Minutes to|3 Seconds", subtitle: "Fitness app video loading fixed with AWS S3",
+  },
 };
 
 export function getBookStyle(project: Project): BookStyle {
-  return bookStyles[project.slug] ?? { short: project.title.split(/ — | – /)[0], cover: "#171310", tint: "#c9beac" };
+  const short = project.title.split(/ — | – /)[0];
+  return (
+    bookStyles[project.slug] ?? {
+      short, cover: "#171310", tint: "#c9beac", title: short.replace(/ /g, "|"), subtitle: project.headlineLabel,
+    }
+  );
 }
 
 const CCV = "/project-evidence/cost-center-verification";

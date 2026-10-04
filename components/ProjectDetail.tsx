@@ -64,8 +64,8 @@ export function ProjectDetail({ project, index, next }: { project: Project; inde
       <main className="pd-page">
         <div className="pd-layout">
           <div className="pd-left">
-            <Link href="/works" className="pd-back" onClick={navigate("/works")}>
-              <ArrowLeft size={14} /> All Work
+            <Link href="/books" className="pd-back" onClick={navigate("/books")}>
+              <ArrowLeft size={14} /> Project Books
             </Link>
 
             <motion.div

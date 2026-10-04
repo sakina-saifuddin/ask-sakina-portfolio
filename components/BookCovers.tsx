@@ -14,23 +14,16 @@ function fitLines(lines: string[], maxWidthCqw: number, maxHeightCqw: number, ca
 const coverVars = (style: BookStyle) => ({ "--cover": style.cover, "--tint": style.tint }) as CSSProperties;
 
 
-/**
- * Paperback front cover, laid out like the reference: the title set huge in a lighter tint of the
- * cover colour, a bold white line under it saying what the project is, and a small credit.
- */
+/** Paperback front cover: only the title, set huge in a lighter tint of the cover colour. */
 export function FrontCover({ style }: { style: BookStyle }) {
   const lines = style.title.toUpperCase().split("|");
   return (
     <div className="bkc bkc-front" style={coverVars(style)}>
-      <div className="bkc-front-block">
-        <h1 style={{ fontSize: fitLines(lines, 80, 62, 19) }}>
-          {lines.map((line) => (
-            <span key={line}>{line}</span>
-          ))}
-        </h1>
-        <p className="bkc-sub">{style.subtitle}</p>
-        <p className="bkc-credit">© Sakina Saifuddin</p>
-      </div>
+      <h1 style={{ fontSize: fitLines(lines, 80, 78, 19) }}>
+        {lines.map((line) => (
+          <span key={line}>{line}</span>
+        ))}
+      </h1>
     </div>
   );
 }
@@ -96,11 +89,19 @@ export function BackCover({
           <span key={line}>{line}</span>
         ))}
       </h2>
-      {back.blurb.map((paragraph) => (
-        <p key={paragraph}>{paragraph}</p>
-      ))}
-      <strong className="bkc-line">{back.line}</strong>
-      <p>{back.closing}</p>
+      <ul className="bkc-points">
+        {back.points.map((point) => (
+          <li key={point}>{point}</li>
+        ))}
+      </ul>
+      <div className="bkc-stats">
+        {back.stats.map((stat) => (
+          <div key={stat.label}>
+            <strong>{stat.value}</strong>
+            <span>{stat.label}</span>
+          </div>
+        ))}
+      </div>
       <div className="bkc-foot">
         <div className="bkc-visit">
           <span>

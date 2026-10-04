@@ -1,8 +1,8 @@
 import type { Project } from "@/data/portfolio";
 
 /*
- * Project books. Everything here is written in complete sentences, so a reader who opens a book
- * understands what the project was, what I did, and what it achieved without needing the case study.
+ * Project books. Written to be scanned, not read: short headings, big numbers and short bullet
+ * points that each make sense on their own. The front cover carries only a plain, descriptive title.
  */
 
 /** The headings every project book walks through, in order. */
@@ -12,34 +12,34 @@ export type BookStage = (typeof BOOK_STAGES)[number];
 /** One spread of a project book: a picture on the left page, one stage of the story on the right. */
 export type BookSpread = {
   image: string;
-  /** A sentence under the picture saying what it shows. */
+  /** A short line under the picture saying what it shows. */
   imageCaption: string;
   stage: BookStage;
-  /** A one-sentence heading for the page. */
+  /** A short heading for the page. */
   title: string;
-  text?: string;
+  /** Optional single short line under the heading. */
+  lead?: string;
   points?: string[];
-  /** A single headline number for this step, with a sentence explaining it… */
+  /** One big number for this step… */
   stat?: { value: string; label: string };
-  /** …or a grid of numbers, each with a sentence. */
+  /** …or a grid of big numbers. */
   stats?: { value: string; label: string }[];
-  /** Tool names; shown as the sentence "I used A, B and C." */
+  /** Tool names, shown as "Tools: A · B · C". */
   tools?: string[];
 };
 
 /**
- * Cover design, laid out like a paperback:
- * - `title`: the big sentence on the front ("|" marks line breaks)
- * - `subtitle`: the white sentence under it, saying what I built and what it achieved
+ * Cover design:
+ * - `title`: the only text on the front, saying plainly what the project is ("|" marks line breaks)
  * - `short`: the plain project name (back-cover heading and spine)
  * - colours picked from the project's own screenshots
  */
-export type BookStyle = { cover: string; tint: string; short: string; title: string; subtitle: string };
+export type BookStyle = { cover: string; tint: string; short: string; title: string };
 
 export type ProjectBookContent = {
   style: BookStyle;
-  /** Back cover: blurb paragraphs, one bold sentence, and a closing sentence. */
-  back: { blurb: string[]; line: string; closing: string };
+  /** Back cover: a few bullet points and big numbers. */
+  back: { points: string[]; stats: { value: string; label: string }[] };
   spreads: BookSpread[];
   /** Closing page: what I personally did, and what each technology was used for. */
   contribution: string[];
@@ -47,12 +47,6 @@ export type ProjectBookContent = {
   /** Optional small print, e.g. what the screenshots do or don't show. */
   note?: string;
 };
-
-/** "A, B and C" */
-export function listSentence(items: string[]) {
-  if (items.length <= 1) return items.join("");
-  return `${items.slice(0, -1).join(", ")} and ${items[items.length - 1]}`;
-}
 
 const CCV = "/project-evidence/cost-center-verification";
 const PA = "/project-evidence/financial-reconciliation";
@@ -63,823 +57,802 @@ const ORA = "/project-evidence/oracle-etl";
 const GAN = "/project-evidence/gan-deck";
 const EEG = "/project-evidence/seizure";
 const VER = "/project-evidence/vertebral";
+const JOB = "/projects/job-os-placeholder.png";
+const FIT = "/project-evidence/fitness/demo-poster.jpg";
 
 const books: Record<string, ProjectBookContent> = {
   "sakina-job-os": {
-    style: {
-      short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6",
-      title: "My Job|Search Runs|Itself.",
-      subtitle: "I built a 12-stage n8n pipeline that finds jobs, checks the fit with Claude and drafts outreach for my approval.",
-    },
+    style: { short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6", title: "AI Job Search|Automation" },
     back: {
-      blurb: [
-        "A real job search repeats the same steps again and again: find postings, check that they are real, decide whether they fit, write tailored materials, find a warm introduction and follow up.",
-        "I turned those steps into one automated n8n pipeline. It verifies every posting against the official listing, uses Claude to decide which jobs are worth pursuing, and then writes tailored resumes, cover letters and outreach drafts.",
+      points: [
+        "Finds jobs and checks each one is a real, official posting.",
+        "Uses Claude to keep only the jobs that truly fit.",
+        "Writes resumes, cover letters and outreach, then waits for my approval.",
       ],
-      line: "Twelve automated stages run from discovery to human review.",
-      closing: "Nothing is sent until I approve it, and every job and message is tracked in Airtable.",
+      stats: [
+        { value: "12", label: "automated stages" },
+        { value: "0", label: "messages sent without my approval" },
+      ],
     },
     spreads: [
       {
-        image: "/projects/job-os-placeholder.png",
-        imageCaption: "This is the full n8n workflow, from the shared rules on the left to human review on the right.",
-        stage: "Task",
-        title: "I wanted to automate a job search without losing control of it.",
-        text: "Doing every step of a job search by hand does not scale, but sending automated outreach without a human check is risky. My task was to run discovery, fit-checking, application materials and warm outreach as one pipeline that still waits for my approval.",
-      },
-      {
-        image: "/projects/job-os-placeholder.png",
-        imageCaption: "The early stages load the shared rules, find postings and verify them before any AI reasoning runs.",
-        stage: "My work",
-        title: "I built a pipeline that only spends effort on real, matching jobs.",
+        image: JOB, imageCaption: "The full 12-stage n8n workflow.", stage: "Task",
+        title: "Automate the job search, keep control",
         points: [
-          "The workflow pulls my source-of-truth rules and resume data from Google Drive into one shared object that every stage uses.",
-          "It finds and de-duplicates postings, then checks each one against the official employer page.",
-          "A Claude-based gate decides whether a job is a strong fit before any resume or cover letter is written.",
+          "A job search repeats the same steps again and again.",
+          "Doing it all by hand does not scale.",
+          "Fully automatic outreach without a human check is risky.",
         ],
-        tools: ["n8n", "Google Drive", "the Claude API"],
       },
       {
-        image: "/projects/job-os-placeholder.png",
-        imageCaption: "The later stages build materials, match connections and send everything to review.",
-        stage: "My work",
-        title: "I added warm introductions and a human review step.",
+        image: JOB, imageCaption: "Early stages: rules, discovery and verification.", stage: "My work",
+        title: "Only real, matching jobs get through",
         points: [
-          "The pipeline matches my first-degree LinkedIn connections at each company so outreach can start with a warm introduction.",
-          "It drafts personalized outreach messages and follow-ups.",
-          "Every job, document and message is logged in Airtable, and nothing is sent until I approve it.",
+          "Shared rules and resume data load from Google Drive.",
+          "Every posting is checked against the official employer page.",
+          "Claude decides if a job is a strong fit before anything is written.",
+        ],
+        tools: ["n8n", "Claude API", "Google Drive"],
+      },
+      {
+        image: JOB, imageCaption: "Later stages: materials, connections and review.", stage: "My work",
+        title: "Warm intros and a human check",
+        points: [
+          "Finds my first-degree LinkedIn connections at each company.",
+          "Drafts personalized outreach and follow-ups.",
+          "Logs everything in Airtable and waits for my approval.",
         ],
         tools: ["LinkedIn data", "Airtable"],
       },
       {
-        image: "/projects/job-os-placeholder.png",
-        imageCaption: "Every branch of the workflow ends at the same human review stage.",
-        stage: "Results",
-        title: "The whole search now runs as one tracked pipeline.",
+        image: JOB, imageCaption: "Every branch ends at human review.", stage: "Results",
+        title: "One tracked pipeline",
         stats: [
-          { value: "12", label: "The pipeline has twelve stages, from discovery to human review." },
-          { value: "1", label: "Airtable is the single place where every job and message is tracked." },
-          { value: "0", label: "No message is sent automatically without my approval." },
+          { value: "12", label: "automated stages" },
+          { value: "1", label: "place to track every job (Airtable)" },
+          { value: "0", label: "messages sent without approval" },
         ],
       },
       {
-        image: "/projects/job-os-placeholder.png",
-        imageCaption: "The graph shows how each job moves through the pipeline.",
-        stage: "Outcome",
-        title: "I spend my time on the best roles instead of on repetitive steps.",
-        text: "The repetitive work is automated, and I make the final decision on what gets sent. Because this is a personal project, the evidence is the workflow itself rather than outreach metrics.",
+        image: JOB, imageCaption: "Each job moves through the graph.", stage: "Outcome",
+        title: "More time for the best roles",
+        points: [
+          "The repetitive work runs on its own.",
+          "I make the final call on everything that is sent.",
+          "Personal project: the evidence is the workflow itself.",
+        ],
       },
     ],
     contribution: [
-      "I designed the twelve-stage workflow and the shared rules object that drives it.",
-      "I built the verification, Claude fit-gating and document-generation stages.",
-      "I set up Airtable tracking and the human approval step.",
+      "Designed the 12-stage workflow and its shared rules.",
+      "Built the verification, AI fit-check and writing stages.",
+      "Set up Airtable tracking and the approval step.",
     ],
     stack: [
-      { name: "n8n", use: "I built the whole automation pipeline in n8n." },
-      { name: "Claude API", use: "Claude decides whether a job fits and writes the drafts." },
-      { name: "Google Drive", use: "Drive holds the rules and resume data the pipeline reads." },
-      { name: "Airtable", use: "Airtable tracks every job, document and message." },
-      { name: "LinkedIn data", use: "Connection data finds warm introductions." },
+      { name: "n8n", use: "Runs the whole pipeline." },
+      { name: "Claude API", use: "Judges fit and writes drafts." },
+      { name: "Google Drive", use: "Holds rules and resume data." },
+      { name: "Airtable", use: "Tracks every job and message." },
     ],
-    note: "This is a personal automation project, so the book shows the workflow itself rather than live outreach numbers.",
   },
 
   "retail-demand-forecasting": {
-    style: {
-      short: "Retail Forecasting", cover: "#1f4e6b", tint: "#86b9d8",
-      title: "I Predicted|What Stores|Will Sell.",
-      subtitle: "I trained LightGBM on over 3 million sales records, and it beat two other models on unseen data.",
-    },
+    style: { short: "Retail Forecasting", cover: "#1f4e6b", tint: "#86b9d8", title: "Retail Sales|Forecasting with|Machine Learning" },
     back: {
-      blurb: [
-        "Retail demand changes with the store, the product family, promotions, holidays and recent sales, and about 31% of the records had zero sales.",
-        "I merged the raw files into one dataset of more than 3 million rows, built time-aware features, and compared three models without letting future dates leak into training.",
+      points: [
+        "Forecasts store-level sales to support inventory planning.",
+        "Built on more than 3 million sales records.",
+        "LightGBM beat two other models on unseen data.",
       ],
-      line: "LightGBM reached the lowest test error, with an RMSE of 0.4516.",
-      closing: "The forecast turns millions of past sales into numbers that can support inventory planning.",
+      stats: [
+        { value: "3M+", label: "sales records" },
+        { value: "0.4516", label: "best test error (RMSE)" },
+      ],
     },
     spreads: [
       {
-        image: `${RET}/page-06.png`,
-        imageCaption: "Daily and monthly sales show spikes, trends and seasonality that the model had to learn.",
-        stage: "Task",
-        title: "I needed to forecast store-level demand accurately.",
-        text: "A retailer needs good demand forecasts to stock the right products. Sales here changed by date, store, product family, promotions, holidays and recent demand, so a simple model would not work.",
+        image: `${RET}/page-06.png`, imageCaption: "Sales spike, trend and change with the seasons.", stage: "Task",
+        title: "Forecast demand for every store",
+        points: [
+          "Sales change by store, product, promotions and holidays.",
+          "About 31% of records had zero sales.",
+          "A simple straight-line model would not be accurate.",
+        ],
+        stat: { value: "31%", label: "of records had zero sales" },
       },
       {
-        image: `${RET}/page-09.png`,
-        imageCaption: "This page shows how I cleaned missing values and created the calendar and lag features.",
-        stage: "My work",
-        title: "I cleaned the data and built time-aware features.",
+        image: `${RET}/page-09.png`, imageCaption: "Cleaning missing values and building features.", stage: "My work",
+        title: "Clean data, time-aware features",
         points: [
-          "I merged sales with store details, oil prices, transactions, promotions and holidays.",
-          "I filled each missing value according to what that field meant.",
-          "I created calendar features, 1- to 28-day sales lags and rolling averages, shifted so the model never sees the day it predicts.",
+          "Merged sales with stores, oil prices, promotions and holidays.",
+          "Filled each missing value based on what the field meant.",
+          "Built sales lags and rolling averages without peeking at future days.",
         ],
+        stat: { value: "104", label: "features fed to the model" },
         tools: ["Python", "Pandas"],
       },
       {
-        image: `${RET}/page-14.png`,
-        imageCaption: "Five time-ordered folds compare the three models without leaking future dates.",
-        stage: "My work",
-        title: "I compared three models in a fair, time-ordered way.",
-        text: "Instead of shuffling dates, I trained on earlier periods and validated on later ones across five folds. I compared Linear Regression, Random Forest and LightGBM, and then tested all three on 602,316 unseen rows.",
-        tools: ["Scikit-learn", "LightGBM", "TimeSeriesSplit"],
+        image: `${RET}/page-14.png`, imageCaption: "Five time-ordered validation folds.", stage: "My work",
+        title: "A fair, time-ordered model test",
+        points: [
+          "Trained on earlier dates, tested on later dates.",
+          "Compared Linear Regression, Random Forest and LightGBM.",
+          "Final test on rows the models had never seen.",
+        ],
+        stat: { value: "602,316", label: "unseen rows in the final test" },
+        tools: ["Scikit-learn", "LightGBM"],
       },
       {
-        image: `${RET}/page-16.png`,
-        imageCaption: "On the unseen holdout set, LightGBM had the lowest error of the three models.",
-        stage: "Results",
-        title: "LightGBM was the most accurate model on unseen data.",
+        image: `${RET}/page-16.png`, imageCaption: "LightGBM had the lowest error.", stage: "Results",
+        title: "LightGBM was the most accurate",
+        lead: "Lower error is better.",
         stats: [
-          { value: "0.4516", label: "LightGBM reached the lowest test RMSE." },
-          { value: "0.4845", label: "Random Forest came second." },
-          { value: "1.3541", label: "Linear Regression was much less accurate." },
-          { value: "104", label: "The final model used 104 predictors." },
+          { value: "0.4516", label: "LightGBM error (best)" },
+          { value: "0.4845", label: "Random Forest error" },
+          { value: "1.3541", label: "Linear Regression error" },
+          { value: "3M+", label: "sales records used" },
         ],
       },
       {
-        image: `${RET}/page-18.png`,
-        imageCaption: "The predictions were converted back to real sales values so they can be read directly.",
-        stage: "Outcome",
-        title: "The forecast can now support inventory decisions.",
-        text: "Tree-based models handled the mix of promotions, store behavior, seasonality and recent sales much better than a straight-line model. The report covers the forecasting work in full; it does not include the planned inventory-optimization layer, so this book does not claim results for it.",
+        image: `${RET}/page-18.png`, imageCaption: "Predictions turned back into real sales values.", stage: "Outcome",
+        title: "A forecast for inventory planning",
+        points: [
+          "Tree models handled promotions and seasons far better.",
+          "Predictions read as real sales numbers.",
+          "Next: stockout metrics and prediction ranges.",
+        ],
       },
     ],
     contribution: [
-      "I merged and cleaned more than 3 million sales records.",
-      "I engineered the lag, rolling and calendar features without future-data leakage.",
-      "I ran the time-series cross-validation and the final model comparison.",
+      "Merged and cleaned 3 million+ sales records.",
+      "Built the lag, rolling and calendar features.",
+      "Ran the time-ordered model comparison.",
     ],
     stack: [
-      { name: "Python & Pandas", use: "I prepared and merged the data with Pandas." },
-      { name: "Scikit-learn", use: "I used it for the baseline models and validation." },
-      { name: "LightGBM", use: "LightGBM produced the best forecasts." },
-      { name: "TimeSeriesSplit", use: "It kept every validation fold in time order." },
+      { name: "Python & Pandas", use: "Data preparation." },
+      { name: "Scikit-learn", use: "Baselines and validation." },
+      { name: "LightGBM", use: "The best forecasting model." },
     ],
-    note: "Future work listed in the report includes stockout and overstock metrics, prediction intervals and wider tuning.",
   },
 
   "financial-reconciliation": {
-    style: {
-      short: "Grant Dashboards", cover: "#7a2840", tint: "#e095ab",
-      title: "1,074 Reports|Became One|Dashboard.",
-      subtitle: "I built a Power BI reporting system that cut manual financial review work by about half.",
-    },
+    style: { short: "Grant Dashboards", cover: "#7a2840", tint: "#e095ab", title: "Power BI Grant|Finance|Dashboards" },
     back: {
-      blurb: [
-        "Grant and cost center managers had to read hundreds of separate recurring reports to check budget, expenses, commitments, payroll and monthly activity.",
-        "I built one Power BI data model, with DAX measures and Power Query transformations, behind a grant overview, a current-month review screen and payroll drilldowns.",
+      points: [
+        "Replaced 1,074 recurring reports with one Power BI system.",
+        "Databricks now prepares the data automatically.",
+        "Reviewers go from the grant overview down to single transactions.",
       ],
-      line: "The system replaced 1,074 recurring reports.",
-      closing: "Reviewers now start at the grant overview and drill down to the exact transactions behind a balance.",
+      stats: [
+        { value: "1,074", label: "reports replaced" },
+        { value: "2 days → auto", label: "data preparation" },
+      ],
     },
     spreads: [
       {
-        image: `${FIN}/grants-overview-dummy.png`,
-        imageCaption: "The grant overview shows budget, expenses, commitments and balance, using sample data for privacy.",
-        stage: "Task",
-        title: "Managers needed one place to review their grant finances.",
-        text: "Financial review was spread across recurring reports and different kinds of financial data. Before confirming that a cost center looked right, a reviewer had to piece together budget, expenses, commitments, payroll, project dates and the current month.",
-      },
-      {
-        image: `${FIN}/grants-overview1-dummy.png`,
-        imageCaption: "This view breaks budget against expenses down by status, using sample figures.",
-        stage: "My work",
-        title: "I combined every financial source into one model.",
-        text: "The source tables did not share the same level of detail, so the totals could not be trusted at first. I built lookup logic, Power Query transformations and DAX measures so that budget, commitments, projects, payroll and fiscal periods lined up and every page gave consistent results.",
-        tools: ["Power BI", "Power Query", "DAX"],
-      },
-      {
-        image: `${FIN}/current-month-dummy.png`,
-        imageCaption: "The monthly review screen lets a reviewer pick a cost center and check its activity.",
-        stage: "My work",
-        title: "I built screens that go from summary to transactions.",
+        image: `${FIN}/grants-overview-dummy.png`, imageCaption: "Grant overview (sample data).", stage: "Task",
+        title: "One place to review grant finances",
         points: [
-          "The grant overview gives the high-level picture.",
-          "The current-month screen checks budget, payroll, non-payroll and fiscal-period activity.",
-          "The payroll and non-payroll drilldowns show the exact records behind a balance.",
+          "Managers read hundreds of separate recurring reports.",
+          "Budget, expenses, commitments and payroll lived in different places.",
+          "Preparing the data by hand took about two days.",
         ],
-        tools: ["Power BI", "SQL", "Python"],
+        stat: { value: "1,074", label: "separate recurring reports" },
       },
       {
-        image: `${FIN}/payroll-dummy.png`,
-        imageCaption: "The payroll drilldown filters by award, project, fiscal year and period, using sample data.",
-        stage: "Results",
-        title: "The system automated reporting across the college.",
+        image: `${FIN}/grants-overview1-dummy.png`, imageCaption: "Budget vs. expenses by status (sample data).", stage: "My work",
+        title: "Automated data processing with Databricks",
+        points: [
+          "Added a Databricks layer that prepares all the financial data.",
+          "It replaced a manual process that took two days.",
+          "The dashboards always receive clean, consistent data.",
+        ],
+        stat: { value: "2 days → auto", label: "data preparation time" },
+        tools: ["Databricks", "Python", "SQL"],
+      },
+      {
+        image: `${FIN}/current-month-dummy.png`, imageCaption: "Monthly review for one cost center (sample data).", stage: "My work",
+        title: "One model, summary to transaction",
+        points: [
+          "Lined up budget, commitments, payroll and fiscal periods.",
+          "Wrote DAX measures and Power Query steps for every total.",
+          "Built overview, monthly review and payroll drilldown screens.",
+        ],
+        tools: ["Power BI", "DAX", "Power Query"],
+      },
+      {
+        image: `${FIN}/payroll-dummy.png`, imageCaption: "Payroll drilldown (sample data).", stage: "Results",
+        title: "Reporting automated across the college",
         stats: [
-          { value: "1,074", label: "The system replaced 1,074 recurring reports." },
-          { value: "50%", label: "Manual review work dropped by about half." },
-          { value: "11+", label: "It supports more than eleven departments." },
-          { value: "50+", label: "It covers more than fifty grants and financial datasets." },
+          { value: "1,074", label: "reports replaced" },
+          { value: "50%", label: "less manual review work" },
+          { value: "11+", label: "departments supported" },
+          { value: "50+", label: "grants and datasets" },
         ],
       },
       {
-        image: `${FIN}/grants-overview-dummy.png`,
-        imageCaption: "Every figure, name and ID in these screenshots has been replaced with sample data.",
-        stage: "Outcome",
-        title: "Reviewers no longer jump between separate files.",
-        text: "Reviewers start at the grant overview and drill into current-month, payroll and non-payroll detail in one place. These dashboards also became the evidence layer for the monthly Cost Center Verification app.",
+        image: `${FIN}/grants-overview-dummy.png`, imageCaption: "All figures are sample data.", stage: "Outcome",
+        title: "No more jumping between files",
+        points: [
+          "Data arrives prepared, with no two-day manual step.",
+          "Reviewers drill from overview to exact transactions.",
+          "The dashboards also feed the Cost Center Verification app.",
+        ],
       },
     ],
     contribution: [
-      "I designed the single reporting model behind every dashboard.",
-      "I wrote the Power Query transformations and DAX measures.",
-      "I built the overview, monthly review and payroll drilldown screens.",
+      "Built the Databricks data-processing layer.",
+      "Designed the single Power BI reporting model.",
+      "Wrote the DAX measures and built every dashboard screen.",
     ],
     stack: [
-      { name: "Power BI", use: "I built all the dashboards in Power BI." },
-      { name: "DAX", use: "DAX measures calculate budget, commitments and balances." },
-      { name: "Power Query", use: "Power Query shapes and joins the source data." },
-      { name: "SQL & Python", use: "I used them to prepare and check the data." },
-      { name: "PeopleSoft", use: "PeopleSoft is the source of the financial data." },
+      { name: "Databricks", use: "Prepares the data automatically." },
+      { name: "Power BI", use: "All the dashboards." },
+      { name: "DAX & Power Query", use: "Measures and data shaping." },
+      { name: "PeopleSoft", use: "Source of the financial data." },
     ],
-    note: "The screenshots use fabricated sample data; real grant, financial and employee records are private.",
+    note: "Screenshots use sample data; real financial records are private.",
   },
 
   "cost-center-verification": {
-    style: {
-      short: "Cost Center Verification", cover: "#9b1b30", tint: "#ec98a5",
-      title: "Monthly Sign-off|No Longer Needs|Email Chains.",
-      subtitle: "I built a Power Apps and Power Automate app that runs the monthly cost center sign-off.",
-    },
+    style: { short: "Cost Center Verification", cover: "#9b1b30", tint: "#ec98a5", title: "Monthly Cost|Center Sign-off|App" },
     back: {
-      blurb: [
-        "University policy requires every active cost center to be verified every month: a business administrator checks it and the manager approves it. That process ran on reports, emails and follow-ups.",
-        "I designed and built one Power Apps app for the Cullen College of Engineering. Each manager answers Yes or No for every cost center, and anything marked No goes to the department's business administrator, who records how it was fixed.",
+      points: [
+        "Managers answer Yes or No for every cost center each month.",
+        "Every No goes to the department's business administrator to fix.",
+        "Five Power Automate flows send the emails and reminders.",
       ],
-      line: "Each review moves from the manager to the business administrator to complete.",
-      closing: "Five Power Automate flows handle the checks, emails, reminders and monthly data refresh.",
+      stats: [
+        { value: "2", label: "roles in one app" },
+        { value: "5", label: "automated flows" },
+      ],
     },
     spreads: [
       {
-        image: `${CCV}/home.png`,
-        imageCaption: "The home screen shows each person what is waiting for them this month.",
-        stage: "Task",
-        title: "The monthly cost center sign-off needed to leave the email chains behind.",
-        text: "UH policy MAPP 05.04.02 requires every active cost center to be verified every month. A business administrator (DBA) checks it and the manager approves it. That ran on reports and emails, so my task was to design and build one Power Apps app that runs the whole cycle.",
+        image: `${CCV}/home.png`, imageCaption: "Home: what is waiting for each person.", stage: "Task",
+        title: "Monthly sign-off without email chains",
         points: [
-          "Each manager should get one review per month.",
-          "Every cost center marked No should go to the department's DBA.",
-          "Finished reviews should be locked as an audit record.",
+          "UH policy: every active cost center is verified every month.",
+          "The DBA checks it; the manager approves it.",
+          "It ran on reports, emails and follow-ups.",
         ],
+        stat: { value: "Every month", label: "every cost center must be signed off" },
       },
       {
-        image: `${CCV}/manager-review.png`,
-        imageCaption: "On the manager review, the manager answers Yes or No for every cost center.",
-        stage: "My work",
-        title: "I built the manager review and its data model.",
-        text: "Each review is one SharePoint row per manager per month, and every cost center's answer is stored as JSON. A No needs a comment, and Submit stays locked until every cost center has an answer.",
-        tools: ["Power Apps", "Power Fx", "SharePoint", "JSON"],
-        stat: { value: "100%", label: "Every cost center must be answered before Submit unlocks." },
+        image: `${CCV}/manager-review.png`, imageCaption: "Manager answers Yes or No per cost center.", stage: "My work",
+        title: "The manager review",
+        points: [
+          "One review per manager, per month.",
+          "A No needs a comment.",
+          "Submit stays locked until every cost center is answered.",
+        ],
+        stat: { value: "100%", label: "answered before Submit unlocks" },
+        tools: ["Power Apps", "Power Fx", "SharePoint"],
       },
       {
-        image: `${CCV}/dba-resolve.png`,
-        imageCaption: "The DBA sees only the flagged cost centers and writes a fix note for each one.",
-        stage: "My work",
-        title: "I routed every issue to the right DBA.",
-        text: "A department can have several DBAs, and a DBA can cover several departments, so any listed DBA can resolve a review. The DBA sees only the flagged items, and Resolve stays locked until each one has a fix note.",
-        tools: ["a department-to-DBA table", "delegable SharePoint filters"],
-        stat: { value: "2 / 2", label: "Both flagged items in this test review were fixed before Resolve unlocked." },
+        image: `${CCV}/dba-resolve.png`, imageCaption: "DBA writes a fix for each flagged item.", stage: "My work",
+        title: "Issues go to the right DBA",
+        points: [
+          "A department can have several DBAs.",
+          "The DBA sees only the flagged cost centers.",
+          "Resolve stays locked until each one has a fix note.",
+        ],
+        stat: { value: "2 / 2", label: "flagged items fixed (test data)" },
       },
       {
-        image: `${CCV}/manager-complete.png`,
-        imageCaption: "A completed review is read-only and shows the DBA's fix next to each flagged item.",
-        stage: "My work",
-        title: "I built the business rules into the app.",
-        text: "If every answer is Yes, the review skips the DBA and completes immediately. After Submit or Resolve, the review becomes read-only. Status badges always show words, and each screen has a guided tour.",
-        tools: ["a status workflow", "role-based access", "Power BI links"],
-        stat: { value: "4", label: "Each review moves through four statuses, from Initiated to Verify/Certify Complete." },
+        image: `${CCV}/manager-complete.png`, imageCaption: "Finished reviews are read-only.", stage: "My work",
+        title: "Rules built into the app",
+        points: [
+          "All Yes? The review completes right away.",
+          "After Submit or Resolve, the review is locked.",
+          "Every screen has a guided tour.",
+        ],
+        stat: { value: "4", label: "statuses, Initiated to Complete" },
       },
       {
-        image: `${PA}/power-automate-submit-review.png`,
-        imageCaption: "This is the CCV-SubmitReview flow in Power Automate.",
-        stage: "My work",
-        title: "A flow re-checks every submitted review.",
-        text: "When a manager submits, a flow called from the app checks everything again. The caller must be the review's manager, every cost center must be answered, and every ID must be valid. The flow then sets the status, saves the review and notifies the DBA if anything was marked No.",
-        tools: ["Power Automate", "the Power Apps trigger", "SharePoint"],
-        stat: { value: "20", label: "The flow runs twenty steps for every submitted review." },
+        image: `${PA}/power-automate-submit-review.png`, imageCaption: "The CCV-SubmitReview flow.", stage: "My work",
+        title: "Submit is checked by a flow",
+        points: [
+          "Confirms the caller is the review's manager.",
+          "Rejects unanswered or invalid cost centers.",
+          "Saves the review and alerts the DBA if needed.",
+        ],
+        stat: { value: "20", label: "checks on every submit" },
+        tools: ["Power Automate"],
       },
       {
-        image: `${PA}/power-automate-dba-resolve.png`,
-        imageCaption: "This is the CCV-DBAResolve flow in Power Automate.",
-        stage: "My work",
-        title: "A second flow saves the DBA's fixes.",
-        text: "When the DBA resolves a review, its own flow confirms who is calling, saves the fix notes, replies to the app and emails the manager that the review is complete.",
-        tools: ["Power Automate", "SharePoint", "Outlook"],
-        stat: { value: "10", label: "The flow takes ten steps from Resolve to the manager's email." },
+        image: `${PA}/power-automate-notifications.png`, imageCaption: "Emails chosen by review status.", stage: "My work",
+        title: "The right email at each step",
+        points: [
+          "Manager: when the review opens.",
+          "DBA: when issues are flagged.",
+          "Manager: when the review is complete.",
+        ],
+        stat: { value: "3", label: "email paths" },
+        tools: ["Power Automate", "Outlook"],
       },
       {
-        image: `${PA}/power-automate-notifications.png`,
-        imageCaption: "The notifications flow picks the right email based on the review's status.",
-        stage: "My work",
-        title: "Each status sends the right email.",
-        text: "Whenever a review is created or changed, this flow chooses the email by status. It emails the manager when a review opens, the DBA when issues are flagged, and the manager when the review is complete. Each email links to the app and to Power BI.",
-        tools: ["Power Automate", "a SharePoint trigger", "Outlook"],
-        stat: { value: "3", label: "There are three email paths: one for the manager, one for the DBA and one on completion." },
+        image: `${PA}/power-automate-weekly-reminders.png`, imageCaption: "Weekly reminders run on a schedule.", stage: "My work",
+        title: "Reminders and fresh data",
+        points: [
+          "Weekly reminders go to whoever's turn it is.",
+          "Nobody is reminded twice within 6 days.",
+          "Cost center and employee data refresh every month.",
+        ],
+        stat: { value: "6 days", label: "minimum gap between reminders" },
+        tools: ["Power Automate", "Excel scripts"],
       },
       {
-        image: `${PA}/power-automate-weekly-reminders.png`,
-        imageCaption: "The weekly reminders flow runs on a schedule.",
-        stage: "My work",
-        title: "Weekly reminders chase open reviews.",
-        text: "A scheduled flow finds every review that is still open and reminds whoever's turn it is. It skips anyone who was already reminded in the last six days, so nobody is spammed.",
-        tools: ["Power Automate", "a recurrence trigger", "SharePoint"],
-        stat: { value: "6 days", label: "Nobody is reminded more than once every six days." },
-      },
-      {
-        image: `${PA}/power-automate-monthly-refresh.png`,
-        imageCaption: "The monthly refresh flow updates the cost center and employee data.",
-        stage: "My work",
-        title: "The data refreshes itself every month.",
-        text: "Each month, a scheduled flow picks up the latest cost center and employee files, runs an Excel refresh script on each, and writes the rows to SharePoint in batches. That way, reviews are always generated from current data.",
-        tools: ["Power Automate", "Excel scripts", "SharePoint batch updates"],
-        stat: { value: "2", label: "Two datasets are refreshed every month: cost centers and employees." },
-      },
-      {
-        image: `${CCV}/dba-resolved-list.png`,
-        imageCaption: "The DBA's list shows the reviews they fixed and sent back to managers.",
-        stage: "Results",
-        title: "The full cycle works from start to finish.",
-        text: "A review moves from the manager to the DBA to complete in the development app, using test data, and the emails, reminders and monthly refresh are automated.",
+        image: `${CCV}/dba-resolved-list.png`, imageCaption: "Reviews fixed and sent back.", stage: "Results",
+        title: "The full cycle works end to end",
         stats: [
-          { value: "2", label: "One app serves two roles: the manager and the DBA." },
-          { value: "4", label: "Each review moves through four statuses." },
-          { value: "5", label: "Five Power Automate flows run behind the app." },
-          { value: "30", label: "Managers and DBAs have thirty days to finish each review." },
+          { value: "2", label: "roles: manager and DBA" },
+          { value: "4", label: "review statuses" },
+          { value: "5", label: "Power Automate flows" },
+          { value: "30", label: "days to finish a review" },
         ],
       },
       {
-        image: `${CCV}/my-reviews.png`,
-        imageCaption: "The My Reviews screen lists pending and completed months.",
-        stage: "Outcome",
-        title: "The monthly sign-off now happens in one place.",
-        text: "Managers, DBAs and the college can see who has finished, what was flagged and how it was fixed, without chasing emails. Every finished review is locked as an audit record, and rollout to managers is the next step.",
-        stat: { value: "Audit-ready", label: "Every finished review is locked and kept as a record." },
+        image: `${CCV}/my-reviews.png`, imageCaption: "Pending and completed months.", stage: "Outcome",
+        title: "One place for the monthly sign-off",
+        points: [
+          "Everyone sees who finished and what was fixed.",
+          "Finished reviews are locked as an audit record.",
+          "Next step: rollout to managers.",
+        ],
       },
     ],
     contribution: [
-      "I turned the project manager's confirmed business rules into app logic.",
-      "I designed the SharePoint data model and the four-status workflow.",
-      "I built the home, review list, manager and DBA screens, plus the guided tours.",
-      "I built five Power Automate flows for submit, resolve, notifications, weekly reminders and the monthly refresh.",
+      "Turned the confirmed business rules into app logic.",
+      "Designed the SharePoint data model and 4-status workflow.",
+      "Built every screen, the guided tours and 5 Power Automate flows.",
     ],
     stack: [
-      { name: "Power Apps", use: "I built the app and every screen in Power Apps." },
-      { name: "Power Fx", use: "Power Fx handles the validation, routing and locking rules." },
-      { name: "SharePoint", use: "SharePoint stores one review row per manager per month." },
-      { name: "Power Automate", use: "Five flows run the checks, emails, reminders and refresh." },
-      { name: "Power BI", use: "Power BI supplies the active cost centers and the View details link." },
-      { name: "PeopleSoft (1074)", use: "The monthly 1074 upload is the source data." },
+      { name: "Power Apps", use: "The app and every screen." },
+      { name: "Power Automate", use: "Checks, emails, reminders, refresh." },
+      { name: "SharePoint", use: "One review row per manager per month." },
+      { name: "Power BI", use: "Active cost centers and details." },
     ],
-    note: "All screenshots come from the development app and use test records only.",
+    note: "Screenshots use test records only.",
   },
 
   "healthcare-eligibility-pipeline": {
-    style: {
-      short: "Healthcare Eligibility", cover: "#155e63", tint: "#86cbcc",
-      title: "Up to 20 Sources|Now Feed One|Benefit Summary.",
-      subtitle: "I built and validated a healthcare eligibility pipeline that raised validated data accuracy from 20% to 80%.",
-    },
+    style: { short: "Healthcare Eligibility", cover: "#155e63", tint: "#86cbcc", title: "Healthcare|Eligibility Data|Pipeline" },
     back: {
-      blurb: [
-        "Dental eligibility data did not come from one clean database. Patient details, insurance, benefits, coverage rules, appointments and payer responses lived in different APIs and files, and each payer could describe the same rule differently.",
-        "I worked on a Python workflow that collects and normalizes this data into one patient-level JSON bundle, and I validated the new Benefit Summary screen field by field against the source data.",
+      points: [
+        "Collects eligibility data from many healthcare sources.",
+        "Merges it into one patient-level summary.",
+        "Validated field by field against the raw data.",
       ],
-      line: "Validated data accuracy rose from about 20% to about 80%.",
-      closing: "The work also saved about two hours of manual lookup on each case.",
+      stats: [
+        { value: "20% → 80%", label: "validated data accuracy" },
+        { value: "~2 hrs", label: "saved per case" },
+      ],
     },
     spreads: [
       {
-        image: `${HC}/old-benefit-summary.png`,
-        imageCaption: "The classic Benefit Summary was the comparison point for deductibles, maximums and coverage.",
-        stage: "Task",
-        title: "Eligibility data from many sources had to become one reliable summary.",
-        text: "Every payer can return eligibility information differently. My task was to help collect, check and map that data into one consistent Benefit Summary that staff could trust.",
-      },
-      {
-        image: `${HC}/bundle-fetcher-start.png`,
-        imageCaption: "The Python workflow starts by loading shared lookups and collecting each patient's files.",
-        stage: "My work",
-        title: "I built a workflow that gathers every source into one bundle.",
+        image: `${HC}/old-benefit-summary.png`, imageCaption: "The classic Benefit Summary.", stage: "Task",
+        title: "Many sources, one reliable summary",
         points: [
-          "It collects patient, insurance, benefit, plan, rule, appointment, treatment and provider data.",
-          "It records failed and empty responses so problems can be debugged.",
-          "It merges everything into one patient-level JSON bundle that is ready for the Benefit Summary.",
+          "Patient, insurance and benefit data lived in different systems.",
+          "Each payer could describe the same rule differently.",
+          "Staff needed one summary they could trust.",
         ],
-        tools: ["Python", "REST APIs", "DentalXchange", "CareStack"],
+        stat: { value: "15–20", label: "data sources" },
       },
       {
-        image: `${HC}/new-procedure-view.png`,
-        imageCaption: "The new screen groups procedures into categories with plan percentage, frequency and status.",
-        stage: "My work",
-        title: "I checked the new screen against the raw data.",
-        text: "I did not assume that a cleaner screen meant correct data. I compared deductibles, maximums, coverage percentages, procedure codes, frequency limits and service history between the old and new views, and traced every mismatch back to the source JSON.",
+        image: `${HC}/bundle-fetcher-start.png`, imageCaption: "The Python fetch workflow starting.", stage: "My work",
+        title: "Every source in one bundle",
+        points: [
+          "Collects patient, insurance, benefit and plan data.",
+          "Logs failed and empty responses for debugging.",
+          "Merges everything into one patient-level file.",
+        ],
+        tools: ["Python", "REST APIs", "JSON"],
+      },
+      {
+        image: `${HC}/new-procedure-view.png`, imageCaption: "The new procedure view.", stage: "My work",
+        title: "New screen checked against raw data",
+        points: [
+          "Compared deductibles, maximums and coverage percentages.",
+          "Checked procedure codes and frequency limits.",
+          "Traced every mismatch back to the source.",
+        ],
         tools: ["Postman", "SQL", "BigQuery"],
       },
       {
-        image: `${HC}/old-procedure-view.png`,
-        imageCaption: "The old view shows code-level percentages and limitation notes that I used during validation.",
-        stage: "My work",
-        title: "I turned the problems I found into mapping rules.",
-        points: [
-          "Some procedure groups were given one general frequency even though individual codes had different limits.",
-          "Service history could come from a different source than the classic view.",
-          "A green Eligible label could mislead if age, prior usage or frequency had not been applied yet.",
-        ],
-      },
-      {
-        image: `${HC}/new-benefit-summary.png`,
-        imageCaption: "The redesigned Benefit Summary presents the same benefits more clearly.",
-        stage: "Results",
-        title: "The data became far more accurate and faster to use.",
+        image: `${HC}/new-benefit-summary.png`, imageCaption: "The redesigned Benefit Summary.", stage: "Results",
+        title: "Far more accurate, much faster",
         stats: [
-          { value: "15–20", label: "The workflow integrates between fifteen and twenty source inputs." },
-          { value: "20→80%", label: "Validated data accuracy rose from about 20% to about 80%." },
-          { value: "~2 hrs", label: "Each case needs about two fewer hours of manual lookup." },
-          { value: "7", label: "The work was validated across seven production deployments." },
+          { value: "20% → 80%", label: "validated data accuracy" },
+          { value: "~2 hrs", label: "less manual lookup per case" },
+          { value: "15–20", label: "sources integrated" },
+          { value: "7", label: "deployments validated" },
         ],
       },
       {
-        image: `${HC}/bundle-fetcher-finish.png`,
-        imageCaption: "Each run finishes by writing one merged patient file and logging any failed endpoints.",
-        stage: "Outcome",
-        title: "Staff can now trust the Benefit Summary.",
-        text: "The concrete mapping and validation rules I documented made the new Benefit Summary reliable enough to replace manual lookups. The public repository uses synthetic examples, so no real patient data is shown.",
+        image: `${HC}/bundle-fetcher-finish.png`, imageCaption: "One merged patient file per run.", stage: "Outcome",
+        title: "A summary staff can trust",
+        points: [
+          "Problems became clear mapping rules.",
+          "Manual lookups dropped sharply.",
+          "Public repo uses synthetic data only.",
+        ],
       },
     ],
     contribution: [
-      "I worked on the Python bundle-fetching and normalization workflow.",
-      "I wrote payer-specific source-priority and mapping rules.",
-      "I validated the new Benefit Summary field by field and documented every fix.",
+      "Built the Python fetch-and-merge workflow.",
+      "Wrote payer-specific mapping rules.",
+      "Validated the new screen field by field.",
     ],
     stack: [
-      { name: "Python", use: "I wrote the fetching and normalization workflow in Python." },
-      { name: "REST APIs", use: "The workflow calls the DentalXchange and CareStack APIs." },
-      { name: "JSON", use: "Each patient's data is merged into one JSON bundle." },
-      { name: "SQL & BigQuery", use: "I used them to check the source data." },
-      { name: "Postman", use: "I used Postman to test the API responses." },
+      { name: "Python", use: "Fetching and merging." },
+      { name: "REST APIs", use: "DentalXchange and CareStack data." },
+      { name: "SQL & BigQuery", use: "Checking source data." },
     ],
-    note: "The repository uses synthetic examples and excludes production credentials and real patient data.",
   },
 
   "oracle-financial-etl": {
-    style: {
-      short: "Oracle Financial ETL", cover: "#233a63", tint: "#98add8",
-      title: "Oracle Data|Now Reaches|Power BI|on Its Own.",
-      subtitle: "I wrote a Python pipeline that converts and merges monthly Oracle exports without manual work.",
-    },
+    style: { short: "Oracle Financial ETL", cover: "#233a63", tint: "#98add8", title: "Oracle to|Power BI Data|Pipeline" },
     back: {
-      blurb: [
-        "Every month, large Oracle exports had to be converted, merged into the right fiscal-year workbook and checked before reporting. The files looked like .xls files but were really XML, and some were too large for normal conversion.",
-        "I built a two-stage Python workflow. The first stage streams the XML into a real Excel workbook, and the second applies the right merge rule to each worksheet and validates the result before anything is replaced.",
+      points: [
+        "Converts large monthly Oracle exports into Excel.",
+        "Merges each month into the right fiscal-year workbook.",
+        "Checks itself before replacing any live file.",
       ],
-      line: "The pipeline converted more than 170,000 rows in the largest sheet shown.",
-      closing: "Power Automate runs the merge and treats a failed update as a failure, not a success.",
+      stats: [
+        { value: "170K+", label: "rows in the largest sheet" },
+        { value: "7", label: "merge rules" },
+      ],
     },
     spreads: [
       {
-        image: `${ORA}/conversion.png`,
-        imageCaption: "The converter output lists each financial worksheet and how many rows it wrote.",
-        stage: "Task",
-        title: "A fragile monthly process needed to become repeatable.",
-        text: "The Oracle files were XML spreadsheets disguised as .xls files, and some were very large. Even after conversion, the monthly workbook could not simply be added to the annual file, because each worksheet held a different kind of financial data.",
+        image: `${ORA}/conversion.png`, imageCaption: "Converter output with row counts.", stage: "Task",
+        title: "Make a fragile monthly job repeatable",
+        points: [
+          "Oracle files looked like .xls but were really XML.",
+          "Some were too large for normal conversion.",
+          "Each worksheet needed a different merge rule.",
+        ],
       },
       {
-        image: `${ORA}/conversion.png`,
-        imageCaption: "The converted workbook keeps every worksheet and its row count.",
-        stage: "My work",
-        title: "I wrote a converter that streams the XML.",
-        text: "The converter reads the XML as a stream instead of loading the whole file into memory. It validates the file type, handles old encodings, keeps basic cell types, respects Excel's row and column limits, and writes a real .xlsx workbook.",
+        image: `${ORA}/conversion.png`, imageCaption: "Every worksheet converted.", stage: "My work",
+        title: "A streaming converter",
+        points: [
+          "Reads the XML as a stream, not all at once.",
+          "Handles old encodings and Excel's size limits.",
+          "Writes a real .xlsx workbook.",
+        ],
         tools: ["Python", "lxml", "XlsxWriter"],
       },
       {
-        image: `${ORA}/merge.png`,
-        imageCaption: "A SAFE TEST run detects FY2026 periods 9 and 10 and validates the output.",
-        stage: "My work",
-        title: "I gave each worksheet its own merge rule.",
+        image: `${ORA}/merge.png`, imageCaption: "SAFE TEST run for FY2026.", stage: "My work",
+        title: "A merge rule for every sheet",
         points: [
-          "The workflow detects the incoming fiscal year and periods and finds the matching annual workbook.",
-          "Transaction sheets replace the matching periods and add the new rows.",
-          "Commitment sheets are treated as current snapshots, and the cost center list is updated with a composite key.",
+          "Detects the fiscal year and periods automatically.",
+          "Replaces matching periods and adds new rows.",
+          "Runs in SAFE TEST mode before any live update.",
         ],
-        tools: ["OpenPyXL", "Excel"],
+        stat: { value: "9 & 10", label: "FY2026 periods detected automatically" },
+        tools: ["OpenPyXL"],
       },
       {
-        image: `${ORA}/power-automate.png`,
-        imageCaption: "Power Automate runs the merge and branches on success or failure.",
-        stage: "Results",
-        title: "The pipeline processed every sheet and checked itself.",
+        image: `${ORA}/power-automate.png`, imageCaption: "Power Automate runs the merge.", stage: "Results",
+        title: "Every sheet processed and checked",
         stats: [
-          { value: "170,469", label: "The largest sheet shown had 170,469 rows converted." },
-          { value: "99,667", label: "The revenue and expense sheet had 99,667 rows." },
-          { value: "9 & 10", label: "Fiscal-year 2026 periods 9 and 10 were detected automatically." },
-          { value: "7", label: "Seven worksheet-specific rules control the merge." },
+          { value: "170,469", label: "rows in the largest sheet" },
+          { value: "99,667", label: "revenue and expense rows" },
+          { value: "8,204", label: "budget journal rows" },
+          { value: "7", label: "worksheet merge rules" },
         ],
       },
       {
-        image: `${ORA}/merge.png`,
-        imageCaption: "The output is validated before the live workbook is replaced.",
-        stage: "Outcome",
-        title: "Monthly reporting no longer depends on a manual merge.",
-        text: "The workflow runs in SAFE TEST mode by default and only replaces the live workbook when asked. The validated annual workbook feeds SharePoint, Power Automate and Power BI, so the data path from Oracle to reporting is now repeatable.",
+        image: `${ORA}/merge.png`, imageCaption: "Output validated before replacement.", stage: "Outcome",
+        title: "No more manual monthly merge",
+        points: [
+          "Oracle data now flows to Power BI on a repeatable path.",
+          "A failed update is never treated as a success.",
+          "The public repo is fully sanitized.",
+        ],
       },
     ],
     contribution: [
-      "I wrote the streaming Oracle XML to Excel converter.",
-      "I designed the worksheet-specific fiscal-year merge rules.",
-      "I added the schema checks, SAFE TEST mode and the Power Automate hand-off.",
+      "Wrote the streaming XML converter.",
+      "Designed the fiscal-year merge rules.",
+      "Added SAFE TEST mode and the Power Automate hand-off.",
     ],
     stack: [
-      { name: "Python", use: "I wrote both stages of the pipeline in Python." },
-      { name: "lxml & XlsxWriter", use: "They stream the XML and write the workbook." },
-      { name: "OpenPyXL", use: "OpenPyXL reads and merges the annual workbook." },
-      { name: "Power Automate", use: "Power Automate runs the merge each month." },
-      { name: "SharePoint & Power BI", use: "They receive the validated workbook for reporting." },
+      { name: "Python", use: "Both pipeline stages." },
+      { name: "Power Automate", use: "Runs the monthly merge." },
+      { name: "Power BI", use: "Receives the validated data." },
     ],
-    note: "The public repository is sanitized and excludes production financial records and internal paths.",
   },
 
   "pneumonia-dcgan": {
-    style: {
-      short: "Pneumonia X-ray GAN", cover: "#2f5d46", tint: "#a2d0b3",
-      title: "Synthetic|X-rays Made|the Model Fairer.",
-      subtitle: "I used a DCGAN to create 2,000 normal chest X-rays, and accuracy rose from 73.6% to 82.2%.",
-    },
+    style: { short: "Pneumonia X-ray GAN", cover: "#2f5d46", tint: "#a2d0b3", title: "AI-Generated|X-rays for|Pneumonia|Detection" },
     back: {
-      blurb: [
-        "The training data had far more pneumonia X-rays than normal ones, so the classifier kept missing normal cases.",
-        "My first attempt to fix this with synthetic images made the model worse. I studied why, changed the strategy, and generated 2,000 clearer images for the normal class in a second experiment.",
+      points: [
+        "The model kept missing normal chest X-rays.",
+        "My first fix with synthetic images failed, and I learned why.",
+        "The second try made the model accurate and fair.",
       ],
-      line: "Recall for normal X-rays rose from 0.32 to 0.76.",
-      closing: "The failed first experiment is the reason the second one worked.",
+      stats: [
+        { value: "73.6% → 82.2%", label: "accuracy" },
+        { value: "0.32 → 0.76", label: "normal-case recall" },
+      ],
     },
     spreads: [
       {
-        image: `${GAN}/slide-02.png`,
-        imageCaption: "The training set had 3,876 pneumonia images and only 1,342 normal images.",
-        stage: "Task",
-        title: "I wanted the classifier to recognize normal X-rays fairly.",
-        text: "Because pneumonia images outnumbered normal ones almost three to one, the model learned pneumonia well but missed many normal cases. The goal was a more balanced model, not just a higher overall accuracy.",
-      },
-      {
-        image: `${GAN}/slide-09.png`,
-        imageCaption: "In the first experiment, adding synthetic images lowered test accuracy to 75%.",
-        stage: "My work",
-        title: "My first experiment failed, and I learned from it.",
-        text: "I trained the GAN for only 20 epochs, the images were noisy, and I added them to the class that was already larger. Accuracy fell from 82.85% to 75%, which showed me that synthetic data can hurt a model when the quality or the class strategy is wrong.",
-        tools: ["PyTorch", "a DCGAN"],
-      },
-      {
-        image: `${GAN}/slide-15.png`,
-        imageCaption: "After 50 epochs, the synthetic X-rays show much clearer chest structure than after 20.",
-        stage: "My work",
-        title: "I changed the strategy for the second experiment.",
+        image: `${GAN}/slide-02.png`, imageCaption: "Far more pneumonia than normal images.", stage: "Task",
+        title: "Recognize normal X-rays fairly",
         points: [
-          "I trained the GAN for 50 epochs instead of 20.",
-          "I generated 2,000 images for the smaller normal class.",
-          "I added dropout and class weights, and I lowered the classifier's learning rate.",
+          "Pneumonia images outnumbered normal ones about 3 to 1.",
+          "The model missed many normal cases.",
+          "Goal: a balanced model, not just higher accuracy.",
         ],
-        tools: ["PyTorch", "Torchvision", "a CNN classifier"],
-      },
-      {
-        image: `${GAN}/slide-17.png`,
-        imageCaption: "The final classification report shows a much better balance between the two classes.",
-        stage: "Results",
-        title: "The second experiment made the model accurate and fair.",
         stats: [
-          { value: "82.21%", label: "Accuracy rose from 73.56% to 82.21%." },
-          { value: "0.76", label: "Recall for normal X-rays rose from 0.32 to 0.76." },
-          { value: "0.82", label: "Macro F1 improved from 0.65 to 0.82." },
-          { value: "2,000", label: "I generated 2,000 synthetic normal X-rays." },
+          { value: "3,876", label: "pneumonia images" },
+          { value: "1,342", label: "normal images" },
         ],
       },
       {
-        image: `${GAN}/slide-18.png`,
-        imageCaption: "This comparison covers every model across both experiments.",
-        stage: "Outcome",
-        title: "The model stopped defaulting to pneumonia.",
-        text: "The final model is much better at identifying normal cases. This is an academic project, and synthetic medical images would need strong external validation before any clinical use.",
+        image: `${GAN}/slide-09.png`, imageCaption: "Experiment 1 lowered accuracy.", stage: "My work",
+        title: "Experiment 1 failed",
+        points: [
+          "The GAN trained for only 20 epochs.",
+          "Images were noisy and went to the wrong class.",
+          "Lesson: bad synthetic data hurts a model.",
+        ],
+        stat: { value: "82.9% → 75%", label: "accuracy dropped" },
+        tools: ["PyTorch", "DCGAN"],
+      },
+      {
+        image: `${GAN}/slide-15.png`, imageCaption: "50 epochs gives clearer chest structure.", stage: "My work",
+        title: "Experiment 2: a better strategy",
+        points: [
+          "Trained the GAN for 50 epochs, not 20.",
+          "Generated images for the smaller normal class.",
+          "Added dropout and class weights.",
+        ],
+        stat: { value: "2,000", label: "synthetic normal X-rays" },
+        tools: ["PyTorch", "Torchvision"],
+      },
+      {
+        image: `${GAN}/slide-17.png`, imageCaption: "Final classification report.", stage: "Results",
+        title: "Accurate and fair",
+        stats: [
+          { value: "82.21%", label: "accuracy (from 73.56%)" },
+          { value: "0.76", label: "normal recall (from 0.32)" },
+          { value: "0.82", label: "macro F1 (from 0.65)" },
+          { value: "+8.65", label: "accuracy points gained" },
+        ],
+      },
+      {
+        image: `${GAN}/slide-18.png`, imageCaption: "Both experiments compared.", stage: "Outcome",
+        title: "No more defaulting to pneumonia",
+        points: [
+          "The model now finds normal cases much better.",
+          "The failed experiment made the success possible.",
+          "Research only, not a clinical tool.",
+        ],
       },
     ],
     contribution: [
-      "I measured the class imbalance and the baseline classifier's behavior.",
-      "I ran both GAN experiments and diagnosed why the first one failed.",
-      "I compared accuracy, recall, F1, confusion matrices and image quality across both experiments.",
+      "Measured the class imbalance and baseline.",
+      "Ran both GAN experiments and diagnosed the failure.",
+      "Compared every metric across both experiments.",
     ],
     stack: [
-      { name: "PyTorch", use: "I built and trained the GAN and the classifier in PyTorch." },
-      { name: "Torchvision", use: "Torchvision loads and transforms the X-ray images." },
-      { name: "DCGAN", use: "The DCGAN generates the synthetic chest X-rays." },
-      { name: "CNN", use: "A convolutional network classifies pneumonia versus normal." },
+      { name: "PyTorch", use: "GAN and classifier." },
+      { name: "DCGAN", use: "Generates synthetic X-rays." },
+      { name: "CNN", use: "Classifies pneumonia vs. normal." },
     ],
-    note: "This is a research project only; it is not a clinical tool.",
   },
 
   "seizure-detection": {
-    style: {
-      short: "EEG Seizure Detection", cover: "#4f2c5f", tint: "#c7a2d6",
-      title: "My Model|Reads Brainwaves|for Seizures.",
-      subtitle: "I built an EEG classifier that reached 94% mean accuracy on 5,508 samples.",
-    },
+    style: { short: "EEG Seizure Detection", cover: "#4f2c5f", tint: "#c7a2d6", title: "EEG Seizure|Detection with|Deep Learning" },
     back: {
-      blurb: [
-        "EEG data is noisy, and different channels can behave very differently. A high overall accuracy would not be enough if the model missed seizures or only worked on one split of the data.",
-        "I studied the signal first, then trained a classifier and tested it fold by fold, comparing seizure and non-seizure results side by side.",
+      points: [
+        "Classifies brain activity as seizure or non-seizure.",
+        "Studied the EEG signal before training.",
+        "Tested fold by fold on unseen data.",
       ],
-      line: "The model reached 93% sensitivity and 95% specificity.",
-      closing: "It performs almost equally well on seizure and non-seizure activity.",
+      stats: [
+        { value: "94%", label: "mean accuracy" },
+        { value: "5,508", label: "samples evaluated" },
+      ],
     },
     spreads: [
       {
-        image: `${EEG}/channel-variance.png`,
-        imageCaption: "The variance of each EEG channel shows that the inputs do not all behave the same way.",
-        stage: "Task",
-        title: "I needed to tell seizure activity apart from normal activity.",
-        text: "The model had to separate seizure from non-seizure brain activity and stay consistent across EEG channels and test folds, not just score well on average.",
-      },
-      {
-        image: `${EEG}/statistical-properties.png`,
-        imageCaption: "I inspected the mean, standard deviation, skewness and kurtosis of every channel.",
-        stage: "My work",
-        title: "I studied the signal before training any model.",
-        text: "I analyzed channel variance and basic statistics such as mean, standard deviation, skewness and kurtosis. This showed me how the signal changed across channels before I focused on the classifier.",
-        tools: ["Python", "signal analysis"],
-      },
-      {
-        image: `${EEG}/training-curves.png`,
-        imageCaption: "Loss falls and validation accuracy rises, and fold 5 reached 0.9319 test accuracy.",
-        stage: "My work",
-        title: "I tested the model on unseen folds.",
-        text: "I tracked training and validation loss and accuracy across epochs, and I tested on held-out folds instead of the training data. I also compared precision, recall and F1 for each class, so the result was not hidden behind one average.",
-        tools: ["deep learning", "cross-validation"],
-      },
-      {
-        image: `${EEG}/classification-report.png`,
-        imageCaption: "The final report shows similar F1 scores for seizure and non-seizure samples.",
-        stage: "Results",
-        title: "The model performed well on both classes.",
-        stats: [
-          { value: "94%", label: "The model reached 94% mean accuracy." },
-          { value: "93%", label: "It caught 93% of seizures (sensitivity)." },
-          { value: "95%", label: "It correctly cleared 95% of non-seizure samples (specificity)." },
-          { value: "5,508", label: "The evaluation covered 5,508 samples." },
+        image: `${EEG}/channel-variance.png`, imageCaption: "EEG channels behave differently.", stage: "Task",
+        title: "Tell seizures apart from normal activity",
+        points: [
+          "EEG data is noisy.",
+          "Channels can behave very differently.",
+          "The model must catch seizures, not just score well.",
         ],
       },
       {
-        image: `${EEG}/training-curves.png`,
-        imageCaption: "Training stayed stable across epochs.",
-        stage: "Outcome",
-        title: "The model is balanced, not just accurate.",
-        text: "Seizure recall was 0.93 and non-seizure recall was 0.95, with an F1 of about 0.94 for both. That balance matters more than a model that only looks accurate because it predicts the more common class. This is academic work and not a clinical system.",
+        image: `${EEG}/statistical-properties.png`, imageCaption: "Statistics for every channel.", stage: "My work",
+        title: "Signal first, model second",
+        points: [
+          "Measured variance for every channel.",
+          "Checked mean, spread, skew and kurtosis.",
+          "Understood the signal before training.",
+        ],
+        tools: ["Python"],
+      },
+      {
+        image: `${EEG}/training-curves.png`, imageCaption: "Loss falls, accuracy rises.", stage: "My work",
+        title: "Tested on unseen folds",
+        points: [
+          "Tracked training and validation every epoch.",
+          "Tested on held-out folds, not training data.",
+          "Compared results for each class separately.",
+        ],
+        stat: { value: "0.9319", label: "fold 5 test accuracy" },
+        tools: ["Deep learning", "Cross-validation"],
+      },
+      {
+        image: `${EEG}/classification-report.png`, imageCaption: "Final classification report.", stage: "Results",
+        title: "Strong on both classes",
+        stats: [
+          { value: "94%", label: "mean accuracy" },
+          { value: "93%", label: "seizures caught" },
+          { value: "95%", label: "non-seizures cleared" },
+          { value: "5,508", label: "samples evaluated" },
+        ],
+      },
+      {
+        image: `${EEG}/training-curves.png`, imageCaption: "Stable training.", stage: "Outcome",
+        title: "Balanced, not just accurate",
+        points: [
+          "Similar results for seizure and non-seizure.",
+          "F1 of about 0.94 for both classes.",
+          "Academic work, not a clinical system.",
+        ],
       },
     ],
     contribution: [
-      "I analyzed the EEG channels and their statistical properties.",
-      "I prepared the signal data and trained the classifier.",
-      "I ran the fold-level evaluation and compared results for each class.",
+      "Analyzed the EEG channels and statistics.",
+      "Trained the classifier.",
+      "Ran the fold-level evaluation.",
     ],
     stack: [
-      { name: "Python", use: "I did the analysis and modelling in Python." },
-      { name: "Deep learning", use: "A neural network classifies the EEG signals." },
-      { name: "Signal analysis", use: "I studied the channels before training." },
-      { name: "Cross-validation", use: "Fold-level testing checked the model on unseen data." },
+      { name: "Python", use: "Analysis and modelling." },
+      { name: "Deep learning", use: "Classifies the EEG signal." },
+      { name: "Cross-validation", use: "Tests on unseen data." },
     ],
-    note: "This is academic machine-learning work; it is not a clinical diagnostic system.",
   },
 
   "vertebral-column-classification": {
-    style: {
-      short: "Vertebral Classification", cover: "#3f3474", tint: "#b0a4e6",
-      title: "A Neural Net|Spots Spine|Disease.",
-      subtitle: "I trained a neural network on 310 samples, and it reached 85.5% accuracy on unseen data.",
-    },
+    style: { short: "Vertebral Classification", cover: "#3f3474", tint: "#b0a4e6", title: "Spine Disease|Classification with|Neural Networks" },
     back: {
-      blurb: [
-        "The question was whether six biomechanical measurements of the spine are enough to tell a normal sample from an abnormal one.",
-        "I built a multilayer neural network, tuned its learning rate, momentum and hidden layer size, and then tested it on samples it had never seen.",
+      points: [
+        "Classifies spine samples as normal or abnormal.",
+        "Uses six biomechanical measurements.",
+        "Tuned and tested on unseen samples.",
       ],
-      line: "The network reached 85.48% accuracy on the held-out test set.",
-      closing: "The gap between training and testing accuracy shows the limits of a small dataset.",
+      stats: [
+        { value: "85.48%", label: "test accuracy" },
+        { value: "310", label: "samples" },
+      ],
     },
     spreads: [
       {
-        image: `${VER}/confusion-matrices.png`,
-        imageCaption: "The confusion matrices show how the network classified training and test samples.",
-        stage: "Task",
-        title: "I wanted to classify spine samples as normal or abnormal.",
-        text: "The dataset has 310 samples, each described by six biomechanical measurements. My task was to find out whether a neural network could classify them reliably.",
-      },
-      {
-        image: `${VER}/learning-rate.png`,
-        imageCaption: "This experiment shows how different learning rates changed accuracy and loss.",
-        stage: "My work",
-        title: "I tuned the network carefully.",
+        image: `${VER}/confusion-matrices.png`, imageCaption: "Train and test confusion matrices.", stage: "Task",
+        title: "Normal or abnormal spine?",
         points: [
-          "I combined the six features and used a stratified 80/20 split with normalization.",
-          "I tested different learning rates, momentum values and hidden-layer sizes.",
-          "I evaluated the final network with accuracy, F1 score, confusion matrices and mean squared error.",
+          "310 samples, six measurements each.",
+          "Can a neural network classify them reliably?",
         ],
-        tools: ["Python", "TensorFlow", "Keras", "Scikit-learn"],
+        stat: { value: "6", label: "measurements per sample" },
       },
       {
-        image: `${VER}/f1-scores.png`,
-        imageCaption: "The F1 scores compare training and testing for the normal and abnormal classes.",
-        stage: "Results",
-        title: "The network classified most unseen samples correctly.",
+        image: `${VER}/learning-rate.png`, imageCaption: "Learning-rate experiment.", stage: "My work",
+        title: "A carefully tuned network",
+        points: [
+          "Stratified 80/20 split with normalization.",
+          "Tested learning rates, momentum and layer sizes.",
+          "Measured accuracy, F1 and errors.",
+        ],
+        tools: ["Python", "TensorFlow", "Keras"],
+      },
+      {
+        image: `${VER}/f1-scores.png`, imageCaption: "F1 scores for each class.", stage: "Results",
+        title: "Most unseen samples classified correctly",
         stats: [
-          { value: "85.48%", label: "The network reached 85.48% accuracy on the test set." },
-          { value: "95.56%", label: "It reached 95.56% accuracy on the training set." },
-          { value: "310", label: "The dataset has 310 samples." },
-          { value: "6", label: "Each sample is described by six measurements." },
+          { value: "85.48%", label: "test accuracy" },
+          { value: "95.56%", label: "training accuracy" },
+          { value: "310", label: "samples" },
+          { value: "6", label: "measurements" },
         ],
       },
       {
-        image: `${VER}/confusion-matrices.png`,
-        imageCaption: "The test matrix shows where the network still makes mistakes.",
-        stage: "Outcome",
-        title: "Six measurements can classify most spine samples.",
-        text: "The network separates normal and abnormal samples well, but the difference between training and test accuracy shows a risk of overfitting on such a small dataset. This is not a medical diagnostic system.",
+        image: `${VER}/confusion-matrices.png`, imageCaption: "Where mistakes remain.", stage: "Outcome",
+        title: "Six measurements go a long way",
+        points: [
+          "The network separates most samples well.",
+          "The train/test gap shows a small-data limit.",
+          "Not a medical diagnostic tool.",
+        ],
       },
     ],
     contribution: [
-      "I prepared the data with a stratified split and normalization.",
-      "I ran the learning-rate, momentum and hidden-layer experiments.",
-      "I evaluated the final network on held-out data.",
+      "Prepared the data and the split.",
+      "Ran the tuning experiments.",
+      "Evaluated on held-out data.",
     ],
     stack: [
-      { name: "Python", use: "I wrote the experiments in Python." },
-      { name: "TensorFlow & Keras", use: "I built and trained the network with Keras." },
-      { name: "Scikit-learn", use: "I used it for the split, scaling and metrics." },
+      { name: "Python", use: "All experiments." },
+      { name: "TensorFlow & Keras", use: "The neural network." },
+      { name: "Scikit-learn", use: "Split, scaling and metrics." },
     ],
-    note: "The dataset is small, and this is not a medical diagnostic system.",
   },
 
   "fitness-video-optimization": {
-    style: {
-      short: "Fitness Video", cover: "#a4405c", tint: "#f4b3c4",
-      title: "Videos Load|in 3 Seconds,|Not 5 Minutes.",
-      subtitle: "I moved a fitness app's 50+ workout videos to AWS S3 and cut loading time from five minutes to three seconds.",
-    },
+    style: { short: "Fitness Video", cover: "#a4405c", tint: "#f4b3c4", title: "Fitness App|Video Loading|Fix" },
     back: {
-      blurb: [
-        "A React Native fitness app had more than 50 workout videos, but a single video could take around five minutes to load, which made the whole app feel broken.",
-        "I traced the delay to the way the app stored and delivered its videos, moved them to AWS S3, and changed how the app requested them.",
+      points: [
+        "Workout videos took about 5 minutes to load.",
+        "I found the bottleneck and moved the videos to AWS S3.",
+        "Videos now start in about 3 seconds.",
       ],
-      line: "Video loading dropped from about five minutes to about three seconds.",
-      closing: "I solved this with traditional debugging and cloud infrastructure, before today's generative-AI tools.",
+      stats: [
+        { value: "5 min → 3 sec", label: "loading time" },
+        { value: "50+", label: "workout videos" },
+      ],
     },
     spreads: [
       {
-        image: "/project-evidence/fitness/demo-poster.jpg",
-        imageCaption: "This frame comes from a demo of the real fitness application.",
-        stage: "Task",
-        title: "Users were waiting minutes for a workout video to start.",
-        text: "The app had more than 50 workout videos, and each one could take about five minutes to load. My task was to find out why and make the videos start quickly.",
+        image: FIT, imageCaption: "A frame from the real app.", stage: "Task",
+        title: "Videos took minutes to start",
+        points: [
+          "The app has 50+ workout videos.",
+          "Each one took about 5 minutes to load.",
+          "The app felt broken.",
+        ],
+        stat: { value: "~5 min", label: "to load one video" },
       },
       {
-        image: "/project-evidence/fitness/demo-poster.jpg",
-        imageCaption: "The workout screens worked; the delay came from how the videos were delivered.",
-        stage: "My work",
-        title: "I found the bottleneck and moved the videos to the cloud.",
+        image: FIT, imageCaption: "The delay came from video delivery.", stage: "My work",
+        title: "Found the bottleneck, fixed delivery",
         points: [
-          "I investigated the media path and found that the original cached video-loading setup caused the delay.",
-          "I uploaded all of the workout videos to AWS S3.",
-          "I updated the React Native and Node.js code so the app requested videos from S3.",
+          "Traced the delay to the old video-loading setup.",
+          "Moved every video to AWS S3.",
+          "Updated the app to load videos from S3.",
         ],
         tools: ["React Native", "Node.js", "AWS S3"],
       },
       {
-        image: "/project-evidence/fitness/demo-poster.jpg",
-        imageCaption: "After the change, videos start within a few seconds.",
-        stage: "Results",
-        title: "Videos now start almost immediately.",
+        image: FIT, imageCaption: "Videos now start in seconds.", stage: "Results",
+        title: "Videos start almost instantly",
         stats: [
-          { value: "~5 min", label: "A video used to take about five minutes to load." },
-          { value: "~3 sec", label: "A video now loads in about three seconds." },
-          { value: "50+", label: "The change covers more than fifty workout videos." },
+          { value: "~5 min", label: "before" },
+          { value: "~3 sec", label: "after" },
+          { value: "50+", label: "videos sped up" },
         ],
       },
       {
-        image: "/project-evidence/fitness/demo-poster.jpg",
-        imageCaption: "Users can start a workout right away.",
-        stage: "Outcome",
-        title: "The app finally feels fast.",
-        text: "Users can start a workout almost immediately instead of waiting minutes. Loading times can still vary with network speed, device and video size.",
+        image: FIT, imageCaption: "Workouts start right away.", stage: "Outcome",
+        title: "The app finally feels fast",
+        points: [
+          "Users start a workout right away.",
+          "Solved with debugging and cloud storage.",
+          "Times can vary by network and device.",
+        ],
       },
     ],
     contribution: [
-      "I diagnosed the media-loading bottleneck.",
-      "I moved the video library to AWS S3.",
-      "I updated the mobile app and backend to use the new video source.",
+      "Diagnosed the loading bottleneck.",
+      "Moved the video library to AWS S3.",
+      "Updated the app and backend.",
     ],
     stack: [
-      { name: "React Native", use: "The mobile app is built with React Native." },
-      { name: "Node.js", use: "The backend serves the app's data." },
-      { name: "AWS S3", use: "S3 now stores and delivers the workout videos." },
+      { name: "React Native", use: "The mobile app." },
+      { name: "Node.js", use: "The backend." },
+      { name: "AWS S3", use: "Stores and delivers the videos." },
     ],
-    note: "The before and after times are the project measurements; real times vary by network and device.",
   },
 };
 
@@ -892,15 +865,15 @@ export function getBookContent(project: Project): ProjectBookContent {
   const images = project.evidence.filter((e): e is typeof e & { src: string } => e.type === "image" && !!e.src);
   const pic = (i: number) => {
     const e = images[i % Math.max(images.length, 1)];
-    return { image: e?.src ?? "", imageCaption: e?.caption ?? e?.label ?? "" };
+    return { image: e?.src ?? "", imageCaption: e?.label ?? "" };
   };
   return {
-    style: { short, cover: "#171310", tint: "#c9beac", title: short.replace(/ /g, "|"), subtitle: project.problem },
-    back: { blurb: [project.problem], line: `${project.headlineMetric} ${project.headlineLabel}.`, closing: project.limitations },
+    style: { short, cover: "#171310", tint: "#c9beac", title: short.replace(/ /g, "|") },
+    back: { points: project.approach.slice(0, 3), stats: project.outcomes.slice(0, 2) },
     spreads: [
-      { ...pic(0), stage: "Task", title: "This is the problem the project set out to solve.", text: project.problem },
-      { ...pic(1), stage: "My work", title: "This is what I built.", points: project.approach },
-      { ...pic(2), stage: "Outcome", title: "This is what the project achieved.", text: project.caseStudySections?.at(-1)?.text ?? "" },
+      { ...pic(0), stage: "Task", title: "The task", lead: project.problem },
+      { ...pic(1), stage: "My work", title: "What I built", points: project.approach },
+      { ...pic(2), stage: "Results", title: "Results", stats: project.outcomes.slice(0, 4) },
     ],
     contribution: [],
     stack: project.tech.map((name) => ({ name, use: "" })),

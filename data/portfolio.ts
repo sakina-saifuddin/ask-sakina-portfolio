@@ -354,16 +354,17 @@ export const projects: Project[] = [
     category: "POWER BI · DAX · FINANCIAL ANALYTICS",
     title: "Grant Financial Analytics & Reporting Dashboards",
     problem: "How can grant and cost-center managers review budget, expense, commitments, payroll, and monthly activity without working through hundreds of separate recurring reports?",
-    summary: "Built a centralized Power BI reporting system for grant and cost-center review: one data model with DAX measures and Power Query transformations behind a grant overview, current-month verification, and payroll / non-payroll drilldowns.",
+    summary: "Built a centralized Power BI reporting system for grant and cost-center review, with a Databricks data-processing layer that automated a preparation process which used to take two days. One data model with DAX measures and Power Query transformations sits behind a grant overview, current-month verification, and payroll / non-payroll drilldowns.",
     headlineMetric: "1,074",
     headlineLabel: "recurring reports automated",
     approach: [
-      "Combined budget, revenue, expense, payroll, commitment, award, project, and cost-center data into one reporting model.",
+      "Built a Databricks data-processing layer that automatically prepares the budget, revenue, expense, payroll, commitment, award, project, and cost-center data — a process that used to take two days by hand.",
+      "Combined the processed data into one reporting model.",
       "Built Power Query transformations and DAX measures for fiscal periods, budget available, commitments, project dates, and review filters.",
       "Created separate grant overview, current-month verification, payroll, non-payroll, and drilldown experiences.",
       "Designed the dashboards as the evidence layer for the monthly cost center verification workflow, which became its own Power Apps project."
     ],
-    evaluation: ["1,074 recurring reports automated", "11+ departments supported", "50+ grants / financial datasets", "50% manual workload reduction", "10+ Power BI dashboards and views"],
+    evaluation: ["1,074 recurring reports automated", "2-day manual data preparation automated with Databricks", "11+ departments supported", "50+ grants / financial datasets", "50% manual workload reduction", "10+ Power BI dashboards and views"],
     outcomes: [
       { value: "1,074", label: "reports automated" },
       { value: "50%", label: "manual work reduced" },
@@ -373,13 +374,14 @@ export const projects: Project[] = [
     caseStudySections: [
       { title: "The challenge", text: "Financial review was spread across recurring reports and different types of financial data. A reviewer needed to understand budget, actual expenses, open and soft commitments, payroll, project dates, and the current month before confirming that a cost center looked correct." },
       { title: "What I built", text: "I created one reporting system in Power BI with the calculations and filters needed to move from a high-level grant view into the underlying records. I also built monthly verification and payroll/non-payroll views so a reviewer could check the exact transactions behind a balance." },
+      { title: "Automating the data processing", text: "Before the dashboards could be refreshed, the financial data had to be pulled together and prepared by hand, which took about two days. I added a Databricks data-processing layer that does this preparation automatically, so the reporting model always receives clean, consistent data without the two-day manual effort." },
       { title: "A difficult part I solved", text: "The source tables did not all use the same level of detail. Budget, commitments, projects, payroll, and fiscal periods had to line up correctly before the totals could be trusted. I built lookup logic, Power Query transformations, DAX measures, and project/fiscal filters so the same selection produced consistent results across pages." },
       { title: "The result", text: "The system automated 1,074 recurring reports across 11+ departments and 50+ grant or financial datasets, while reducing manual review work by about 50%. Instead of jumping between separate files, reviewers can start with the grant overview and drill into current-month, payroll, and non-payroll details." },
       { title: "What the screenshots show", text: "The first dashboard is the grant overview, the second is the current-month verification screen, and the third is the payroll drilldown. Together they show the main path from summary review to transaction-level evidence." }
     ],
     limitations: "The screenshots are work samples with all real figures, grant names, and employee data replaced by sample values — sensitive university financial and personnel records are not shown.",
     evidencePrivacyNotice: "The dashboards below are real — every figure, name, and ID shown in them has been replaced with fabricated sample data. The actual grant, financial, and employee records are private and are not shown.",
-    tech: ["Power BI", "DAX", "Power Query", "Python", "SQL", "PeopleSoft"],
+    tech: ["Power BI", "Databricks", "DAX", "Power Query", "Python", "SQL", "PeopleSoft"],
     evidence: [
       { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png", label: "Grant cost center overview", caption: "Grant cost center financial overview with total budget, expenses, commitments, available balance, and budget-vs-expenses breakdowns by status. Underlying dollar figures are sample data for privacy; the charts reflect the real shape of the dashboard." },
       { type: "image", src: "/project-evidence/financial-reconciliation/grants-overview-dummy.png", label: "Grant overview", caption: "High-level grant view with budget, expenses, commitments, balance, funding dates, and cost-center status. Shown with sample data to protect real grant and personnel records." },
@@ -727,13 +729,13 @@ export const qaItems = [
     question: "What has she built?",
     answer: "She has shipped 5+ full-stack applications, built healthcare pipelines across 15–20 data sources, automated 1,074 recurring financial reports, built 10+ BI dashboards, created an Oracle-to-Power-BI ETL workflow, and trained machine-learning models for forecasting, EEG classification, computer vision, and generative AI.",
     facts: ["5+ apps", "15–20 sources", "1,074 reports"],
-    links: [{ label: "See projects", href: "/works" }, { label: "See experience", href: "/#chapter-four" }],
+    links: [{ label: "See projects", href: "/books" }, { label: "See experience", href: "/#chapter-four" }],
   },
   {
     question: "What machine-learning models has she trained?",
     answer: "Her project work includes Linear Regression, Random Forest, LightGBM, SVMs, CNNs, bidirectional LSTMs, multilayer neural networks, DCGANs, and a Deep Q-Network decision layer. She has worked with both TensorFlow/Keras and PyTorch.",
     facts: ["CNN / Bi-LSTM", "DCGAN", "LightGBM / DQN"],
-    links: [{ label: "ML projects", href: "/works" }],
+    links: [{ label: "ML projects", href: "/books" }],
   },
   {
     question: "Has she worked with LLMs and RAG?",
@@ -763,7 +765,7 @@ export const qaItems = [
     question: "What are her strongest project results?",
     answer: "Her current project evidence includes 94% mean accuracy for EEG seizure detection, a DCGAN project that improved chest X-ray classifier accuracy from 73.56% to 82.21%, 1,074 automated financial reports, and a retail forecasting workflow over 3M+ sales records.",
     facts: ["94% EEG accuracy", "82.21% X-ray accuracy", "1,074 reports"],
-    links: [{ label: "Project archive", href: "/works" }],
+    links: [{ label: "Project archive", href: "/books" }],
   },
   {
     question: "When will she graduate and where is she based?",
@@ -781,7 +783,7 @@ export const qaItems = [
     question: "Why should we interview Sakina?",
     answer: "Her work covers both engineering and analysis. She has shipped production applications, built dashboards, automated manual workflows, integrated healthcare data, worked with clients and campaign performance, and trained machine-learning models. The portfolio links those claims to screenshots, metrics, code, and case studies.",
     facts: ["Production software", "Analytics", "Machine learning"],
-    links: [{ label: "Review the work", href: "/works" }],
+    links: [{ label: "Review the work", href: "/books" }],
   },
   {
     question: "What's a mistake she's made, and what did she learn from it?",

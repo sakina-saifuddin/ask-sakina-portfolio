@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import type { CSSProperties } from "react";
 import type { Project } from "@/data/portfolio";
-import { BOOK_STAGES, getBookContent, listSentence, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
+import { BOOK_STAGES, getBookContent, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
 import { Header } from "@/components/Header";
 import { BackCover, Book3D, FrontCover } from "@/components/BookCovers";
 import "./project-book.css";
@@ -292,7 +292,7 @@ function PageContent({ page, index, project, content, style }: PageProps) {
             ))}
           </ol>
           <h2>{spread.title}</h2>
-          {spread.text && <p>{spread.text}</p>}
+          {spread.lead && <p className="bk-lead">{spread.lead}</p>}
           {spread.points && (
             <ul className="bk-points">
               {spread.points.map((pt) => (
@@ -316,7 +316,11 @@ function PageContent({ page, index, project, content, style }: PageProps) {
               ))}
             </div>
           )}
-          {spread.tools && <p className="bk-used-line">I used {listSentence(spread.tools)}.</p>}
+          {spread.tools && (
+            <p className="bk-used-line">
+              <b>Tools:</b> {spread.tools.join(" · ")}
+            </p>
+          )}
           <span className="bk-folio">{index}</span>
         </div>
       );

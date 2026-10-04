@@ -158,9 +158,8 @@
     var(--cover);
 }
 
-/* front: huge tinted title in the lower middle, white subtitle and tiny credit under it */
-.bkc-front { justify-content: center; padding: 22cqw 7cqw 8cqw 11cqw; }
-.bkc-front-block { display: inline-flex; flex-direction: column; align-self: flex-start; max-width: 100%; }
+/* front: only the title, huge and tinted, left-aligned a little below the middle */
+.bkc-front { justify-content: center; padding: 14cqw 7cqw 6cqw 11cqw; }
 .bkc-front h1 {
   display: flex;
   flex-direction: column;
@@ -174,29 +173,8 @@
   opacity: 0.92;
 }
 .bkc-front h1 span { white-space: nowrap; }
-.bkc-sub {
-  align-self: center;
-  margin: 2.6cqw 0 0;
-  text-align: center;
-  max-width: 92%;
-  font-size: max(8px, 2.7cqw);
-  font-weight: 800;
-  line-height: 1.25;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: #fff;
-}
-.bkc-credit {
-  align-self: center;
-  margin: 1cqw 0 0;
-  font-size: max(6px, 1.4cqw);
-  font-weight: 700;
-  letter-spacing: 0.04em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.85);
-}
 
-/* back: heading, blurb, bold centred line, blurb, visit note + barcode */
+/* back: heading, bullet points, big numbers, visit note + barcode */
 .bkc-back { padding: 7cqw 7cqw 6cqw 9cqw; gap: 2.2cqw; }
 .bkc-back h2 {
   display: flex;
@@ -210,16 +188,29 @@
   opacity: 0.92;
 }
 .bkc-back p { margin: 0; font-size: max(8px, 1.72cqw); line-height: 1.55; font-weight: 500; color: rgba(255, 255, 255, 0.8); }
-.bkc-line {
-  align-self: center;
-  margin: 1cqw 0;
-  text-align: center;
-  font-size: max(9px, 2.4cqw);
-  font-weight: 800;
-  letter-spacing: 0.01em;
-  text-transform: uppercase;
-  color: #fff;
+.bkc-points { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 2cqw; }
+.bkc-points li {
+  position: relative;
+  padding-left: 4cqw;
+  font-size: max(10px, 2.5cqw);
+  line-height: 1.4;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.92);
 }
+.bkc-points li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.55em;
+  width: 1.6cqw;
+  height: 1.6cqw;
+  border-radius: 50%;
+  background: var(--tint);
+}
+.bkc-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 3cqw; margin-top: 2cqw; padding-top: 3cqw; border-top: 1px solid rgba(255, 255, 255, 0.22); }
+.bkc-stats div { display: flex; flex-direction: column; gap: 0.6cqw; }
+.bkc-stats strong { font-size: max(16px, 6.4cqw); font-weight: 800; line-height: 1; color: var(--tint); }
+.bkc-stats span { font-size: max(8px, 1.8cqw); font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: #fff; }
 .bkc-foot { margin-top: auto; display: flex; align-items: flex-end; justify-content: space-between; gap: 4cqw; padding-left: 2cqw; }
 .bkc-visit { display: flex; flex-direction: column; gap: 1.6cqw; }
 .bkc-visit span { font-size: max(8px, 1.7cqw); font-weight: 800; line-height: 1.2; letter-spacing: 0.02em; text-transform: uppercase; color: #fff; }
@@ -413,7 +404,7 @@
 .bk-points li {
   position: relative;
   padding-left: 2.6cqw;
-  font-size: max(13px, 2cqw);
+  font-size: max(13px, 2.2cqw);
   line-height: 1.45;
   color: var(--bk-body);
 }
@@ -455,7 +446,7 @@
 .bk-result strong {
   font-family: var(--font-cinzel), Georgia, serif;
   font-weight: 500;
-  font-size: max(28px, 6.8cqw);
+  font-size: max(34px, 9cqw);
   line-height: 1;
   color: var(--bk-accent);
 }
@@ -465,10 +456,10 @@
   color: var(--bk-muted);
 }
 .bk-used { display: flex; flex-direction: column; gap: 1.2cqw; }
-/* "I used A, B and C." under each My work page */
+.bk-story p.bk-lead { font-size: max(13px, 2.1cqw); color: var(--bk-muted); }
+/* "Tools: A · B · C" under each My work page */
 .bk-story p.bk-used-line {
   font-size: max(12px, 1.75cqw);
-  font-style: italic;
   color: var(--bk-muted);
   padding-top: 1.2cqw;
   border-top: 1px solid var(--bk-line);
@@ -522,7 +513,7 @@
 .bk-stats strong {
   font-family: var(--font-cinzel), Georgia, serif;
   font-weight: 500;
-  font-size: max(24px, 5.4cqw);
+  font-size: max(28px, 7cqw);
   line-height: 1;
   color: var(--bk-accent);
 }
@@ -587,7 +578,7 @@
 .bk-points li {
   position: relative;
   padding-left: 2.6cqw;
-  font-size: max(13px, 2cqw);
+  font-size: max(13px, 2.2cqw);
   line-height: 1.45;
   color: var(--bk-body);
 }

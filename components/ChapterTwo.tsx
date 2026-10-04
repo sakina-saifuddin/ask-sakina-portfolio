@@ -25,7 +25,7 @@ const relatedWork: RelatedWorkItem[] = [
     title: "Sakina Job OS — Agentic AI Job Search & Outreach Platform",
     shortTitle: "Agentic AI Job Platform",
     image: "/projects/job-os-placeholder.png",
-    href: "/works/sakina-job-os",
+    href: "/books?project=sakina-job-os",
     slug: "sakina-job-os",
   },
   {
@@ -33,7 +33,7 @@ const relatedWork: RelatedWorkItem[] = [
     title: "AI-Driven Retail Inventory Forecasting & Autonomous Inventory Optimization",
     shortTitle: "AI Retail Demand Forecasting",
     image: "/project-evidence/retail-report/page-16.png",
-    href: "/works/retail-demand-forecasting",
+    href: "/books?project=retail-demand-forecasting",
     slug: "retail-demand-forecasting",
   },
   {
@@ -41,7 +41,7 @@ const relatedWork: RelatedWorkItem[] = [
     title: "Grant Financial Analytics & Reporting Dashboards",
     shortTitle: "Power BI Grant Dashboards",
     image: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
-    href: "/works/financial-reconciliation",
+    href: "/books?project=financial-reconciliation",
     slug: "financial-reconciliation",
   },
   {
@@ -49,7 +49,7 @@ const relatedWork: RelatedWorkItem[] = [
     title: "Oracle Financial ETL Pipeline",
     shortTitle: "Oracle Financial Data Pipeline",
     image: "/project-evidence/oracle-etl/conversion.png",
-    href: "/works/oracle-financial-etl",
+    href: "/books?project=oracle-financial-etl",
     slug: "oracle-financial-etl",
   },
   {
@@ -57,7 +57,7 @@ const relatedWork: RelatedWorkItem[] = [
     title: "GAN-Based Chest X-ray Augmentation for Pneumonia Detection",
     shortTitle: "AI Pneumonia X-ray Detection",
     image: "/project-evidence/gan-deck/architecture.png",
-    href: "/works/pneumonia-dcgan",
+    href: "/books?project=pneumonia-dcgan",
     slug: "pneumonia-dcgan",
   },
 ];
@@ -156,11 +156,11 @@ export function ChapterTwo() {
           transition={{ duration: 0.5, ease: EASE, delay: 0.35 }}
         >
           <Link
-            href="/works"
+            href="/books"
             className="ch2-view-all"
             onClick={(event) => {
               event.preventDefault();
-              triggerClipWipeCurtain("/works");
+              triggerClipWipeCurtain("/books");
             }}
           >
             View All Work →

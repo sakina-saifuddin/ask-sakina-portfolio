@@ -7,10 +7,12 @@ import type { CSSProperties } from "react";
 import type { Project } from "@/data/portfolio";
 import { BOOK_STAGES, getBookContent, getBookStyle, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
 import { Header } from "@/components/Header";
-import { BackCover, FrontCover } from "@/components/BookCovers";
+import { BackCover, Book3D, FrontCover } from "@/components/BookCovers";
 import "./project-book.css";
 
 const TURN_MS = 1000;
+// How long the closed 3D book takes to straighten up before the cover opens.
+const STRAIGHTEN_MS = 450;
 
 type BookPage =
   | { kind: "cover" }
@@ -43,6 +45,10 @@ export function ProjectBook({ project }: { project: Project }) {
   // Every leaf currently mid-turn (several can be when pages are turned quickly), in the order they started.
   const [turning, setTurning] = useState<number[]>([]);
   const [narrow, setNarrow] = useState(false);
+  // While the book is shut (desktop only), a real 3D paperback stands in for the flat cover leaf.
+  const [closed, setClosed] = useState<"front" | "back" | null>("front");
+  const [tilted, setTilted] = useState(true);
+  const straightening = useRef(false);
   const turnTimers = useRef<ReturnType<typeof setTimeout>[]>([]);
   const touchX = useRef<number | null>(null);
 
@@ -60,7 +66,45 @@ export function ProjectBook({ project }: { project: Project }) {
     turnTimers.current.push(setTimeout(() => setTurning((t) => t.filter((l) => l !== leaf)), TURN_MS));
   }, []);
 
+  useEffect(() => {
+    if (narrow) setClosed(null);
+  }, [narrow]);
+
+  // Once a turn lands on the front or back cover, swap in the 3D book: flat first, then turned.
+  useEffect(() => {
+    if (narrow || turning.length > 0 || closed) return;
+    if (flipped !== 0 && flipped !== leafCount) return;
+    setClosed(flipped === 0 ? "front" : "back");
+    setTilted(false);
+  }, [narrow, turning.length, closed, flipped, leafCount]);
+
+  // A freshly shown 3D book starts flat (matching the leaf it replaced), then turns to show its depth.
+  useEffect(() => {
+    if (!closed || tilted || straightening.current) return;
+    const t = setTimeout(() => setTilted(true), 40);
+    return () => clearTimeout(t);
+  }, [closed, tilted]);
+
+  // Straighten the 3D book, then hand over to the page leaves and run the turn.
+  const openFromClosed = useCallback(
+    (leaf: number, nextFlipped: number) => {
+      if (straightening.current) return;
+      straightening.current = true;
+      setTilted(false);
+      turnTimers.current.push(
+        setTimeout(() => {
+          straightening.current = false;
+          setClosed(null);
+          turn(leaf, nextFlipped);
+        }, STRAIGHTEN_MS)
+      );
+    },
+    [turn]
+  );
+
   const next = useCallback(() => {
+    if (closed === "front") return openFromClosed(0, 1);
+    if (closed) return;
     if (narrow) {
       if (side === "left" && flipped < leafCount) return setSide("right");
       if (side === "right" && flipped < leafCount) {
@@ -70,9 +114,11 @@ export function ProjectBook({ project }: { project: Project }) {
       return;
     }
     if (flipped < leafCount) turn(flipped, flipped + 1);
-  }, [narrow, side, flipped, leafCount, turn]);
+  }, [closed, openFromClosed, narrow, side, flipped, leafCount, turn]);
 
   const prev = useCallback(() => {
+    if (closed === "back") return openFromClosed(leafCount - 1, leafCount - 1);
+    if (closed) return;
     if (narrow) {
       if (side === "right" && flipped > 0) return setSide("left");
       if (side === "left" && flipped > 0) {
@@ -82,7 +128,7 @@ export function ProjectBook({ project }: { project: Project }) {
       return;
     }
     if (flipped > 0) turn(flipped - 1, flipped - 1);
-  }, [narrow, side, flipped, turn]);
+  }, [closed, openFromClosed, leafCount, narrow, side, flipped, turn]);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
@@ -115,7 +161,7 @@ export function ProjectBook({ project }: { project: Project }) {
       <Header theme="light" />
       <header className="bk-topbar">
         <Link href={`/works/${project.slug}`} className="bk-back">
-          <ArrowLeft size={16} /> Case study
+          <ArrowLeft size={14} /> Case study
         </Link>
         <span className="bk-hint">Click a page, swipe, or use ← → to turn</span>
       </header>
@@ -138,7 +184,21 @@ export function ProjectBook({ project }: { project: Project }) {
           touchX.current = null;
         }}
       >
-        <div className="bk-book" style={{ transform: `translateX(${shift})` }}>
+        {closed && (
+          <div className="bk-closed">
+            <Book3D
+              style={style}
+              project={project}
+              rotate={closed === "front" ? (tilted ? -24 : 0) : tilted ? 156 : 180}
+              tilt={tilted ? -5 : 0}
+              onBackLinkClick={stop}
+            />
+          </div>
+        )}
+        <div
+          className="bk-book"
+          style={{ transform: `translateX(${shift})`, visibility: closed ? "hidden" : undefined }}
+        >
           {/* Page edges: the stack of unread pages on the right, read pages on the left. */}
           <span className="bk-edges bk-edges-right" style={{ width: `${((leafCount - flipped) / leafCount) * 12}px` }} />
           <span className="bk-edges bk-edges-left" style={{ width: `${(flipped / leafCount) * 12}px` }} />

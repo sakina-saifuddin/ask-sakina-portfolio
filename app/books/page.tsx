@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import type { MouseEvent } from "react";
 import { motion } from "framer-motion";
 import { ChevronLeft, ChevronRight } from "lucide-react";
@@ -9,7 +9,7 @@ import { ScrollAnimations } from "@/components/ScrollAnimations";
 import { triggerClipWipeCurtain } from "@/components/ClipWipeCurtain";
 import { projects } from "@/data/portfolio";
 import { getBookStyle } from "@/data/projectBooks";
-import { FrontCover } from "@/components/BookCovers";
+import { Book3D } from "@/components/BookCovers";
 import "@/components/project-book.css";
 
 const EASE = [0.16, 1, 0.3, 1] as const;
@@ -32,6 +32,26 @@ const shortTitles: Record<string, string> = {
 
 export default function Books() {
   const trackRef = useRef<HTMLDivElement>(null);
+  // Arriving from a project on the home page (/books?project=slug): bring that book into view and highlight it.
+  const [highlight, setHighlight] = useState<string | null>(null);
+
+  useEffect(() => {
+    const slug = new URLSearchParams(window.location.search).get("project");
+    if (!slug || !projects.some((p) => p.slug === slug)) return;
+    setHighlight(slug);
+    const t1 = setTimeout(() => {
+      const track = trackRef.current;
+      const card = track?.querySelector<HTMLElement>(`[data-slug="${slug}"]`);
+      if (!track || !card) return;
+      track.scrollTo({ left: card.offsetLeft - (track.clientWidth - card.offsetWidth) / 2, behavior: "smooth" });
+      card.scrollIntoView({ block: "center", behavior: "smooth" });
+    }, 350);
+    const t2 = setTimeout(() => setHighlight(null), 3200);
+    return () => {
+      clearTimeout(t1);
+      clearTimeout(t2);
+    };
+  }, []);
 
   function scrollByCard(direction: 1 | -1) {
     const track = trackRef.current;
@@ -59,7 +79,8 @@ export default function Books() {
                 <motion.a
                   key={project.slug}
                   href={`/book/${project.slug}`}
-                  className="works-carousel-card"
+                  className={`works-carousel-card${highlight === project.slug ? " is-highlight" : ""}`}
+                  data-slug={project.slug}
                   onClick={(event: MouseEvent) => {
                     event.preventDefault();
                     triggerClipWipeCurtain(`/book/${project.slug}`);
@@ -72,9 +93,7 @@ export default function Books() {
                   whileTap={{ scale: 0.98 }}
                 >
                   <div className="works-grid-media books-mock-stage">
-                    <div className="books-mock">
-                      <FrontCover style={getBookStyle(project)} />
-                    </div>
+                    <Book3D style={getBookStyle(project)} rotate={-32} tilt={-7} />
                   </div>
                   <div className="works-grid-meta">
                     <span className="works-grid-number">{pad(index + 1)}.</span>

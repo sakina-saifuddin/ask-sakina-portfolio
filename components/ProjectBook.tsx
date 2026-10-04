@@ -5,7 +5,7 @@ import Link from "next/link";
 import { ArrowLeft, ChevronLeft, ChevronRight } from "lucide-react";
 import type { CSSProperties } from "react";
 import type { Project } from "@/data/portfolio";
-import { BOOK_STAGES, getBookContent, getBookStyle, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
+import { BOOK_STAGES, getBookContent, listSentence, type BookSpread, type BookStyle, type ProjectBookContent } from "@/data/projectBooks";
 import { Header } from "@/components/Header";
 import { BackCover, Book3D, FrontCover } from "@/components/BookCovers";
 import "./project-book.css";
@@ -36,7 +36,7 @@ function buildPages(content: ProjectBookContent): BookPage[] {
 
 export function ProjectBook({ project }: { project: Project }) {
   const content = useMemo(() => getBookContent(project), [project]);
-  const style = useMemo(() => getBookStyle(project), [project]);
+  const style = content.style;
   const pages = useMemo(() => buildPages(content), [content]);
   const leafCount = pages.length / 2;
 
@@ -189,6 +189,7 @@ export function ProjectBook({ project }: { project: Project }) {
             <Book3D
               style={style}
               project={project}
+              back={content.back}
               rotate={closed === "front" ? (tilted ? -24 : 0) : tilted ? 156 : 180}
               tilt={tilted ? -5 : 0}
               onBackLinkClick={stop}
@@ -315,16 +316,7 @@ function PageContent({ page, index, project, content, style }: PageProps) {
               ))}
             </div>
           )}
-          {spread.tools && (
-            <div className="bk-used">
-              <span className="bk-label">Used</span>
-              <div className="bk-chips">
-                {spread.tools.map((t) => (
-                  <span key={t}>{t}</span>
-                ))}
-              </div>
-            </div>
-          )}
+          {spread.tools && <p className="bk-used-line">I used {listSentence(spread.tools)}.</p>}
           <span className="bk-folio">{index}</span>
         </div>
       );
@@ -355,7 +347,7 @@ function PageContent({ page, index, project, content, style }: PageProps) {
           </dl>
           {content.contribution.length > 0 && (
             <>
-              <span className="bk-label">My part</span>
+              <span className="bk-label">What I did</span>
               <ul className="bk-points">
                 {content.contribution.map((c) => (
                   <li key={c}>{c}</li>
@@ -369,6 +361,6 @@ function PageContent({ page, index, project, content, style }: PageProps) {
       );
 
     case "back":
-      return <BackCover project={project} style={style} onLinkClick={stop} />;
+      return <BackCover project={project} style={style} back={content.back} onLinkClick={stop} />;
   }
 }

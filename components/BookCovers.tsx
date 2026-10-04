@@ -1,7 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { Project } from "@/data/portfolio";
-import type { BookStyle } from "@/data/projectBooks";
+import type { BookStyle, ProjectBookContent } from "@/data/projectBooks";
 
 /** Font size (in cqw of the cover) that fits the given lines inside a box of maxWidth × maxHeight cqw. */
 function fitLines(lines: string[], maxWidthCqw: number, maxHeightCqw: number, cap: number, charWidth = 0.66) {
@@ -13,7 +13,6 @@ function fitLines(lines: string[], maxWidthCqw: number, maxHeightCqw: number, ca
 
 const coverVars = (style: BookStyle) => ({ "--cover": style.cover, "--tint": style.tint }) as CSSProperties;
 
-const firstSentences = (text: string, n = 2) => (text.match(/[^.!?]+[.!?]+/g) ?? [text]).slice(0, n).join(" ").trim();
 
 /**
  * Paperback front cover, laid out like the reference: the title set huge in a lighter tint of the
@@ -80,15 +79,16 @@ function splitInTwo(text: string) {
 export function BackCover({
   project,
   style,
+  back,
   onLinkClick,
 }: {
   project: Project;
   style: BookStyle;
+  back: ProjectBookContent["back"];
   onLinkClick?: (e: React.MouseEvent) => void;
 }) {
   const heading = style.short.toUpperCase();
   const headingLines = heading.split(" ").length > 2 ? splitInTwo(heading) : [heading];
-  const result = project.caseStudySections?.find((s) => /result|outcome/i.test(s.title))?.text;
   return (
     <div className="bkc bkc-back" style={coverVars(style)}>
       <h2 style={{ fontSize: fitLines(headingLines, 80, 24, 11) }}>
@@ -96,13 +96,11 @@ export function BackCover({
           <span key={line}>{line}</span>
         ))}
       </h2>
-      <p>{project.summary}</p>
-      <p>{project.problem}</p>
-      {result && <p>{firstSentences(result)}</p>}
-      <strong className="bkc-line">
-        {project.headlineMetric} · {project.headlineLabel}
-      </strong>
-      <p>{project.outcomes.map((o) => `${o.value} ${o.label}`).join(" · ")}.</p>
+      {back.blurb.map((paragraph) => (
+        <p key={paragraph}>{paragraph}</p>
+      ))}
+      <strong className="bkc-line">{back.line}</strong>
+      <p>{back.closing}</p>
       <div className="bkc-foot">
         <div className="bkc-visit">
           <span>
@@ -138,6 +136,7 @@ export function Spine({ style }: { style: BookStyle }) {
 export function Book3D({
   style,
   project,
+  back,
   rotate,
   tilt = -6,
   className = "",
@@ -145,6 +144,7 @@ export function Book3D({
 }: {
   style: BookStyle;
   project?: Project;
+  back?: ProjectBookContent["back"];
   rotate: number;
   tilt?: number;
   className?: string;
@@ -158,7 +158,11 @@ export function Book3D({
           <FrontCover style={style} />
         </div>
         <div className="b3d-face b3d-back">
-          {project ? <BackCover project={project} style={style} onLinkClick={onBackLinkClick} /> : <div className="bkc" />}
+          {project && back ? (
+            <BackCover project={project} style={style} back={back} onLinkClick={onBackLinkClick} />
+          ) : (
+            <div className="bkc" />
+          )}
         </div>
         <div className="b3d-spine">
           <Spine style={style} />

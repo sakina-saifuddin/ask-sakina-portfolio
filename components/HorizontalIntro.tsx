@@ -5,6 +5,7 @@ import { profile } from "@/data/portfolio";
 import { ChapterOne } from "@/components/ChapterOne";
 import { ChapterTwo } from "@/components/ChapterTwo";
 import { ChapterThree } from "@/components/ChapterThree";
+import { ChapterAchievements } from "@/components/ChapterAchievements";
 import { ChapterFour } from "@/components/ChapterFour";
 import { ChapterFive } from "@/components/ChapterFive";
 import { Typewriter } from "@/components/Typewriter";
@@ -118,9 +119,13 @@ export function HorizontalIntro() {
 
     function updateNavThemeDesktop() {
       if (mobileQuery.matches) return;
-      const width = el!.clientWidth || 1;
-      const index = Math.round(el!.scrollLeft / width);
-      announceActive(panels[Math.min(Math.max(index, 0), panels.length - 1)]);
+      // Panels aren't all one viewport wide (Chapter III is wider), so pick the nearest panel by position.
+      const current = el!.scrollLeft;
+      let nearest = panels[0];
+      panels.forEach((panel) => {
+        if (Math.abs(panel.offsetLeft - current) < Math.abs((nearest?.offsetLeft ?? 0) - current)) nearest = panel;
+      });
+      announceActive(nearest);
     }
 
     function updateNavThemeMobile() {
@@ -178,6 +183,7 @@ export function HorizontalIntro() {
         <ChapterOne />
         <ChapterTwo />
         <ChapterThree />
+        <ChapterAchievements />
         <ChapterFour />
         <ChapterFive />
       </div>

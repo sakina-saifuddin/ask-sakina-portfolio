@@ -1531,7 +1531,42 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .wid-column-text h3{width:100%;text-align:left;font-family:var(--font-cinzel);font-weight:700;font-size:clamp(1.8rem,9vw,2.6rem);line-height:1.1;letter-spacing:.01em;text-transform:uppercase;color:var(--ink);white-space:pre-line}
 }
 
-/* --- chapter IV: selected experience (grey list + logo preview on hover) --- */
+/* --- chapter IV: achievements (copy on the left, prize and team photos on the right) --- */
+.hz-panel-achievements{position:relative;background:var(--paper);flex-direction:row;align-items:center;justify-content:space-between;gap:clamp(2rem,4vw,4.5rem);padding:clamp(120px,17vh,170px) clamp(24px,6vw,90px) clamp(48px,7vh,80px) clamp(72px,9vw,120px)}
+.ach-chapter-block{position:absolute;left:clamp(72px,9vw,120px);top:clamp(28px,4.5vh,56px)}
+.ach-chapter-eyebrow{display:block;font-family:var(--font-sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--muted)}
+.ach-chapter-label{display:block;font-family:var(--font-cinzel);font-weight:400;font-size:clamp(2.4rem,4.5vw,4rem);line-height:1;text-transform:uppercase;margin:1rem 0 0;color:var(--ink)}
+.ach-copy{flex:0 0 clamp(320px,34vw,520px);display:flex;flex-direction:column;align-items:flex-start}
+.ach-eyebrow{font-family:var(--font-sans);font-size:.72rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+.ach-title{font-family:var(--font-cinzel);font-weight:600;font-size:clamp(2rem,3.6vw,3.4rem);line-height:1.04;color:var(--ink);margin:.9rem 0 1rem}
+.ach-text{font-family:var(--font-sans);font-size:clamp(.88rem,1.05vw,1rem);line-height:1.65;color:var(--slate);margin:0;max-width:46ch}
+.ach-stats{display:flex;gap:clamp(1.4rem,3vw,2.6rem);margin:1.6rem 0;padding:1.1rem 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);width:100%}
+.ach-stats strong{display:block;font-family:var(--font-cinzel);font-weight:700;font-size:clamp(1.8rem,2.8vw,2.6rem);line-height:1;color:var(--ink)}
+.ach-stats span{display:block;margin-top:.35rem;font-family:var(--font-sans);font-size:.72rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
+.ach-links{display:flex;flex-wrap:wrap;gap:.6rem}
+.ach-links a{font-family:var(--font-sans);font-size:.85rem;font-weight:700;padding:.7rem 1rem;border-radius:999px;border:1px solid var(--line);color:var(--ink);transition:background .25s ease,color .25s ease}
+.ach-links a:first-child{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+.ach-links a:hover{background:var(--ink);color:var(--paper)}
+.ach-photos{flex:1;display:grid;grid-template-columns:1.7fr 1fr;gap:1rem;align-items:end;max-width:1000px;min-width:0}
+.ach-photo{margin:0;min-width:0}
+.ach-photo-frame{position:relative;overflow:hidden;border-radius:6px;border:1px solid var(--line)}
+.ach-photo-main .ach-photo-frame{aspect-ratio:4/3}
+.ach-photo-side .ach-photo-frame{aspect-ratio:3/4}
+.ach-photo-frame img{object-fit:cover;transition:transform .9s cubic-bezier(.16,1,.3,1)}
+.ach-photo-main img{object-position:center 85%}
+.ach-photo:hover img{transform:scale(1.03)}
+.ach-photo figcaption{margin-top:.6rem;font-family:var(--font-sans);font-size:.78rem;color:var(--muted)}
+
+@media(max-width:900px){
+  .hz-panel-achievements{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:2rem;padding:76px 1.5rem 2.5rem 20px;min-height:auto;height:auto;overflow-y:visible}
+  .ach-chapter-block{position:static;display:flex;flex-direction:column-reverse;align-items:flex-start;gap:.5rem;margin:0}
+  .ach-chapter-label{margin:0;font-size:clamp(1.5rem,6.2vw,2.1rem)}
+  .ach-copy{flex:none;width:100%}
+  .ach-photos{width:100%;grid-template-columns:1fr}
+  .ach-photo-side .ach-photo-frame{aspect-ratio:4/3}
+}
+
+/* --- chapter V: selected experience (grey list + logo preview on hover) --- */
 .hz-panel-experience{position:relative;background:#F5F0E6}
 .exp-chapter-block{position:absolute;left:clamp(72px,9vw,120px);top:clamp(28px,4.5vh,56px)}
 .exp-chapter-eyebrow{display:block;font-family:var(--font-sans);font-size:.8rem;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:#8a8071}

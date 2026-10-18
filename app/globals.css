@@ -1938,8 +1938,17 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
 }
 
 /* Achievements page: big numbers and links inside the dark panel */
-.achievement-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;width:100%;margin:1.4rem 0;padding:1.1rem 0;border-top:1px solid #333;border-bottom:1px solid #333}
+.achievement-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:1rem;width:100%;margin:1.4rem 0;padding:1.1rem 0;border-top:1px solid #333;border-bottom:1px solid #333}
 .achievement-stats strong{display:block;font-size:clamp(1.8rem,2.6vw,2.6rem);letter-spacing:-.04em;color:#fff}
 .achievement-stats small{color:#b9b9b3;font-size:.72rem}
 .achievement-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
 .certificate-copy .achievement-links a{margin-top:0}
+.achievement-lead{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:2.5rem;align-items:center;padding:5rem 0 1rem}
+.achievement-lead-image{position:relative;aspect-ratio:4/3;border-radius:18px;overflow:hidden;border:1px solid var(--line)}
+.achievement-lead-image img{object-fit:cover}
+.certificate-image.achievement-photo{min-height:520px}
+.achievement-photo img{object-fit:cover!important;object-position:center 80%;padding:0!important}
+.achievements-page .page-intro h1,.achievement-lead h2{color:var(--ink)}
+.achievement-lead h2{font-size:clamp(2rem,3.4vw,3.4rem);line-height:1.02;letter-spacing:-.045em;margin:.9rem 0 1rem}
+.achievement-lead p{color:var(--muted);line-height:1.7;margin:0 0 1rem}
+@media(max-width:900px){.achievement-lead{grid-template-columns:1fr;gap:1.5rem;padding-top:3.5rem}.achievement-stats{grid-template-columns:repeat(2,1fr)}}

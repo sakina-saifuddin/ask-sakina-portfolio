@@ -5,6 +5,11 @@ import { Footer } from "@/components/Footer";
 
 const items = [
   {
+    title: "2nd Place — CodeRED Orion Hackathon",
+    context: "Placed 2nd out of 70+ teams at the University of Houston's biggest hackathon with Power Guard 360. See the achievements page for the full story.",
+    src: "/project-evidence/powerguard360/hw-7-physical-model.jpg",
+  },
+  {
     title: "Eligibility Pipeline Appreciation",
     context: "Team feedback on the healthcare eligibility pipeline and discrepancy resolution work.",
     src: "/appreciation/dentalx-team.png",

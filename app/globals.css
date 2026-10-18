@@ -1936,3 +1936,10 @@ body.intro-revealing .hz-panel-quote .hz-quote{animation:hzFadeUp .9s ease .2s b
   .ask-pill{font-size:.76rem;padding:.55rem .9rem}
   .ask-input-bar{padding-left:14px;padding-right:14px}
 }
+
+/* Achievements page: big numbers and links inside the dark panel */
+.achievement-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;width:100%;margin:1.4rem 0;padding:1.1rem 0;border-top:1px solid #333;border-bottom:1px solid #333}
+.achievement-stats strong{display:block;font-size:clamp(1.8rem,2.6vw,2.6rem);letter-spacing:-.04em;color:#fff}
+.achievement-stats small{color:#b9b9b3;font-size:.72rem}
+.achievement-links{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1.2rem}
+.certificate-copy .achievement-links a{margin-top:0}

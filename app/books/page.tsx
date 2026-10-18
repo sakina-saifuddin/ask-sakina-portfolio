@@ -19,6 +19,7 @@ function pad(n: number) {
 }
 
 const shortTitles: Record<string, string> = {
+  "power-guard-360": "Power Plant Failure Prediction",
   "retail-demand-forecasting": "Retail Inventory Forecasting",
   "financial-reconciliation": "Grant Financial Dashboards",
   "cost-center-verification": "Cost Center Verification App",

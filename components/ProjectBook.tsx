@@ -364,7 +364,7 @@ function PageContent({ page, index, project, content, style }: PageProps) {
             <div className="bk-chips bk-links">
               {content.links.map((l) => (
                 <a key={l.href} href={l.href} onClick={stop} {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}>
-                  {l.label} ↗
+                  {l.label}
                 </a>
               ))}
             </div>

@@ -710,8 +710,9 @@ export function AskSakinaChat({ embedded = false }: { embedded?: boolean } = {})
             <div className="ask-suggestions">
               <span className="ask-suggestions-label">Popular questions</span>
               <div className="ask-pill-grid">
-                {qaItems.map((item) => (
+                {qaItems.map((item, i) => (
                   <button key={item.question} type="button" className="ask-pill" onClick={() => ask(item.question, item)}>
+                    <span className="ask-pill-num">{String(i + 1).padStart(2, "0")}</span>
                     {item.question}
                   </button>
                 ))}

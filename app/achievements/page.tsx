@@ -47,9 +47,9 @@ export default function Achievements() {
                 ))}
               </div>
               <div className="achp-links">
-                <Link href="/book/power-guard-360">Read the project book →</Link>
-                <a href={DEVPOST} target="_blank" rel="noreferrer">Devpost ↗</a>
-                <a href="https://powerguard360.us/" target="_blank" rel="noreferrer">Live website ↗</a>
+                <Link href="/book/power-guard-360">Read the project book</Link>
+                <a href={DEVPOST} target="_blank" rel="noreferrer">Featured on Devpost</a>
+                <a href="https://powerguard360.us/" target="_blank" rel="noreferrer">Live website</a>
               </div>
             </div>
             <figure className="achp-figure achp-hero-photo">
@@ -85,12 +85,12 @@ export default function Achievements() {
           <section className="hz-panel achp-panel achp-demo" data-nav-theme="dark" data-panel-id="ach-demo">
             <div className="achp-copy">
               <span className="achp-eyebrow">The demo</span>
-              <h2 className="achp-title">See Power Guard 360 in action</h2>
+              <h2 className="achp-title">Watch the full demo</h2>
               <p className="achp-text">
-                A live sensor board, a 3D digital twin of the plant, and a model that flags failing turbines and explains why.
+                The full demo video, from a sensor reading on our board to an engineer arriving at the turbine.
               </p>
               <div className="achp-links">
-                <a href={YOUTUBE} target="_blank" rel="noreferrer">Watch on YouTube ↗</a>
+                <a href={YOUTUBE} target="_blank" rel="noreferrer">Watch on YouTube</a>
               </div>
             </div>
             <div className="achp-video">

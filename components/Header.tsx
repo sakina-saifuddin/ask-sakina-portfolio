@@ -18,9 +18,10 @@ const chapters = [
   { num: "01", title: "Intro", href: "/#intro" },
   { num: "02", title: "Work", href: "/#chapter-two" },
   { num: "03", title: "What I Build", href: "/#chapter-three" },
-  { num: "04", title: "Experience", href: "/about#career-journey" },
-  { num: "05", title: "Expertise", href: "/#chapter-one-stack" },
-  { num: "06", title: "Contact", href: "/#chapter-five" },
+  { num: "04", title: "Achievements", href: "/#chapter-achievements" },
+  { num: "05", title: "Experience", href: "/about#career-journey" },
+  { num: "06", title: "Expertise", href: "/#chapter-one-stack" },
+  { num: "07", title: "Contact", href: "/#chapter-five" },
 ];
 
 export function Header({ theme }: { theme?: "light" | "dark" } = {}) {

@@ -25,7 +25,7 @@ export function ChapterFour() {
       <div className="exp-chapter-block">
         <span className="exp-chapter-eyebrow">Selected Experiences</span>
         <span className="exp-chapter-label">
-          <HeaderWordsReveal text="Chapter IV" active={entered} />
+          <HeaderWordsReveal text="Chapter V" active={entered} />
         </span>
       </div>
 

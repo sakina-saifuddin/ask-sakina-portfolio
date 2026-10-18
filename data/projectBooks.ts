@@ -68,7 +68,7 @@ const books: Record<string, ProjectBookContent> = {
     style: { short: "Power Guard 360", cover: "#0f2a5c", tint: "#7fa8f0", title: "Predicting Power|Plant Failures|with Machine Learning" },
     back: {
       points: [
-        "2nd place out of 70+ teams at CodeRED Orion, UH's biggest hackathon.",
+        "2nd of 70+ teams at CodeRED Orion and a $500 Best Pitch prize.",
         "Machine learning flags failing turbines and explains why.",
         "Real sensors, a 3D plant, and a phone app for the engineer.",
       ],
@@ -140,17 +140,21 @@ const books: Record<string, ProjectBookContent> = {
         ],
       },
       {
-        image: `${PG}/11-complete-solution-loop.png`, imageCaption: "Sense, predict, protect, see, act, fix.", stage: "Outcome",
+        image: `${PG}/award-500-best-pitch.jpg`, imageCaption: "Our team on stage with the $500 Best Pitch/Demo check.", stage: "Outcome",
         title: "2nd place out of 70+ teams",
         points: [
-          "Placed 2nd at CodeRED Orion, UH's biggest hackathon.",
-          "Judges saw the live sensors and the full loop end to end.",
+          "Led a team of undergraduates to 2nd place at CodeRED Orion.",
+          "Won $500 for Best Pitch/Demo.",
           "Still live at powerguard360.us.",
         ],
-        stat: { value: "2nd", label: "of 70+ teams" },
+        stats: [
+          { value: "2nd", label: "of 70+ teams" },
+          { value: "$500", label: "cash prize" },
+        ],
       },
     ],
     contribution: [
+      "Led a team of undergraduates and split the work by each person's strengths.",
       "Built both machine learning models, the SHAP explanations and the model service.",
       "Built the 3D plant model and the version 2 interface.",
       "Added the public view with admin sign-in and deployed the plant server.",
@@ -167,6 +171,7 @@ const books: Record<string, ProjectBookContent> = {
     links: [
       { label: "Live website", href: "https://powerguard360.us/" },
       { label: "YouTube demo", href: "https://www.youtube.com/watch?v=1z6rV0uYjOI" },
+      { label: "Devpost", href: "https://devpost.com/software/power-guard-360" },
       { label: "The achievement", href: "/achievements" },
     ],
   },

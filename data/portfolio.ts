@@ -269,7 +269,7 @@ export const projects: Project[] = [
     category: "MACHINE LEARNING · IOT · 3D WEB · HACKATHON (2ND PLACE)",
     title: "Power Guard 360 — Predictive Maintenance for a Power Plant Feeding an AI Data Center",
     problem: "When a gas turbine at a power plant fails without warning, the AI data center it feeds loses power. How can a plant spot failures early, tell the manager why, and get an engineer to the right turbine before that happens?",
-    summary: "Built at CodeRED Orion, the University of Houston's biggest hackathon, where our team placed 2nd out of 70+ teams. Two Random Forest models watch every turbine's sensor data and flag failures with the reasons behind them. A live Arduino sensor board drives one turbine and watches for gas leaks, a 3D digital twin shows the whole plant, and the engineer's phone app takes them to the job.",
+    summary: "Built at CodeRED Orion, the University of Houston's biggest hackathon, where I led our team to 2nd place out of 70+ teams and a $500 prize for Best Pitch/Demo. Two Random Forest models watch every turbine's sensor data and flag failures with the reasons behind them. A live Arduino sensor board drives one turbine and watches for gas leaks, a 3D digital twin shows the whole plant, and the engineer's phone app takes them to the job.",
     headlineMetric: "2nd of 70+",
     headlineLabel: "teams at CodeRED Orion 2026",
     approach: [
@@ -290,7 +290,7 @@ export const projects: Project[] = [
       { title: "The challenge", text: "The Chevron track was built around plants like Project Kilby, where gas turbines power an AI data center directly. If a turbine fails suddenly, the data center's computers go dark. The plant needs to catch failures before they happen and get the right engineer to the right turbine fast." },
       { title: "What we built", text: "Power Guard 360 covers the whole loop: sense, predict, protect, see, act and fix. Sensors feed the plant server, the models flag a turbine and explain why, a battery covers the gap if a unit trips, the manager sees everything on a 3D plant and a dashboard, approves a repair, and the engineer gets the job on their phone." },
       { title: "My part", text: "I built the machine learning pipeline: both Random Forest models, the SHAP explanations and the trained model bundle the plant server uses. I also built the 3D plant model with a Blender script, the version 2 logo and interface, the About page, the read-only public view with admin sign-in, the phone layout, and the deployment of the plant server on a cloud VM." },
-      { title: "The result", text: "We placed 2nd out of more than 70 teams at CodeRED Orion. The judges saw the live sensor board, a physical model of the plant and data center, and the full loop from a sensor reading to an engineer arriving at the turbine." }
+      { title: "The result", text: "We placed 2nd out of more than 70 teams at CodeRED Orion and won $500 for Best Pitch/Demo. The judges saw the live sensor board, a physical model of the plant and data center, and the full loop from a sensor reading to an engineer arriving at the turbine." }
     ],
     limitations: "Seven of the eight turbines replay rows from the public AI4I 2020 dataset rather than real turbine data, and the models were trained on that dataset. The live sensor board stands in for one turbine.",
     tech: ["Python", "scikit-learn", "SHAP", "FastAPI", "React", "TypeScript", "three.js", "Node.js", "WebSockets", "Expo / React Native", "Arduino", "Gemini API", "Blender"],
@@ -298,6 +298,7 @@ export const projects: Project[] = [
       { type: "image", src: "/project-evidence/powerguard360/live-01-plant-3d-twin.png", label: "3D digital twin of the plant", caption: "Eight gas turbines, the AI data center, the battery yard and gas metering, with live readings and the model's diagnosis for the selected turbine." },
       { type: "image", src: "/project-evidence/powerguard360/live-03-maintenance.png", label: "Maintenance recommendation", caption: "The Random Forest flags GT-03 with a 99% overstrain risk and lists the readings that drove it. The manager decides what happens next." },
       { type: "image", src: "/project-evidence/powerguard360/hw-1-sensor-board-setup.jpg", label: "Live sensor board", caption: "Arduino UNO R4 WiFi with a motor speed sensor and an air quality sensor, posting readings to the plant server twice a second." },
+      { type: "image", src: "/project-evidence/powerguard360/award-500-best-pitch.jpg", label: "2nd place and the $500 prize", caption: "Our team on stage at CodeRED Orion with the $500 Best Pitch/Demo check." },
       { type: "image", src: "/project-evidence/powerguard360/hw-7-physical-model.jpg", label: "Physical model at the judging table", caption: "The power plant and the AI data center it feeds, built for the demo." },
       { type: "image", src: "/project-evidence/powerguard360/11-complete-solution-loop.png", label: "The whole loop", caption: "Sense, predict, protect, see, act and fix, all in one place." }
     ],
@@ -305,6 +306,7 @@ export const projects: Project[] = [
     links: [
       { label: "Live website", href: "https://powerguard360.us/" },
       { label: "YouTube demo", href: "https://www.youtube.com/watch?v=1z6rV0uYjOI" },
+      { label: "Devpost", href: "https://devpost.com/software/power-guard-360" },
       { label: "Source code", href: "https://github.com/YatoVoid/PowerGuard360" },
       { label: "Hackathon achievement", href: "/achievements" }
     ]

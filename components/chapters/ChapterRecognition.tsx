@@ -4,8 +4,8 @@ import Link from "next/link";
 const items = [
   {
     title: "2nd Place — CodeRED Orion Hackathon",
-    context: "Placed 2nd out of 70+ teams at the University of Houston's biggest hackathon with Power Guard 360.",
-    src: "/project-evidence/powerguard360/hw-7-physical-model.jpg",
+    context: "Placed 2nd out of 70+ teams at the University of Houston's biggest hackathon and won $500 for Best Pitch/Demo with Power Guard 360.",
+    src: "/project-evidence/powerguard360/award-500-best-pitch.jpg",
     href: "/achievements",
   },
   {

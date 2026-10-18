@@ -360,6 +360,15 @@ function PageContent({ page, index, project, content, style }: PageProps) {
             </>
           )}
           {content.note && <p className="bk-note">{content.note}</p>}
+          {content.links && (
+            <div className="bk-chips bk-links">
+              {content.links.map((l) => (
+                <a key={l.href} href={l.href} onClick={stop} {...(l.href.startsWith("http") ? { target: "_blank", rel: "noreferrer" } : {})}>
+                  {l.label} ↗
+                </a>
+              ))}
+            </div>
+          )}
           <span className="bk-folio">{index}</span>
         </div>
       );

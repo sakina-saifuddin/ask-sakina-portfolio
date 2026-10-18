@@ -265,6 +265,51 @@ const ganSlides: ProjectEvidence[] = Array.from({ length: 20 }, (_, i) => {
 
 export const projects: Project[] = [
   {
+    slug: "power-guard-360",
+    category: "MACHINE LEARNING · IOT · 3D WEB · HACKATHON (2ND PLACE)",
+    title: "Power Guard 360 — Predictive Maintenance for a Power Plant Feeding an AI Data Center",
+    problem: "When a gas turbine at a power plant fails without warning, the AI data center it feeds loses power. How can a plant spot failures early, tell the manager why, and get an engineer to the right turbine before that happens?",
+    summary: "Built at CodeRED Orion, the University of Houston's biggest hackathon, where our team placed 2nd out of 70+ teams. Two Random Forest models watch every turbine's sensor data and flag failures with the reasons behind them. A live Arduino sensor board drives one turbine and watches for gas leaks, a 3D digital twin shows the whole plant, and the engineer's phone app takes them to the job.",
+    headlineMetric: "2nd of 70+",
+    headlineLabel: "teams at CodeRED Orion 2026",
+    approach: [
+      "Trained two Random Forests on the AI4I 2020 predictive maintenance dataset: one gives a calibrated failure risk, the other names the failure type.",
+      "Used SHAP to give the three sensor readings that drove each prediction, so every alert comes with its reasons.",
+      "Served both models through a FastAPI service that the Node.js plant server calls for every running turbine once a second.",
+      "Connected a real Arduino sensor board: a hand-spun motor, a barometer and an air quality sensor drive turbine GT-08 live and watch the gas metering skid for leaks.",
+      "Showed the plant as a live 3D digital twin with React Three Fiber, with a maintenance board where the manager approves a repair and dispatches an engineer to their phone."
+    ],
+    evaluation: ["Tested on 2,000 readings the models never saw", "96% precision and 78% recall for failure detection", "PR-AUC 0.90, ahead of XGBoost (0.88) and logistic regression (0.50)", "Macro F1 0.93 for the failure type", "Live sensor board demoed at the judging table", "Deployed at powerguard360.us"],
+    outcomes: [
+      { value: "2nd", label: "place out of 70+ teams" },
+      { value: "96%", label: "precision on unseen data" },
+      { value: "0.90", label: "PR-AUC for failure detection" },
+      { value: "0.93", label: "macro F1 for failure type" }
+    ],
+    caseStudySections: [
+      { title: "The challenge", text: "The Chevron track was built around plants like Project Kilby, where gas turbines power an AI data center directly. If a turbine fails suddenly, the data center's computers go dark. The plant needs to catch failures before they happen and get the right engineer to the right turbine fast." },
+      { title: "What we built", text: "Power Guard 360 covers the whole loop: sense, predict, protect, see, act and fix. Sensors feed the plant server, the models flag a turbine and explain why, a battery covers the gap if a unit trips, the manager sees everything on a 3D plant and a dashboard, approves a repair, and the engineer gets the job on their phone." },
+      { title: "My part", text: "I built the machine learning pipeline: both Random Forest models, the SHAP explanations and the trained model bundle the plant server uses. I also built the 3D plant model with a Blender script, the version 2 logo and interface, the About page, the read-only public view with admin sign-in, the phone layout, and the deployment of the plant server on a cloud VM." },
+      { title: "The result", text: "We placed 2nd out of more than 70 teams at CodeRED Orion. The judges saw the live sensor board, a physical model of the plant and data center, and the full loop from a sensor reading to an engineer arriving at the turbine." }
+    ],
+    limitations: "Seven of the eight turbines replay rows from the public AI4I 2020 dataset rather than real turbine data, and the models were trained on that dataset. The live sensor board stands in for one turbine.",
+    tech: ["Python", "scikit-learn", "SHAP", "FastAPI", "React", "TypeScript", "three.js", "Node.js", "WebSockets", "Expo / React Native", "Arduino", "Gemini API", "Blender"],
+    evidence: [
+      { type: "image", src: "/project-evidence/powerguard360/live-01-plant-3d-twin.png", label: "3D digital twin of the plant", caption: "Eight gas turbines, the AI data center, the battery yard and gas metering, with live readings and the model's diagnosis for the selected turbine." },
+      { type: "image", src: "/project-evidence/powerguard360/live-03-maintenance.png", label: "Maintenance recommendation", caption: "The Random Forest flags GT-03 with a 99% overstrain risk and lists the readings that drove it. The manager decides what happens next." },
+      { type: "image", src: "/project-evidence/powerguard360/hw-1-sensor-board-setup.jpg", label: "Live sensor board", caption: "Arduino UNO R4 WiFi with a motor speed sensor and an air quality sensor, posting readings to the plant server twice a second." },
+      { type: "image", src: "/project-evidence/powerguard360/hw-7-physical-model.jpg", label: "Physical model at the judging table", caption: "The power plant and the AI data center it feeds, built for the demo." },
+      { type: "image", src: "/project-evidence/powerguard360/11-complete-solution-loop.png", label: "The whole loop", caption: "Sense, predict, protect, see, act and fix, all in one place." }
+    ],
+    videoId: "1z6rV0uYjOI",
+    links: [
+      { label: "Live website", href: "https://powerguard360.us/" },
+      { label: "YouTube demo", href: "https://www.youtube.com/watch?v=1z6rV0uYjOI" },
+      { label: "Source code", href: "https://github.com/YatoVoid/PowerGuard360" },
+      { label: "Hackathon achievement", href: "/achievements" }
+    ]
+  },
+  {
     slug: "sakina-job-os",
     category: "AGENTIC AI · AUTOMATION · JOB SEARCH",
     title: "Sakina Job OS — Agentic AI Job Search & Outreach Platform",
@@ -747,19 +792,19 @@ export const qaItems = [
     question: "What is her Power BI and analytics experience?",
     answer: "At TMAC / NIST-MEP, she automated 1,074 recurring reports and built 10+ Power BI / PowerApps dashboards for grant and financial review. At BluTech Consulting, she built Power BI and Tableau dashboards over 500K+ records for UBL and reduced reporting turnaround by 25%.",
     facts: ["10+ dashboards", "500K+ records", "25% faster reporting"],
-    links: [{ label: "Power BI case study", href: "/works/financial-reconciliation" }],
+    links: [{ label: "Power BI project book", href: "/book/financial-reconciliation" }],
   },
   {
     question: "What healthcare work has she done?",
     answer: "At Dental-X AI, she works on dental insurance and eligibility automation. Her work combines DentalXchange, CareStack, SQL, JSON, APIs, and payer-specific mapping rules into a consistent patient-level structure and includes validation of the classic and new Benefit Summary UI.",
     facts: ["15–20 sources", "7 deployments", "UI mapping"],
-    links: [{ label: "Healthcare project", href: "/works/healthcare-eligibility-pipeline" }],
+    links: [{ label: "Healthcare project", href: "/book/healthcare-eligibility-pipeline" }],
   },
   {
     question: "What automation work has she done?",
     answer: "She built an Oracle/PeopleSoft ETL workflow that converts legacy XML-based .xls exports to .xlsx, merges monthly data into fiscal-year workbooks using worksheet-specific rules, validates the output, and feeds SharePoint, Power Automate, and Power BI reporting.",
     facts: ["Oracle → XLSX", "SAFE TEST", "Power Automate"],
-    links: [{ label: "Oracle ETL project", href: "/works/oracle-financial-etl" }],
+    links: [{ label: "Oracle ETL project", href: "/book/oracle-financial-etl" }],
   },
   {
     question: "What are her strongest project results?",
@@ -789,7 +834,7 @@ export const qaItems = [
     question: "What's a mistake she's made, and what did she learn from it?",
     answer: "On her DCGAN chest X-ray project, her first experiment made things worse: she added 500 synthetic images straight into the already-larger pneumonia class without controlling for image quality or class balance, and test accuracy actually fell from 82.85% to 75%, with normal-case recall dropping from 0.57 to 0.34. Instead of dropping that result, she kept it in the write-up, used it to diagnose the real problem, and rebuilt the class-balancing strategy, training settings, and regularization for a second experiment — which reached 82.21% accuracy with far stronger recall. She applies the same habit elsewhere in the portfolio: flagging, rather than smoothing over, places where her own evidence doesn't fully support a bigger claim.",
     facts: ["Experiment 1 got worse", "Diagnosed & rebuilt approach", "82.21% on retry"],
-    links: [{ label: "See the case study", href: "/works/pneumonia-dcgan" }],
+    links: [{ label: "See the project book", href: "/book/pneumonia-dcgan" }],
   },
   {
     question: "What tools and technologies has she worked with?",

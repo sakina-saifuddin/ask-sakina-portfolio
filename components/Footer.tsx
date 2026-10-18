@@ -28,6 +28,7 @@ export function Footer() {
           <Link href="/books" onClick={navigate("/books")}>Projects</Link>
           <Link href="/#chapter-one-terminal" onClick={navigate("/#chapter-one-terminal")}>Ask My Resume</Link>
           <Link href="/resume" onClick={navigate("/resume")}>Resume</Link>
+          <Link href="/achievements" onClick={navigate("/achievements")}>Achievements</Link>
           <Link href="/certificates" onClick={navigate("/certificates")}>Certificates</Link>
           <Link href="/appreciation" onClick={navigate("/appreciation")}>Appreciation</Link>
         </div>

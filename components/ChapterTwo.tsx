@@ -22,6 +22,14 @@ type RelatedWorkItem = {
 const relatedWork: RelatedWorkItem[] = [
   {
     number: "01",
+    title: "Power Guard 360 — Predictive Maintenance for a Power Plant (2nd place, CodeRED Orion)",
+    shortTitle: "Power Plant Failure Prediction",
+    image: "/project-evidence/powerguard360/live-01-plant-3d-twin.png",
+    href: "/books?project=power-guard-360",
+    slug: "power-guard-360",
+  },
+  {
+    number: "02",
     title: "Sakina Job OS — Agentic AI Job Search & Outreach Platform",
     shortTitle: "Agentic AI Job Platform",
     image: "/projects/job-os-placeholder.png",
@@ -29,7 +37,7 @@ const relatedWork: RelatedWorkItem[] = [
     slug: "sakina-job-os",
   },
   {
-    number: "02",
+    number: "03",
     title: "AI-Driven Retail Inventory Forecasting & Autonomous Inventory Optimization",
     shortTitle: "AI Retail Demand Forecasting",
     image: "/project-evidence/retail-report/page-16.png",
@@ -37,7 +45,7 @@ const relatedWork: RelatedWorkItem[] = [
     slug: "retail-demand-forecasting",
   },
   {
-    number: "03",
+    number: "04",
     title: "Grant Financial Analytics & Reporting Dashboards",
     shortTitle: "Power BI Grant Dashboards",
     image: "/project-evidence/financial-reconciliation/grants-overview1-dummy.png",
@@ -45,7 +53,7 @@ const relatedWork: RelatedWorkItem[] = [
     slug: "financial-reconciliation",
   },
   {
-    number: "04",
+    number: "05",
     title: "Oracle Financial ETL Pipeline",
     shortTitle: "Oracle Financial Data Pipeline",
     image: "/project-evidence/oracle-etl/conversion.png",
@@ -53,7 +61,7 @@ const relatedWork: RelatedWorkItem[] = [
     slug: "oracle-financial-etl",
   },
   {
-    number: "05",
+    number: "06",
     title: "GAN-Based Chest X-ray Augmentation for Pneumonia Detection",
     shortTitle: "AI Pneumonia X-ray Detection",
     image: "/project-evidence/gan-deck/architecture.png",

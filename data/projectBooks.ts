@@ -46,6 +46,8 @@ export type ProjectBookContent = {
   stack: { name: string; use: string }[];
   /** Optional small print, e.g. what the screenshots do or don't show. */
   note?: string;
+  /** Optional links shown on the closing page: live site, demo video, source. */
+  links?: { label: string; href: string }[];
 };
 
 const CCV = "/project-evidence/cost-center-verification";
@@ -59,8 +61,116 @@ const EEG = "/project-evidence/seizure";
 const VER = "/project-evidence/vertebral";
 const JOB = "/projects/job-os-placeholder.png";
 const FIT = "/project-evidence/fitness/demo-poster.jpg";
+const PG = "/project-evidence/powerguard360";
 
 const books: Record<string, ProjectBookContent> = {
+  "power-guard-360": {
+    style: { short: "Power Guard 360", cover: "#0f2a5c", tint: "#7fa8f0", title: "Predicting Power|Plant Failures|with Machine Learning" },
+    back: {
+      points: [
+        "2nd place out of 70+ teams at CodeRED Orion, UH's biggest hackathon.",
+        "Machine learning flags failing turbines and explains why.",
+        "Real sensors, a 3D plant, and a phone app for the engineer.",
+      ],
+      stats: [
+        { value: "2nd", label: "of 70+ teams" },
+        { value: "96%", label: "precision on unseen data" },
+      ],
+    },
+    spreads: [
+      {
+        image: `${PG}/hw-7-physical-model.jpg`, imageCaption: "Our model of the plant and the AI data center it feeds.", stage: "Task",
+        title: "Keep the AI data center powered",
+        points: [
+          "Gas turbines power an AI data center directly.",
+          "If a turbine fails without warning, the computers go dark.",
+          "The plant needs to catch failures early and fix them fast.",
+        ],
+        stat: { value: "24 hrs", label: "to build it at CodeRED Orion" },
+      },
+      {
+        image: `${PG}/live-03-maintenance.png`, imageCaption: "The model flags GT-03 and lists the readings behind it.", stage: "My work",
+        title: "Two models that explain themselves",
+        points: [
+          "Model 1 gives each turbine a calibrated failure risk.",
+          "Model 2 names the failure type: heat, power, overstrain or tool wear.",
+          "SHAP lists the three readings that drove each alert.",
+        ],
+        tools: ["Python", "scikit-learn", "SHAP", "FastAPI"],
+      },
+      {
+        image: `${PG}/hw-1-sensor-board-setup.jpg`, imageCaption: "The live sensor board next to the plant view.", stage: "My work",
+        title: "Real sensors drive one turbine",
+        points: [
+          "A spinning motor, a barometer and an air quality sensor feed turbine GT-08.",
+          "The board posts readings twice a second.",
+          "Low air quality at gas metering raises a gas leak alert.",
+        ],
+        tools: ["Arduino UNO R4 WiFi", "Node.js", "WebSockets"],
+      },
+      {
+        image: `${PG}/live-01-plant-3d-twin.png`, imageCaption: "The 3D digital twin with live readings for every turbine.", stage: "My work",
+        title: "The whole plant in 3D",
+        points: [
+          "Built the 3D plant model with a Blender script.",
+          "Click any turbine to see its readings and the model's diagnosis.",
+          "Designed the version 2 interface, logo and phone layout.",
+        ],
+        tools: ["Blender", "React", "three.js", "TypeScript"],
+      },
+      {
+        image: `${PG}/hw-6-engineer-phone-app.jpg`, imageCaption: "The engineer's phone gets the job.", stage: "My work",
+        title: "From alert to engineer",
+        points: [
+          "The manager approves a repair and picks an engineer.",
+          "The engineer's phone buzzes with the job.",
+          "The control room watches them walk to the turbine on the 3D map.",
+        ],
+        tools: ["Expo", "React Native"],
+      },
+      {
+        image: `${PG}/gas-leak.png`, imageCaption: "A possible gas leak raised from the live air quality sensor.", stage: "Results",
+        title: "Accurate on data it never saw",
+        lead: "Tested on 2,000 readings held back from training.",
+        stats: [
+          { value: "96%", label: "precision" },
+          { value: "78%", label: "recall" },
+          { value: "0.90", label: "PR-AUC (XGBoost 0.88)" },
+          { value: "0.93", label: "macro F1 for failure type" },
+        ],
+      },
+      {
+        image: `${PG}/11-complete-solution-loop.png`, imageCaption: "Sense, predict, protect, see, act, fix.", stage: "Outcome",
+        title: "2nd place out of 70+ teams",
+        points: [
+          "Placed 2nd at CodeRED Orion, UH's biggest hackathon.",
+          "Judges saw the live sensors and the full loop end to end.",
+          "Still live at powerguard360.us.",
+        ],
+        stat: { value: "2nd", label: "of 70+ teams" },
+      },
+    ],
+    contribution: [
+      "Built both machine learning models, the SHAP explanations and the model service.",
+      "Built the 3D plant model and the version 2 interface.",
+      "Added the public view with admin sign-in and deployed the plant server.",
+    ],
+    stack: [
+      { name: "scikit-learn + SHAP", use: "Predicts failures and explains them." },
+      { name: "FastAPI", use: "Serves the models to the plant server." },
+      { name: "Node.js + WebSockets", use: "Runs the plant and pushes live data." },
+      { name: "React + three.js", use: "The 3D plant and the dashboard." },
+      { name: "Expo", use: "The engineer's phone app." },
+      { name: "Arduino", use: "Live turbine and gas leak sensors." },
+    ],
+    note: "Seven of the eight turbines replay the public AI4I 2020 dataset; the sensor board drives the eighth.",
+    links: [
+      { label: "Live website", href: "https://powerguard360.us/" },
+      { label: "YouTube demo", href: "https://www.youtube.com/watch?v=1z6rV0uYjOI" },
+      { label: "The achievement", href: "/achievements" },
+    ],
+  },
+
   "sakina-job-os": {
     style: { short: "Job OS", cover: "#8b3a68", tint: "#e3a2c6", title: "AI Job Search|Automation" },
     back: {

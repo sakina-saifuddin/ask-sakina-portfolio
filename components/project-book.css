@@ -618,3 +618,14 @@
 /* the book you picked on the home page turns to face you for a moment */
 .works-carousel-card.is-highlight .books-mock-stage .b3d-body { transform: rotateX(-4deg) rotateY(-10deg) !important; }
 .works-carousel-card.is-highlight .books-mock-stage { box-shadow: 0 0 0 2px #171310, 0 20px 36px rgba(23, 19, 16, 0.2); }
+
+/* Closing-page links (live site, demo video): chips that open in a new tab without turning the page. */
+.bk-links a {
+  padding: 0.7cqw 1.7cqw;
+  border-radius: 999px;
+  border: 1px solid var(--bk-line-strong);
+  font-size: max(11px, 1.6cqw);
+  color: var(--bk-ink);
+  text-decoration: none;
+}
+.bk-links a:hover { background: var(--bk-ink); color: var(--bk-page); }

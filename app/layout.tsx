@@ -1,53 +1,21 @@
 import type { Metadata } from "next";
-import { Instrument_Serif, Instrument_Sans, Montserrat } from "next/font/google";
-import { IntroLoader } from "@/components/IntroLoader";
-import { PageCurtain } from "@/components/PageCurtain";
-import { ProjectImageTransition } from "@/components/ProjectImageTransition";
-import { ClipWipeCurtain } from "@/components/ClipWipeCurtain";
-import { GlobalClickSound } from "@/components/GlobalClickSound";
-import { CustomCursor } from "@/components/CustomCursor";
+import { VT323, IBM_Plex_Mono, Instrument_Serif, Instrument_Sans } from "next/font/google";
 import "./globals.css";
 
-const displaySerif = Instrument_Serif({
-  subsets: ["latin"],
-  variable: "--font-cinzel",
-  weight: ["400"],
-  style: ["normal", "italic"],
-});
-
-const bodySans = Instrument_Sans({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-sans",
-  display: "swap",
-});
-
-// Heavy geometric sans for the project-book covers (paperback-style lettering).
-const coverSans = Montserrat({
-  subsets: ["latin"],
-  weight: ["600", "700", "800"],
-  variable: "--font-cover",
-  display: "swap",
-});
+const vt = VT323({ subsets: ["latin"], weight: "400", variable: "--font-vt" });
+const mono = IBM_Plex_Mono({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-mono" });
+const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--font-serif" });
+const sans = Instrument_Sans({ subsets: ["latin"], weight: ["400", "500", "600"], variable: "--font-sans" });
 
 export const metadata: Metadata = {
-  title: "Sakina Saifuddin | Software, Data & AI Portfolio",
-  description: "Sakina Saifuddin's portfolio: software engineering, data, BI, automation, machine learning, projects, shipped work, and experience.",
-
+  title: "Sakina Saifuddin",
+  description: "Sakina Saifuddin: software, data and AI. Some of it is on VHS.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${displaySerif.variable} ${bodySans.variable} ${coverSans.variable}`}>
-      <body>
-        {children}
-        <IntroLoader />
-        <PageCurtain />
-        <ProjectImageTransition />
-        <ClipWipeCurtain />
-        <GlobalClickSound />
-        <CustomCursor />
-      </body>
+    <html lang="en" className={`${vt.variable} ${mono.variable} ${serif.variable} ${sans.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }

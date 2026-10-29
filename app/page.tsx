@@ -1,13 +1,14 @@
-import { Header } from "@/components/Header";
-import { HorizontalIntro } from "@/components/HorizontalIntro";
+import { Room } from "@/components/Room";
+import { profile } from "@/data/portfolio";
 
-export default function Home() {
+export default function Page() {
   return (
     <>
-      <Header />
-      <main>
-        <HorizontalIntro />
-      </main>
+      <Room />
+      <h1 className="sr">{profile.name}</h1>
+      <p className="sr">
+        {profile.headline} <a href="/lofi">Read the plain version.</a>
+      </p>
     </>
   );
 }

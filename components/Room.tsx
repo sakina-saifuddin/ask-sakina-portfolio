@@ -6,6 +6,8 @@ import hotspots from "@/public/room/hotspots.json";
 import { CHANNELS, type ChannelId } from "@/lib/channels";
 import { ChannelView } from "./Channels";
 import { Rain } from "./Rain";
+import { RoomCanvas, type LightState } from "./RoomCanvas";
+import { Static } from "./Static";
 import * as audio from "@/lib/audio";
 
 type Pt = number[];
@@ -26,12 +28,19 @@ export function Room() {
   const [channel, setChannel] = useState<ChannelId | null>(null);
   const [zoom, setZoom] = useState(true);
   const [soundOn, setSoundOn] = useState(false);
+  const [lofi, setLofi] = useState(false);
   const [burst, setBurst] = useState(false);
   const [credits, setCredits] = useState(false);
   const [counter, setCounter] = useState(0);
   const [zoomScale, setZoomScale] = useState(3);
   const [hover, setHover] = useState<number | null>(null);
-  const flashRef = useRef<HTMLDivElement>(null);
+
+  const light = useRef<LightState>({ flash: 0 });
+  const stageRef = useRef<HTMLDivElement>(null);
+  const swayRef = useRef<HTMLDivElement>(null);
+  const zoomRef = useRef(zoom);
+  zoomRef.current = zoom;
+  const pointer = useRef({ x: 0, y: 0 });
 
   // Small screens and reduced-motion visitors get the lo-fi page, like a static fallback.
   useEffect(() => {
@@ -52,6 +61,46 @@ export function Room() {
     calc();
     window.addEventListener("resize", calc);
     return () => window.removeEventListener("resize", calc);
+  }, []);
+
+  // One animation loop drives: idle camera breathing, mouse parallax for the city layers,
+  // and the city brightening when lightning hits.
+  useEffect(() => {
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    let raf = 0;
+    let px = 0;
+    let py = 0;
+    const loop = (t: number) => {
+      const s = t / 1000;
+      // pointer parallax eases toward the cursor; a slow sine keeps the layers drifting when idle
+      px += (pointer.current.x + Math.sin(s * 0.23) * 0.35 - px) * 0.04;
+      py += (pointer.current.y + Math.cos(s * 0.19) * 0.25 - py) * 0.04;
+      const st = stageRef.current;
+      if (st) {
+        st.style.setProperty("--px", px.toFixed(4));
+        st.style.setProperty("--py", py.toFixed(4));
+        st.style.setProperty("--fl", light.current.flash.toFixed(3));
+      }
+      const sw = swayRef.current;
+      if (sw) {
+        // breathing: very slow, very small; off while zoomed in on the TV
+        const k = zoomRef.current ? 0 : 1;
+        const x = (Math.sin(s * 0.31) * 0.22 + Math.sin(s * 0.13) * 0.12) * k;
+        const y = (Math.sin(s * 0.27 + 1) * 0.16 + Math.sin(s * 0.09) * 0.1) * k;
+        sw.style.transform = `translate(${x.toFixed(3)}%, ${y.toFixed(3)}%) rotate(${(Math.sin(s * 0.17) * 0.06 * k).toFixed(3)}deg) scale(${1 + 0.006 * k})`;
+      }
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    const move = (e: PointerEvent) => {
+      pointer.current.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      pointer.current.y = (e.clientY / window.innerHeight - 0.5) * 2;
+    };
+    window.addEventListener("pointermove", move);
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", move);
+    };
   }, []);
 
   // Fake boot: the meter climbs, then the TV asks about sound.
@@ -77,18 +126,19 @@ export function Room() {
     return () => clearInterval(t);
   }, [channel]);
 
-  // Now and then the sky flashes.
+  // Now and then lightning lights the room through the moon pass.
   useEffect(() => {
     let t: ReturnType<typeof setTimeout>;
+    const strike = () => {
+      light.current.flash = 1;
+      setTimeout(() => (light.current.flash = 0.8), 140);
+      setTimeout(() => audio.thunder(), 700);
+    };
     const next = () => {
       t = setTimeout(() => {
-        const el = flashRef.current;
-        if (el) {
-          el.classList.add("on");
-          setTimeout(() => el.classList.remove("on"), 700);
-        }
+        strike();
         next();
-      }, 28000 + Math.random() * 40000);
+      }, 22000 + Math.random() * 38000);
     };
     next();
     return () => clearTimeout(t);
@@ -103,10 +153,24 @@ export function Room() {
 
   const toggleSound = useCallback(() => {
     setSoundOn((on) => {
-      if (on) audio.stop();
-      else audio.start();
+      if (on) {
+        audio.stopLofi();
+        audio.stop();
+        setLofi(false);
+      } else audio.start();
       return !on;
     });
+  }, []);
+
+  const toggleLofi = useCallback(() => {
+    if (audio.isLofi()) {
+      audio.stopLofi();
+      setLofi(false);
+    } else {
+      audio.startLofi();
+      setSoundOn(true);
+      setLofi(true);
+    }
   }, []);
 
   const play = useCallback(
@@ -121,7 +185,7 @@ export function Room() {
       setChannel(id);
       setCounter(0);
       setZoom(true);
-      setTimeout(() => setBurst(false), 650);
+      setTimeout(() => setBurst(false), 500);
     },
     [phase, channel],
   );
@@ -132,7 +196,7 @@ export function Room() {
     setBurst(true);
     setChannel(null);
     setZoom(false);
-    setTimeout(() => setBurst(false), 450);
+    setTimeout(() => setBurst(false), 400);
   }, [channel]);
 
   useEffect(() => {
@@ -151,6 +215,7 @@ export function Room() {
         else eject();
       } else if (k === "z") setZoom((z) => !z);
       else if (k === "s") toggleSound();
+      else if (k === "l") toggleLofi();
       else if (k === "e") eject();
       else if (/^[1-5]$/.test(k)) play(CHANNELS[Number(k) - 1].id);
     };
@@ -167,124 +232,131 @@ export function Room() {
 
   return (
     <div className="viewport">
-      <div className="stage" style={camera}>
-        <img className="plate" src="/room/still.jpg" alt="A desk at night by a rainy window: a small TV, a VCR, a stack of labelled video tapes, a desk lamp and a plant." draggable={false} />
+      <div className="sway" ref={swayRef}>
+        <div className="stage" ref={stageRef} style={camera}>
+          {/* city seen through the window: two depth layers that drift against each other */}
+          <img className="city far" src="/room/far.webp" alt="" draggable={false} />
+          <img className="city near" src="/room/near.webp" alt="" draggable={false} />
+          {/* the room, blended from three Blender passes in a shader (alpha hole = window) */}
+          <RoomCanvas light={light} />
 
-        <div className="rainbox" style={{ left: pct(WINDOW.x), top: pct(WINDOW.y), width: pct(WINDOW.w), height: pct(WINDOW.h) }}>
-          <Rain />
-        </div>
-        <div className="flash" ref={flashRef} />
-
-        {/* loaded tape sitting in the VCR slot */}
-        {loaded && (
-          <div className="vcr-tape" style={{ left: pct(hotspots.slot[0] - 0.055), top: pct(hotspots.slot[1] - 0.012), borderColor: loaded.color }}>
-            <i style={{ background: loaded.color }} />
+          <div className="rainbox" style={{ left: pct(WINDOW.x), top: pct(WINDOW.y), width: pct(WINDOW.w), height: pct(WINDOW.h) }}>
+            <Rain />
           </div>
-        )}
-        <button className="hot eject" aria-label="Eject tape (E)" title="Eject (E)" style={{ left: pct(EJECT[0]), top: pct(EJECT[1]) }} onClick={eject} />
 
-        {/* tapes in the stack */}
-        {CHANNELS.map((c, i) => {
-          const [x, y] = hotspots.tapes[i] as Pt;
-          return (
-            <button
-              key={c.id}
-              className={`hot tape${channel === c.id ? " loaded" : ""}${hover === i ? " hov" : ""}`}
-              style={{ left: pct(x), top: pct(y) }}
-              aria-label={`Play tape ${c.n}: ${c.spine}`}
-              onClick={() => play(c.id)}
-              onMouseEnter={() => setHover(i)}
-              onMouseLeave={() => setHover(null)}
-            >
-              <span>{c.n} · {c.spine}</span>
-            </button>
-          );
-        })}
+          {/* loaded tape sitting in the VCR slot */}
+          {loaded && (
+            <div className="vcr-tape" style={{ left: pct(hotspots.slot[0] - 0.055), top: pct(hotspots.slot[1] - 0.012), borderColor: loaded.color }}>
+              <i style={{ background: loaded.color }} />
+            </div>
+          )}
+          <button className="hot eject" aria-label="Eject tape (E)" title="Eject (E)" style={{ left: pct(EJECT[0]), top: pct(EJECT[1]) }} onClick={eject} />
 
-        {/* numbered buttons on the TV */}
-        {CHANNELS.map((c, i) => {
-          const [x, y] = hotspots.buttons[i] as Pt;
-          return (
-            <button
-              key={c.id}
-              className={`hot tvbtn${channel === c.id ? " on" : ""}`}
-              style={{ left: pct(x), top: pct(y) }}
-              aria-label={`Channel ${c.n}: ${c.spine}`}
-              onClick={() => play(c.id)}
-            >
-              {c.n}
-            </button>
-          );
-        })}
+          {/* tapes in the stack */}
+          {CHANNELS.map((c, i) => {
+            const [x, y] = hotspots.tapes[i] as Pt;
+            return (
+              <button
+                key={c.id}
+                className={`hot tape${channel === c.id ? " loaded" : ""}${hover === i ? " hov" : ""}`}
+                style={{ left: pct(x), top: pct(y) }}
+                aria-label={`Play tape ${c.n}: ${c.spine}`}
+                onClick={() => play(c.id)}
+                onMouseEnter={() => setHover(i)}
+                onMouseLeave={() => setHover(null)}
+              >
+                <span>{c.n} · {c.spine}</span>
+              </button>
+            );
+          })}
 
-        {/* the TV screen */}
-        <div
-          className={`screen${phase === "room" ? " live" : ""}`}
-          style={{ left: pct(SCREEN.x), top: pct(SCREEN.y), width: pct(SCREEN.w), height: pct(SCREEN.h) }}
-          onClickCapture={(e) => {
-            if (!zoom && phase === "room") {
-              e.preventDefault();
-              e.stopPropagation();
-              setZoom(true);
-            }
-          }}
-        >
-          {phase !== "room" && (
-            <div className="boot">
-              <div className="lb">▶▶ LOADING</div>
-              <div className="chn">CH 00</div>
-              {phase === "loading" ? (
-                <>
-                  <div className="meter"><i style={{ width: `${progress}%` }} /></div>
-                  <div className="pc">{Math.floor(progress)}%</div>
-                </>
-              ) : (
-                <div className="snd">
-                  <span>SOUND?</span>
-                  <button onClick={() => chooseSound(true)}>ON (Y)</button>
-                  <button onClick={() => chooseSound(false)}>OFF (N)</button>
+          {/* numbered buttons on the TV */}
+          {CHANNELS.map((c, i) => {
+            const [x, y] = hotspots.buttons[i] as Pt;
+            return (
+              <button
+                key={c.id}
+                className={`hot tvbtn${channel === c.id ? " on" : ""}`}
+                style={{ left: pct(x), top: pct(y) }}
+                aria-label={`Channel ${c.n}: ${c.spine}`}
+                onClick={() => play(c.id)}
+              >
+                {c.n}
+              </button>
+            );
+          })}
+
+          {/* the TV screen */}
+          <div
+            className={`screen${phase === "room" ? " live" : ""}`}
+            style={{ left: pct(SCREEN.x), top: pct(SCREEN.y), width: pct(SCREEN.w), height: pct(SCREEN.h) }}
+            onClickCapture={(e) => {
+              if (!zoom && phase === "room") {
+                e.preventDefault();
+                e.stopPropagation();
+                setZoom(true);
+              }
+            }}
+          >
+            <div className="glow">
+              {phase !== "room" && (
+                <div className="boot">
+                  <div className="lb">▶▶ LOADING</div>
+                  <div className="chn">CH 00</div>
+                  {phase === "loading" ? (
+                    <>
+                      <div className="meter"><i style={{ width: `${progress}%` }} /></div>
+                      <div className="pc">{Math.floor(progress)}%</div>
+                    </>
+                  ) : (
+                    <div className="snd">
+                      <span>SOUND?</span>
+                      <button onClick={() => chooseSound(true)}>ON (Y)</button>
+                      <button onClick={() => chooseSound(false)}>OFF (N)</button>
+                    </div>
+                  )}
+                </div>
+              )}
+
+              {phase === "room" && !loaded && !burst && (
+                <div className="idle">
+                  <h2>Sakina Saifuddin</h2>
+                  <p>I build AI, data, and software systems with clear results.</p>
+                  <p className="blink">▶ INSERT A TAPE</p>
+                </div>
+              )}
+
+              {phase === "room" && loaded && !burst && (
+                <div className="fadein" key={loaded.id}>
+                  <div className="osd">
+                    <span>▶ PLAY</span>
+                    <span>CH 0{loaded.n}</span>
+                  </div>
+                  <div className="scroll"><ChannelView id={loaded.id} /></div>
+                  <div className="osd bottom">
+                    <span>{loaded.spine}</span>
+                    <span>SP {fmt(counter)}</span>
+                  </div>
                 </div>
               )}
             </div>
-          )}
 
-          {phase === "room" && !loaded && (
-            <div className="idle">
-              <h2>Sakina Saifuddin</h2>
-              <p>{`I build AI, data, and software systems with clear results.`}</p>
-              <p className="blink">▶ INSERT A TAPE</p>
-            </div>
-          )}
+            {burst && <Static />}
+            <div className="crt" />
+            <div className="roll" />
+          </div>
 
-          {phase === "room" && loaded && (
-            <>
-              <div className="osd">
-                <span>▶ PLAY</span>
-                <span>CH 0{loaded.n}</span>
-              </div>
-              <div className="scroll"><ChannelView id={loaded.id} /></div>
-              <div className="osd bottom">
-                <span>{loaded.spine}</span>
-                <span>SP {fmt(counter)}</span>
-              </div>
-            </>
-          )}
-
-          {burst && <div className="noise" />}
-          <div className="crt" />
+          <div className="vignette" />
         </div>
-
-        <div className="vignette" />
       </div>
 
-      <div className="hud">
-        <div className="hint">
-          {phase === "room" ? "click a tape · 1–5 monitor buttons · Z zoom TV · E eject · S sound" : ""}
-        </div>
+      <div className={`hud${phase === "room" ? " show" : ""}`}>
+        <div className="hint">click a tape · 1–5 monitor buttons · Z zoom TV · E eject · S sound · L lo-fi beat</div>
         <div className="btns">
           {zoom && phase === "room" && <button onClick={() => setZoom(false)}>BACK TO THE DESK · ESC</button>}
           <button onClick={() => setCredits(true)}>CREDITS</button>
-          <a href="/lofi" aria-label="Lo-fi version">LO-FI</a>
+          <a href="/lofi" aria-label="Plain version of this site">PLAIN</a>
+          <button onClick={toggleLofi} aria-pressed={lofi}>LO-FI BEAT {lofi ? "ON" : "OFF"}</button>
           <button onClick={toggleSound} aria-pressed={soundOn}>SOUND {soundOn ? "ON" : "OFF"}</button>
         </div>
       </div>
@@ -294,7 +366,7 @@ export function Room() {
           <div onClick={(e) => e.stopPropagation()}>
             <h2>Credits</h2>
             <p>Idea inspired by the interactive desk on felixrieseberg.com. Scene, code and content here are original.</p>
-            <p>Room modelled and rendered in Blender. Built with Next.js and WebAudio; rain, sound and screen are drawn live, with no audio files.</p>
+            <p>Room modelled and rendered in Blender (Cycles), blended live in a WebGL shader. Built with Next.js and WebAudio; rain, sound and the lo-fi beat are generated in your browser, with no audio files.</p>
             <button onClick={() => setCredits(false)}>CLOSE</button>
           </div>
         </div>

@@ -1,4 +1,5 @@
 import { profile, experience, projects } from "@/data/portfolio";
+import { StillScene } from "@/components/StillScene";
 
 export const metadata = { title: "Sakina Saifuddin · plain version" };
 
@@ -7,11 +8,9 @@ export default function Lofi() {
     <main className="lofi">
       <h1>Hi, I&apos;m Sakina.</h1>
       <p className="dek">{profile.headline}</p>
-      <figure className="still">
-        <a href="/?room=1">
-          <img src="/room/still.jpg" alt="A desk at night by a rainy window with a small TV, a VCR and a stack of labelled video tapes." />
-        </a>
-      </figure>
+      <a className="still" href="/?room=1" aria-label="Open the interactive desk">
+        <StillScene />
+      </a>
       <p className="note">
         This is the plain version, used on small screens and for reduced motion.{" "}
         <a href="/?room=1">Open the interactive desk anyway.</a>
